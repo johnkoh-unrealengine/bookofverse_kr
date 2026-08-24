@@ -1,10 +1,10 @@
-site_name: Book of Verse
-site_url: https://verselang.github.io/book/
-site_description: Documentation for the Verse programming language
-site_author: Jan Vitek
+site_name: Book of Verse (비공식 한글 번역)
+site_url: https://verselang.github.io/bookofverse_kr/
+site_description: Documentation for the Verse programming language (비공식 한글 번역)
+site_author: Jan Vitek (Unofficial Translator : John Koh)
 
-repo_name: verselang/book
-repo_url: https://github.com/verselang/book
+repo_name: johnkoh-unrealengine/bookofverse_kr
+repo_url: https://github.com/johnkoh-unrealengine/bookofverse_kr
 edit_uri: edit/main/docs/
 
 theme:
@@ -75,7 +75,7 @@ extra_javascript:
     path: js/Verse.js
 
 nav:
-  - Home: index.md
+  - Home (홈): index.md
   - Overview: 00_overview.md
   - Expressions: 01_expressions.md
   - Primitive types: 02_primitives.md
