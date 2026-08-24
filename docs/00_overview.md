@@ -1,4 +1,4 @@
-# The Verse Programming Language
+# 프로그래밍 언어 Verse (<-The Verse Programming Language 를 이런식으로 번역할 것)
 
 ## Overview
 
