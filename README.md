@@ -1,6 +1,7 @@
 # Verse Programming Language Documentation
 
 **Read the documentation (Original Version)**: https://verselang.github.io/book/
+
 **Read the documentation (Unofficial Korean Translate Version)**: https://johnkoh-unrealengine.github.io/bookofverse_kr/
 
 This is the open source documentation for the Verse programming language. Verse is a functional logic programming language developed by Epic Games for creating interactive experiences in Unreal Engine and Fortnite.
