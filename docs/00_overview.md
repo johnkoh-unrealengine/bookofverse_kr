@@ -4,18 +4,18 @@
 
 Verse 는 Epic Games에서 Fortnite의 Unreal Editor 게임플레이 제작 및 메타버스 환경 구축을 위해 개발한 다중 패러다임 프로그래밍 언어입니다. 함수형, 논리형, 명령형 프로그래밍 전통을 계승한 Verse는 기존 프로그래밍 언어와는 차별화된, 장기적인 발전과 안정성을 고려하여 설계되었습니다.
 
-Verse 는 세가지 근본적인 원칙을 지켜 만들어졌습니다.:
+Verse 는 세가지 근본적인 원칙을 지켜 만들어졌습니다 :
 
-- **그냥 코드 입니다.**:
+- **그냥 코드 입니다** :
 다른 언어에서 특별한 구문이나 구조를 필요로 할 수 있는 복잡한 개념들도 Verse에서는 일반적인 코드로 표현됩니다. 마법 같은 것은 없습니다. 모든 것은 동일한 기본 구조로 이루어져 있어 균일하고 예측 가능한 프로그래밍 모델을 제공합니다.
 
-- **한 종류의 언어로 되어 있습니다.**:
+- **한 종류의 언어로 되어 있습니다** :
 하나의 언어 구문이 컴파일에도 쓰이고, 런타임에도 쓰입니다. 둘 사이의 처리 과정 없이 작성 내용이 그대로 실행됩니다.
 
-- **메타버스를 우선시 합니다.**:
+- **메타버스를 우선시 합니다** :
 Verse는 코드가 단일 글로벌 시뮬레이션인 메타버스에서 실행되는 미래를 위해 설계되었습니다. 이는 강력한 호환성 보장부터 부작용을 추적하고 안전한 동시 실행을 보장하는 이펙트 시스템에 이르기까지 언어의 모든 측면에 영향을 미칩니다.
 
-Verse는 다음과 같은 목표를 가지고 있습니다.:
+Verse는 다음과 같은 목표를 가지고 있습니다 :
 
 - **간결할 것.** 프로그래밍을 처음 접하는 사람도 쉽게 배울 수 있을 만큼 간단하며, 규칙이 일관적이고, 예외 처리가 필요한 경우가 최소화되어 있습니다.
 
@@ -29,13 +29,13 @@ Verse는 다음과 같은 목표를 가지고 있습니다.:
 
 **왜 Verse 인가?**
 
-기존 프로그래밍 언어는 수십 년에 걸친 역사적 유산과 설계상의 타협점을 안고 있습니다. Verse는 과거에서 배우되 과거에 얽매이지 않고 새롭게 시작합니다. Verse는 다음과 같은 미래에 대응하기 위해 설계되었습니다.:
+기존 프로그래밍 언어는 수십 년에 걸친 역사적 유산과 설계상의 타협점을 안고 있습니다. Verse는 과거에서 배우되 과거에 얽매이지 않고 새롭게 시작합니다. Verse는 향후 변화할 프로그래밍의 다음과 같은 특징들에 대응하기 위해 설계되었습니다:
 
-- 코드가 영구적인 메타버스 속에서 영원히 존재하는 미래.
-- 수백만 명의 개발자가 공유 코드베이스에 기여하는 미래.
-- 프로그램이 기본적으로 안전하고, 동시 실행 가능하며, 조합 가능한 미래.
-- 하위 호환성이 선택 사항이 아니라 필수 사항인 미래.
-- 컴파일 타임과 런타임의 경계가 유동적인 미래.
+- 코드가 영구적인 메타버스 속에 영원히 잔류한다.
+- 수백만 명의 개발자가 공유 코드베이스에 기여한다.
+- 프로그램이 기본적으로 안전하고, 동시 실행 가능하며, 조합 가능해진다.
+- 하위 호환성 지원이 선택이 아니라 필수가 된다.
+- 컴파일 타임과 런타임의 경계가 유연해진.
 
 함께 할 준비가 되셨나요? Verse 의 기본적인 자료형을 이해하시려면 [Built-in Types](02_primitives.md) 부터 확인 해보세요. Verse 의 모든 것이 값을 계산하는 방식을 보시려면 [Expressions](01_expressions.md) 부터 확인하셔도 됩니다.
 
@@ -77,8 +77,8 @@ M()<decides>:void=
 -->
 <!-- 02 -->
 ```verse
-ValidateInput[Data] # 대괄호는 이 함수가 실패할 수도 있음을 의미합니다.
-ProcessData(Data)   # Data 는 유효한 경우에만 처리되며, 괄호는 이 함수가 반드시 성공함을 의미합니다.
+ValidateInput[Data]  # 대괄호는 이 함수가 실패할 수도 있음을 의미합니다.
+ProcessData(Data)    # 유효한 Data만 처리되며, 괄호는 이 함수가 반드시 성공함을 의미합니다.
 ```
 <!-- #> -->
 
@@ -91,13 +91,13 @@ Verse는 강력한 자료형 시스템은 컴파일 타임에 오류를 잡아�
 <!--versetest-->
 <!-- 03 -->
 ```verse
-X := 42                    # 이전에는 X : int = 42 라고 해야 했으나, 자료형 추론됨.
-Name := "Verse"            # 이전에는 Name : str = "Verse" 라고 해야 했으나, 자료형 추론됨.
+X := 42                    # X : int = 42 로 적지 않아도 자료형 추론됨.
+Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형 추론됨.
 ```
 
 **효과 추적**
 
-함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 지정자를 통해 부수효과를 선언합니다. 이러한 부수효과 지정자를 통해 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 즉시 명확히 알 수 있습니다.:
+함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 지정자를 통해 부수 효과를 선언합니다. 이러한 부수 효과 지정자에 의해서 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 빠르고 명확하게 알 수 있습니다:
 
 <!--versetest
 x := class:
@@ -110,9 +110,9 @@ x := class:
 -->
 <!-- 04 -->
 ```verse
-PureCompute()<computes>:int = 2 + 2            # 부수 효과 없음. 즉, 연산만 함
-ReadState()<reads>:int = GetCurrentValue()     # 변경 가능한 상태 읽기 가능
-UpdateGame()<transacts>:void = set Score += 10 # 읽기, 쓰기, 할당하기 가능
+PureCompute()<computes>:int = 2 + 2              # 부수 효과 없음. 즉, 연산만 함
+ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태 읽기 가능
+UpdateGame()<transacts>:void = set Score += 10   # 읽기, 쓰기, 할당하기 가능
 ```
 <!-- #> -->
 
@@ -193,11 +193,11 @@ when(Health < 25):
     Log("Low health warning!")
 ```
 
-Verse provides a foundation for building interactive experiences in persistent virtual environments.
+Verse 는 영속적 가상 환경에서의 상호 경험을 구축하기 위한 기반을 제공합니다.
 
-## An Example
+## 예시
 
-The following example demonstrates key language features by building an inventory management system for a game, showing how Verse's constructs create robust, maintainable code.
+다음 예제는 게임용 인벤토리 관리 시스템을 구축하여 Verse 의 주요 언어 기능을 보여주고, Verse 의 구문이 어떻게 견고하고 유지보수 가능한 코드를 생성하는지 설명합니다.
 
 <!--versetest
 # Define item rarity as an enumeration - showing Verse's type system
@@ -358,10 +358,10 @@ assert:
 -->
 <!-- 08 -->
 ```verse
-# Module declaration - start by importing utility functions
+# 모듈 선언 - 아래처럼 유틸리티 함수를 가져오는 것부터 시작합니다.
 using { /Verse.org/VerseCLR }
 
-# Define item rarity as an enumeration - showing Verse's type system
+# 열거형(이는 Verse 의 자료형 시스템을 보여줍니다)으로 게임 내 아이템 희귀도를 정의합니다.
 item_rarity := enum<persistable>:
     common
     uncommon
@@ -369,53 +369,53 @@ item_rarity := enum<persistable>:
     epic
     legendary
 
-# Struct for immutable item data - functional programming style
+# 게임 내 아이템의 불변 데이터 (여기서는 item 의 stats) 를 위한 구조체를 정의합니다. - 이는 함수형 프로그래밍 스타일의 예시 입니다.
 item_stats := struct<persistable>:
     Damage:float = 0.0
     Defense:float = 0.0
     Weight:float = 1.0
     Value:int = 0
 
-# Class for game items - object-oriented features with functional constraints
+# 게임 내 아이템의 Class 를 정의합니다. - 이는 함수적 제약 조건을 갖는 객체 지향 기능의 예시 입니다.
 game_item := class<final><persistable>:
     Name:string
     Rarity:item_rarity = item_rarity.common
     Stats:item_stats = item_stats{}
     StackSize:int = 1
 
-    # Method with decides effect - can fail
+    # <decides> 효과를 갖는 Method - 이는 연산 결과 fail 될 수 있습니다.
     GetRarityMultiplier()<decides>:float =
         case(Rarity):
             item_rarity.common => 1.0
             item_rarity.uncommon => 1.5
             item_rarity.rare => 2.0
             item_rarity.epic => 3.0
-            _ => {false?; 0.0}  # Fails if the item is legendary or unexpected
+            _ => {false?; 0.0}   # 해당 아이템의 rarity 가 legendary 이거나 규격 외인 경우 Fail 됩니다.
 
-    # Computed property using closed-world function
+    # Closed-world 함수(연산 대상이 정해져 있고, 그것이 확장되지 않는다고 전제되는 함수)를 사용해 계산된 속성
     GetEffectiveValue()<reads><decides>:int=
         Floor[Stats.Value * GetRarityMultiplier[]]
 
-# Inventory system with state management and effects
+# 상태 관리 및 효과를 갖춘 inventory_system 라는 이름의 Class 를 선언한다
 inventory_system := class:
     var Items:[]game_item = array{}
     var MaxWeight:float = 100.0
     var Gold:int = 1000
 
-    # Method demonstrating failure handling and transactional semantics
+    # 오류 처리 및 트랜잭션 의미론을 보여주는 Method
     AddItem(NewItem:game_item)<transacts><decides>:void =
-        # Calculate new weight - speculative execution
+        # 새 무게를 계산한다 - 투기적 실행
         CurrentWeight := GetTotalWeight()
         NewWeight := CurrentWeight + NewItem.Stats.Weight
 
-        # This check might fail, rolling back any changes
+        # 위 검사는 fail 될 수 있고, 그 경우 아래와 같이 모든 변경사항을 되돌린다
         NewWeight <= MaxWeight
 
-        # Only executes if weight check passes
+        # 아래 연산은 weight 검사가 통과된 경우에만 실행된다
         set Items += array{NewItem}
         Print("Added {NewItem.Name} to inventory")
 
-    # Method with query operator and failure propagation
+    # 쿼리 연산자와 오류 전파를 사용하는 Method
     RemoveItem(ItemName:string)<transacts><decides>:game_item =
         var RemovedItem:?game_item = false
         var NewItems:[]game_item = array{}
@@ -426,24 +426,24 @@ inventory_system := class:
             else:
                 set NewItems += array{Item}
         set Items = NewItems
-        RemovedItem?  # Fails if item not found
+        RemovedItem?  # 아이템이 탐색되지 않으면 Fail 된다
 
-    # Purchase with complex failure logic and rollback
+    # 복잡한 오류 로직 및 롤백 기능을 갖춘 아이템 구매 기능
     PurchaseItem(ShopItem:game_item)<transacts><decides>:void =
-        # Multiple failure points - any failure rolls back all changes
+        # 여러 failure 가 발생할 수 있는 지점 - failure 가 하나라도 발생하면 모든 변경 사항을 되돌린다
         Price := ShopItem.GetEffectiveValue[]
-        Price <= Gold  # Fails if not enough gold
+        Price <= Gold  # 골드가 충분하지 않으면 Fail 된다
 
-        # Tentatively deduct gold
+        # 잠정적으로 골드를 차감한다.
         set Gold = Gold - Price
 
-        # Try to add item - might fail due to weight
+        # 아이템 추가를 시도한다 - 무게에 의해 실패할 수 있다
         AddItem[ShopItem]
 
-        # All succeeded - changes are committed
+        # 모든 과정에 성공한 경우 - 변경사항이 커밋 된다
         Print("Purchased {ShopItem.Name} for {Price} gold")
 
-    # Higher-order function with type parameters and where clauses
+    # 자료형 파라미터와 자료형 제약 구문을 사용하는 고차 함수
     FilterItems(Predicate:type{_(:game_item)<computes><decides>:void})<reads><decides>:[]game_item =
         for (Item : Items, Predicate[Item]):
             Item
@@ -454,7 +454,7 @@ inventory_system := class:
             set Total += Item.Stats.Weight
         Total
 
-# Player class using composition
+# 컴포지션을 사용하는(이 경우엔 inventory_system 이라는 이름의 Class 를 포함함) player_character 라는 이름의 Class 를 선언한다.
 player_character<public> := class:
     Name<public>:string
     var Level:int = 1
@@ -466,7 +466,7 @@ player_character<public> := class:
     GainExperience(Amount:int)<transacts>:void =
         set Experience += Amount
 
-        # Automatic level up check with failure handling
+        # 오류 처리 기능을 갖춘 자동 레벨업 확인 기능
         loop:
             RequiredXP := LevelUpThreshold * Level
             if (Experience >= RequiredXP):
@@ -476,39 +476,39 @@ player_character<public> := class:
             else:
                 break
 
-    # Method showing qualified access
+    # 적격 접근을 보여주는 Method
     EquipStarterGear()<transacts><decides>:void =
         StarterSword := game_item{
             Name := "Rusty Sword"
             Rarity := item_rarity.common
             Stats := item_stats{Damage := 10.0, Weight := 5.0, Value := 50}
         }
-        # These might fail if inventory is full
+        # 아래 로직은 인벤토리가 가득 찬 경우 fail 될 수 있다
         Inventory.AddItem[StarterSword]
 
-# Example usage demonstrating control flow and failure handling
+# Control Flow 와 오류 처리를 보여주는 사용 예시
 RunExample<public>()<suspends>:void =
-    # Create a player (can't fail)
+    # player 를 생성한다 (이는 fail 될 수 없다)
     Hero := player_character{Name := "Verse Hero"}
 
-    # Try to equip starter gear (might fail)
+    # StarterGear 장착을 시도한다 (이는 fail 될 수 있다)
     if (Hero.EquipStarterGear[]):
         Print("Hero equipped with starter gear")
 
-    # Demonstrate transactional behavior
+    # 아래는 트랜젝셔널 작동 방식을 보여준다
     ExpensiveItem := game_item{
         Name := "Golden Crown"
         Rarity := item_rarity.epic
-        Stats := item_stats{Value := 2000, Weight := 90.0}  # Very heavy!
+        Stats := item_stats{Value := 2000, Weight := 90.0}  # 매우 무겁다!
     }
 
-    # This might fail due to weight or insufficient gold
+    # 아래는 무게 또는 골드 부족 때문에 fail 될 수 있다
     if (Hero.Inventory.PurchaseItem[ExpensiveItem]):
         Print("Purchase successful!")
     else:
         Print("Purchase failed - gold remains at {Hero.Inventory.Gold}")
 
-    # Use higher-order functions with nested function predicate
+    # 아래는 조건자(Predicate)와 함께 고차 함수를 사용하고 있다
     IsRareOrLegendary(I:game_item)<computes><decides>:void =
         I.Rarity = item_rarity.rare or I.Rarity = item_rarity.legendary
 
