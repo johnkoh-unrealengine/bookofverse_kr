@@ -1,51 +1,51 @@
-# 프로그래밍 언어 Verse (<-The Verse Programming Language 를 이런식으로 번역할 것)
+# 프로그래밍 언어 Verse
 
-## Overview
+## 개요
 
-Verse is a multi-paradigm programming language developed by Epic Games for creating gameplay in Unreal Editor for Fortnite and building experiences in the metaverse. Drawing from functional, logic, and imperative traditions, Verse represents a departure from traditional programming languages, designed for long-term evolution and stability.
+Verse 는 Epic Games에서 Fortnite의 Unreal Editor 게임플레이 제작 및 메타버스 환경 구축을 위해 개발한 다중 패러다임 프로그래밍 언어입니다. 함수형, 논리형, 명령형 프로그래밍 전통을 계승한 Verse는 기존 프로그래밍 언어와는 차별화된, 장기적인 발전과 안정성을 고려하여 설계되었습니다.
 
-Verse is built on three fundamental principles:
+Verse 는 세가지 근본적인 원칙을 지켜 만들어졌습니다.:
 
-- **It's Just Code**:
-Complex concepts that might require special syntax or constructs in other languages are expressed as regular Verse code. There's no magic—everything is built from the same primitive constructs, creating a uniform and predictable programming model.
+- **그냥 코드 입니다.**:
+다른 언어에서 특별한 구문이나 구조를 필요로 할 수 있는 복잡한 개념들도 Verse에서는 일반적인 코드로 표현됩니다. 마법 같은 것은 없습니다. 모든 것은 동일한 기본 구조로 이루어져 있어 균일하고 예측 가능한 프로그래밍 모델을 제공합니다.
 
-- **Just One Language**:
-The same language constructs work at both compile-time and run-time. There is no preprocessor. What you write is what executes, whether during compilation or at runtime.
+- **한 종류의 언어로 되어 있습니다.**:
+하나의 언어 구문이 컴파일에도 쓰이고, 런타임에도 쓰입니다. 둘 사이의 처리 과정 없이 작성 내용이 그대로 실행됩니다.
 
-- **Metaverse First**:
-Verse is designed for a future where code runs in a single global simulation—the metaverse. This influences every aspect of the language, from its strong compatibility guarantees to its effect system that tracks side effects and ensures safe concurrent execution.
+- **메타버스를 우선시 합니다.**:
+Verse는 코드가 단일 글로벌 시뮬레이션인 메타버스에서 실행되는 미래를 위해 설계되었습니다. 이는 강력한 호환성 보장부터 부작용을 추적하고 안전한 동시 실행을 보장하는 이펙트 시스템에 이르기까지 언어의 모든 측면에 영향을 미칩니다.
 
-Verse aims to be:
+Verse는 다음과 같은 목표를 가지고 있습니다.:
 
-- **Simple enough** for first-time programmers to learn, with consistent rules and minimal special cases.
+- **간결할 것.** 프로그래밍을 처음 접하는 사람도 쉽게 배울 수 있을 만큼 간단하며, 규칙이 일관적이고, 예외 처리가 필요한 경우가 최소화되어 있습니다.
 
-- **Expressive enough** for sophisticated game logic and distributed systems, with advanced features that scale to large codebases.
+- **표현력이 좋을 것.** 정교한 게임 로직과 분산 시스템에 필요한 표현력을 갖추고 있으며, 대규모 코드베이스에 맞춰 확장 가능한 고급 기능을 제공합니다.
 
-- **Safe enough** for untrusted code to run in a shared environment, with strong sandboxing and effect tracking.
+- **안전할 것.** 신뢰할 수 없는 코드가 공유 환경에서 실행될 수 있을 만큼 안전하며, 강력한 샌드박싱 및 영향 추적 기능을 제공합니다.
 
-- **Fast enough** for real-time games and simulations, with an implementation that can optimize pure computations aggressively.
+- **빠를 것.** 실시간 게임 및 시뮬레이션에서 충분히 빠르며, 순수 연산을 적극적으로 최적화할 수 있는 구현 방식을 갖추고 있습니다.
 
-- **Stable enough** to last for decades, with strong backward compatibility guarantees and careful evolution.
+- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 하위 호환성을 보장하고, 구조 변경에 신중합니다.
 
-**Why Verse?**
+**왜 Verse 인가?**
 
-Traditional programming languages carry decades of historical baggage and design compromises. Verse starts fresh, learning from the past but not being bound by it. It's designed for a future where:
+기존 프로그래밍 언어는 수십 년에 걸친 역사적 유산과 설계상의 타협점을 안고 있습니다. Verse는 과거에서 배우되 과거에 얽매이지 않고 새롭게 시작합니다. Verse는 다음과 같은 미래에 대응하기 위해 설계되었습니다.:
 
-- Code lives forever in a persistent metaverse
-- Millions of developers contribute to a shared codebase
-- Programs must be safe, concurrent, and composable by default
-- Backward compatibility is not optional but essential
-- The boundary between compile-time and runtime is fluid
+- 코드가 영구적인 메타버스 속에서 영원히 존재하는 미래.
+- 수백만 명의 개발자가 공유 코드베이스에 기여하는 미래.
+- 프로그램이 기본적으로 안전하고, 동시 실행 가능하며, 조합 가능한 미래.
+- 하위 호환성이 선택 사항이 아니라 필수 사항인 미래.
+- 컴파일 타임과 런타임의 경계가 유동적인 미래.
 
-Ready to dive in? Start with [Built-in Types](02_primitives.md) to understand Verse's fundamental data types, or jump to [Expressions](01_expressions.md) to see how everything in Verse computes values.
+함께 할 준비가 되셨나요? Verse 의 기본적인 자료형을 이해하시려면 [Built-in Types](02_primitives.md) 부터 확인 해보세요. Verse 의 모든 것이 값을 계산하는 방식을 보시려면 [Expressions](01_expressions.md) 부터 확인하셔도 됩니다.
 
-For experienced programmers coming from other languages, the [Failure System](08_failure.md) and [Effects](13_effects.md) sections highlight some of Verse's distinctive features.
+이미 다른 프로그래밍 언어에 익숙하신 프로그래머 분들께서는 [Failure System](08_failure.md) 과 [Effects](13_effects.md)  를 보시면 Verse 만의 독특한 기능들을 확인하실 수 있습니다.
 
-## Key Features
+## 주요 특징
 
-**Everything is an Expression**
+**모든것은 표현식이다.**
 
-In Verse, there are no statements—everything is an expression that produces a value. This creates a composable system where any piece of code can be used anywhere a value is expected.
+Verse 에는 구문이 없습니다. 모든 것은 값을 생성하는 표현식 입니다. 이것이 값이 필요한 모든 곳에서 어떤 코드 조각이든 사용할 수 있는 조합 시스템을 만듭니다.
 
 <!--versetest
 Condition()<computes><decides> :void= {}
@@ -53,16 +53,16 @@ Array :[]int= array{1}
 -->
 <!-- 01 -->
 ```verse
-# Even control flow produces values
+# 심지어 control flow 조차도 값을 생성합니다.
 Result := if (Condition[]) then "yes" else "no"
 
-# Loops are expressions
+# Loops 도 표현식입니다.
 Multiply := for (X : Array) { X * 42 }
 ```
 
-**Failure as Control Flow**
+**Control Flow 로서의 Failure**
 
-Instead of boolean conditions and exceptions, Verse uses failure as a primary control flow mechanism. Expressions can succeed (producing a value) or fail (producing no value), enabling natural control flow patterns:
+Boolean 조건과 예외 대신, Verse 는 failure 를 기본 control flow 매커니즘으로 사용합니다. 표현식은 성공할 수도 있고(이 경우 값을 만듭니다.), 실패할 수도 있으며, 이를 통해 자연스러운 control flow 패턴을 만듭니다.
 
 <!--versetest
 ValidateInput(x:string)<computes><decides>:void= {}
@@ -77,50 +77,50 @@ M()<decides>:void=
 -->
 <!-- 02 -->
 ```verse
-ValidateInput[Data] # Square brackets indicate that this function may fail
-ProcessData(Data)   # Data is only processed if valid, parentheses mean must succeed
+ValidateInput[Data] # 대괄호는 이 함수가 실패할 수도 있음을 의미합니다.
+ProcessData(Data)   # Data 는 유효한 경우에만 처리되며, 괄호는 이 함수가 반드시 성공함을 의미합니다.
 ```
 <!-- #> -->
 
-The [Failure](08_failure.md) chapter covers failable expressions and failure contexts in depth, and [Control Flow](07_control.md) explains if expressions.
+[Failure](08_failure.md) 장에서는 failure 될 수 있는 표현식과 failure 컨텍스트를 심층적으로 다루고, [Control Flow](07_control.md) 장에서는 if 표현식을 설명합니다.
 
-**Strong Static Typing with Inference**
+**추론 기능을 갖춘 강력한 정적 자료형 검사**
 
-Verse features a powerful type system that catches errors at compile time while minimizing the need for type annotations through inference. See [Types](11_types.md) for more on the type system and subtyping.
+Verse는 강력한 자료형 시스템은 컴파일 타임에 오류를 잡아내고, 추론 방식을 적용해 자료형을 수동으로 지정할 필요성을 최소화합니다. 자료형 시스템 및 보조 자료형에 대한 자세한 내용은 [Types](11_types.md)를 참조하세요.
 
 <!--versetest-->
 <!-- 03 -->
 ```verse
-X := 42                    # Type inferred 
-Name := "Verse"            # Type inferred
+X := 42                    # 이전에는 X : int = 42 라고 해야 했으나, 자료형 추론됨.
+Name := "Verse"            # 이전에는 Name : str = "Verse" 라고 해야 했으나, 자료형 추론됨.
 ```
 
-**Effect Tracking**
+**효과 추적**
 
-Functions declare their side effects through specifiers like `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, and `<suspends>`. These effect specifiers make it immediately clear what a function can do beyond computing its return value:
+함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 지정자를 통해 부수효과를 선언합니다. 이러한 부수효과 지정자를 통해 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 즉시 명확히 알 수 있습니다.:
 
 <!--versetest
 x := class:
     GetCurrentValue()<reads>:int=1
     var Score:int=0
-    PureCompute()<computes>:int = 2 + 2            # No side effects
-    ReadState()<reads>:int = GetCurrentValue()     # Can read mutable state
-    UpdateGame()<transacts>:void = set Score += 10 # Can read, write, allocate
+    PureCompute()<computes>:int = 2 + 2            
+    ReadState()<reads>:int = GetCurrentValue()     
+    UpdateGame()<transacts>:void = set Score += 10 
 <#
 -->
 <!-- 04 -->
 ```verse
-PureCompute()<computes>:int = 2 + 2            # No side effects
-ReadState()<reads>:int = GetCurrentValue()     # Can read mutable state
-UpdateGame()<transacts>:void = set Score += 10 # Can read, write, allocate
+PureCompute()<computes>:int = 2 + 2            # 부수 효과 없음. 즉, 연산만 함
+ReadState()<reads>:int = GetCurrentValue()     # 변경 가능한 상태 읽기 가능
+UpdateGame()<transacts>:void = set Score += 10 # 읽기, 쓰기, 할당하기 가능
 ```
 <!-- #> -->
 
-The [Effects](13_effects.md) chapter provides complete details on the effect system.
+[Effects](13_effects.md) 장에서는 효과 시스템에 대한 자세한 내용을 보실 수 있습니다.
 
-**Built-in Concurrency**
+**내장된 동시성**
 
-Concurrency is a first-class feature with structured concurrency primitives that make concurrent programming safe and predictable.
+동시성은 구조화된 동시성 기본 요소를 갖춘 핵심 기능으로, 동시 프로그래밍을 안전하고 예측 가능하게 만듭니다.
 
 <!--versetest
 TaskA()<suspends>:void={}
@@ -143,22 +143,22 @@ M()<suspends>:void=
 -->
 <!-- 05 -->
 ```verse
-# Run tasks concurrently and wait for all
+# 여러 작업을 동시에 실행하고, 모든 작업이 완료될 때까지 기다립니다.
 sync:
     TaskA()
     TaskB()
     TaskC()
 
-# Race tasks and take first result
+# 여러 작업을 동시에 실행하고, 가장 먼저 도출된 결과를 채택합니다.
 race:
     FastPath()
     SlowButReliablePath()
 ```
 <!-- #> -->
 
-**Speculative Execution**
+**예측 실행**
 
-Verse can speculatively execute code and roll back changes if the execution fails, enabling flexible patterns for validation and error handling.
+Verse는 코드를 예측 실행하고, 실행에 실패할 경우 변경 사항을 되돌릴 수 있습니다. 이것은 유효성 검사 및 오류 처리에 유연한 패턴을 적용할 수 있도록 돕습니다.
 
 <!--versetest
 TryComplexOperation()<computes><decides>:void={}
@@ -166,14 +166,14 @@ TryComplexOperation()<computes><decides>:void={}
 <!-- 06 -->
 ```verse
 if (TryComplexOperation[]):
-    # Changes performed by TryComplexOperation[] are committed
+    # TryComplexOperation[] 에 의한 변경 사항이 커밋 됩니다.
 else:
-    # Changes are rolled back automatically
+    # TryComplexOperation[] 에 의한 변경 사항이 자동으로 롤백 됩니다.
 ```
 
-**Reactive Programming with Live Variables**
+**실시간 변수를 사용하는 반응형 프로그래밍**
 
-Verse provides first-class support for reactive programming through live variables that automatically recompute when their dependencies change, reducing the need for manual event handling.
+Verse 는 종속성이 변경될 때마다 자동적으로 다시 계산되는 실시간 변수를 사용함으로써, 반응형 프로그래밍을 위한 최고 수준의 지원을 제공합니다. 이는 이벤트 처리를 수동으로 해야 할 부담을 줄여줍니다.
 
 <!--versetest
 Log(:string)<transacts>:void={}
@@ -184,11 +184,11 @@ var MaxHealth:int = 100
 var Damage:int = 0
 var live Health:int = MaxHealth - Damage
 
-# Health automatically updates when dependencies change
-set Damage = 20      # Health becomes 80
-set MaxHealth = 150  # Health becomes 130
+# 종속성이 변경되면 Health 값이 자동으로 업데이트 됩니다.
+set Damage = 20      # Health 값이 80 이 됩니다.
+set MaxHealth = 150  # Health 값이 130 이 됩니다.
 
-# Reactive constructs for event handling
+# 이벤트 처리를 위한 반응형 구조
 when(Health < 25):
     Log("Low health warning!")
 ```
