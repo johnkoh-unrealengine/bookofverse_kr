@@ -53,14 +53,14 @@ Array :[]int= array{1}
 -->
 <!-- 01 -->
 ```verse
-# 심지어 control flow[^1] 조차도 값을 생성합니다.
+# 심지어 control flow 조차도 값을 생성합니다.
 Result := if (Condition[]) then "yes" else "no"
 
 # Loops 도 표현식입니다.
 Multiply := for (X : Array) { X * 42 }
 ```
 
-**Control Flow 로서의 Failure**
+**Control Flow[^1] 로서의 Failure**
 
 Boolean 조건과 예외 대신, Verse 는 failure 를 기본 control flow 매커니즘으로 사용합니다. 표현식은 성공할 수도 있고(이 경우 값을 만듭니다.), 실패할 수도 있으며, 이를 통해 자연스러운 control flow 패턴을 만듭니다.
 
