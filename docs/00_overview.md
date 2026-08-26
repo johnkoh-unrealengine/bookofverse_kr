@@ -25,7 +25,7 @@ Verse는 다음과 같은 목표를 가지고 있습니다 :
 
 - **빠를 것.** 실시간 게임 및 시뮬레이션에서 충분히 빠르며, 순수 연산을 적극적으로 최적화할 수 있는 구현 방식을 갖추고 있습니다.
 
-- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 하위 호환성[^BackwardCompatibility]을 보장하고, 구조 변경에 신중합니다.
+- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 Backward Compatibility[^BackwardCompatibility]를 보장하고, 구조 변경에 신중합니다.
 
 **왜 Verse 인가?**
 
@@ -62,7 +62,7 @@ Multiply := for (X : Array) { X * 42 }
 
 **Control Flow[^ControlFlow] 로서의 Failure**
 
-Boolean 조건과 예외 대신, Verse 는 failure 를 기본 control flow 매커니즘으로 사용합니다. 표현식은 성공할 수도 있고(이 경우 값을 만듭니다.), 실패할 수도 있으며, 이를 통해 자연스러운 control flow 패턴을 만듭니다.
+Boolean 조건과 예외 대신, Verse 는 failure 를 기본 control flow 매커니즘으로 사용합니다. 표현식은 성공할 수도 있고(이 경우 값을 도출합니다), 실패할 수도 있으며, 이를 통해 자연스러운 control flow 패턴을 만듭니다.
 
 <!--versetest
 ValidateInput(x:string)<computes><decides>:void= {}
@@ -91,13 +91,13 @@ Verse는 강력한 자료형 시스템은 컴파일 타임에 오류를 잡아�
 <!--versetest-->
 <!-- 03 -->
 ```verse
-X := 42                    # X : int = 42 로 적지 않아도 자료형 추론됨.
-Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형 추론됨.
+X := 42                    # X : int = 42 로 적지 않아도 자료형이 추론됩니다.
+Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형이 추론됩니.
 ```
 
-**효과 추적**
+**Effect 추적**
 
-함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 지정자를 통해 부수 효과를 선언합니다. 이러한 부수 효과 지정자에 의해서 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 빠르고 명확하게 알 수 있습니다:
+함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 Specifiers[^Specifiers] 를 통해 부수 효과를 선언합니다. 이러한 Effect Specifiers 를 보면 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 빠르고 명확하게 알 수 있습니다:
 
 <!--versetest
 x := class:
@@ -110,9 +110,9 @@ x := class:
 -->
 <!-- 04 -->
 ```verse
-PureCompute()<computes>:int = 2 + 2              # 부수 효과 없음. 즉, 연산만 함
-ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태 읽기 가능
-UpdateGame()<transacts>:void = set Score += 10   # 읽기, 쓰기, 할당하기 가능
+PureCompute()<computes>:int = 2 + 2              # 부수 효과가 없습니다. 즉, 내부 연산만 합니다.
+ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태를 읽을 수 있습니다.
+UpdateGame()<transacts>:void = set Score += 10   # 읽고, 쓰고, 할당할 수 있습니다.
 ```
 <!-- #> -->
 
@@ -156,7 +156,7 @@ race:
 ```
 <!-- #> -->
 
-**예측 실행**
+**Speculative Execution[^SpeculativeExecution]**
 
 Verse는 코드를 예측 실행하고, 실행에 실패할 경우 변경 사항을 되돌릴 수 있습니다. 이것은 유효성 검사 및 오류 처리에 유연한 패턴을 적용할 수 있도록 돕습니다.
 
@@ -197,7 +197,7 @@ Verse 는 영속적 가상 환경에서의 상호 경험을 구축하기 위한 
 
 ## 예시
 
-다음 예제는 게임용 인벤토리 관리 시스템을 구축하여 Verse 의 주요 언어 기능을 보여주고, Verse 의 구문이 어떻게 견고하고 유지보수 가능한 코드를 생성하는지 설명합니다.
+다음 예시는 게임용 인벤토리 관리 시스템을 구축하여 Verse 의 주요 언어 기능을 보여주고, Verse 의 구문이 어떻게 견고하고 유지보수 가능한 코드를 생성하는지 설명합니다.
 
 <!--versetest
 # Define item rarity as an enumeration - showing Verse's type system
@@ -358,10 +358,10 @@ assert:
 -->
 <!-- 08 -->
 ```verse
-# 모듈 선언 - 아래처럼 유틸리티 함수를 가져오는 것부터 시작합니다.
+# 모듈 선언 - 아래처럼 유틸리티 함수를 가져오는 것부터 시작합니다
 using { /Verse.org/VerseCLR }
 
-# 열거형(이는 Verse 의 자료형 시스템을 보여줍니다)으로 게임 내 아이템 희귀도를 정의합니다.
+# Enumeration(열거형. 이는 Verse 의 자료형 시스템을 보여줍니다)으로 게임 내 아이템 희귀도를 정의합니다
 item_rarity := enum<persistable>:
     common
     uncommon
@@ -369,34 +369,34 @@ item_rarity := enum<persistable>:
     epic
     legendary
 
-# 게임 내 아이템의 불변 데이터 (여기서는 item 의 stats) 를 위한 구조체를 정의합니다. - 이는 함수형 프로그래밍 스타일의 예시 입니다.
+# 게임 내 아이템의 불변 데이터 (여기서는 item 의 stats) 를 위한 구조체를 정의합니다 - 이는 함수형 프로그래밍 스타일의 예시 입니다
 item_stats := struct<persistable>:
     Damage:float = 0.0
     Defense:float = 0.0
     Weight:float = 1.0
     Value:int = 0
 
-# 게임 내 아이템의 Class 를 정의합니다. - 이는 함수적 제약 조건을 갖는 객체 지향 기능의 예시 입니다.
+# 게임 내 아이템의 Class 를 정의합니다 - 이는 함수적 제약 조건을 갖는 객체 지향 기능의 예시 입니다
 game_item := class<final><persistable>:
     Name:string
     Rarity:item_rarity = item_rarity.common
     Stats:item_stats = item_stats{}
     StackSize:int = 1
 
-    # <decides> 효과를 갖는 Method - 이는 연산 결과 fail 될 수 있습니다.
+    # <decides> 효과를 갖는 Method - 이는 연산 결과 fail 될 수 있습니다
     GetRarityMultiplier()<decides>:float =
         case(Rarity):
             item_rarity.common => 1.0
             item_rarity.uncommon => 1.5
             item_rarity.rare => 2.0
             item_rarity.epic => 3.0
-            _ => {false?; 0.0}   # 해당 아이템의 rarity 가 legendary 이거나 규격 외인 경우 Fail 됩니다.
+            _ => {false?; 0.0}   # 해당 아이템의 rarity 가 legendary 이거나 규격 외인 경우 Fail 됩니다
 
     # Closed-world 함수(연산 대상이 정해져 있고, 그것이 확장되지 않는다고 전제되는 함수)를 사용해 계산된 속성
     GetEffectiveValue()<reads><decides>:int=
         Floor[Stats.Value * GetRarityMultiplier[]]
 
-# 상태 관리 및 효과를 갖춘 inventory_system 라는 이름의 Class 를 선언한다
+# 상태 관리 및 효과를 갖춘 inventory_system 라는 이름의 Class 를 선언합니다
 inventory_system := class:
     var Items:[]game_item = array{}
     var MaxWeight:float = 100.0
@@ -404,14 +404,14 @@ inventory_system := class:
 
     # 오류 처리 및 트랜잭션 의미론을 보여주는 Method
     AddItem(NewItem:game_item)<transacts><decides>:void =
-        # 새 무게를 계산한다 - 투기적 실행
+        # 새 무게를 계산합니다 - 이는 Speculative Execution (투기적 실행) 의 예시입니다
         CurrentWeight := GetTotalWeight()
         NewWeight := CurrentWeight + NewItem.Stats.Weight
 
-        # 위 검사는 fail 될 수 있고, 그 경우 아래와 같이 모든 변경사항을 되돌린다
+        # 위 검사는 fail 될 수 있고, 그 경우 아래와 같이 모든 변경 사항을 되돌립니다
         NewWeight <= MaxWeight
 
-        # 아래 연산은 weight 검사가 통과된 경우에만 실행된다
+        # 아래 연산은 weight 검사가 통과된 경우에만 실행됩니다
         set Items += array{NewItem}
         Print("Added {NewItem.Name} to inventory")
 
@@ -426,21 +426,21 @@ inventory_system := class:
             else:
                 set NewItems += array{Item}
         set Items = NewItems
-        RemovedItem?  # 아이템이 탐색되지 않으면 Fail 된다
+        RemovedItem?  # 아이템이 탐색되지 않으면 Fail 됩니다
 
     # 복잡한 오류 로직 및 롤백 기능을 갖춘 아이템 구매 기능
     PurchaseItem(ShopItem:game_item)<transacts><decides>:void =
-        # 여러 failure 가 발생할 수 있는 지점 - failure 가 하나라도 발생하면 모든 변경 사항을 되돌린다
+        # 여러 failure 가 발생할 수 있는 지점 - failure 가 하나라도 발생하면 모든 변경 사항을 되돌립니다
         Price := ShopItem.GetEffectiveValue[]
-        Price <= Gold  # 골드가 충분하지 않으면 Fail 된다
+        Price <= Gold  # 골드가 충분하지 않으면 Fail 됩니다
 
-        # 잠정적으로 골드를 차감한다.
+        # 잠정적으로 골드를 차감합니다
         set Gold = Gold - Price
 
-        # 아이템 추가를 시도한다 - 무게에 의해 실패할 수 있다
+        # 아이템 추가를 시도합니다 - 이는 무게에 의해 실패할 수 있습니다
         AddItem[ShopItem]
 
-        # 모든 과정에 성공한 경우 - 변경사항이 커밋 된다
+        # 모든 과정에 성공한 경우 - 변경사항이 커밋 됩니다
         Print("Purchased {ShopItem.Name} for {Price} gold")
 
     # 자료형 파라미터와 자료형 제약 구문을 사용하는 고차 함수
@@ -454,7 +454,7 @@ inventory_system := class:
             set Total += Item.Stats.Weight
         Total
 
-# 컴포지션을 사용하는(이 경우엔 inventory_system 이라는 이름의 Class 를 포함함) player_character 라는 이름의 Class 를 선언한다.
+# 컴포지션을 사용하는(이 경우엔 inventory_system 이라는 이름의 Class 를 포함함) player_character 라는 이름의 Class 를 선언합니다
 player_character<public> := class:
     Name<public>:string
     var Level:int = 1
@@ -483,32 +483,32 @@ player_character<public> := class:
             Rarity := item_rarity.common
             Stats := item_stats{Damage := 10.0, Weight := 5.0, Value := 50}
         }
-        # 아래 로직은 인벤토리가 가득 찬 경우 fail 될 수 있다
+        # 아래 로직은 인벤토리가 가득 찬 경우 fail 될 수 있습니다
         Inventory.AddItem[StarterSword]
 
 # Control Flow 와 오류 처리를 보여주는 사용 예시
 RunExample<public>()<suspends>:void =
-    # player 를 생성한다 (이는 fail 될 수 없다)
+    # player 를 생성합니다 (이는 fail 될 수 없습니다)
     Hero := player_character{Name := "Verse Hero"}
 
-    # StarterGear 장착을 시도한다 (이는 fail 될 수 있다)
+    # StarterGear 장착을 시도합니다 (이는 fail 될 수 있습니다)
     if (Hero.EquipStarterGear[]):
         Print("Hero equipped with starter gear")
 
-    # 아래는 트랜젝셔널 작동 방식을 보여준다
+    # Transactional (여러 작업을 하나의 논리적 단위로 취급하는) 작동 방식을 보여줍니다
     ExpensiveItem := game_item{
         Name := "Golden Crown"
         Rarity := item_rarity.epic
-        Stats := item_stats{Value := 2000, Weight := 90.0}  # 매우 무겁다!
+        Stats := item_stats{Value := 2000, Weight := 90.0}  # 매우 무겁습니다!
     }
 
-    # 아래는 무게 또는 골드 부족 때문에 fail 될 수 있다
+    # 무게 또는 골드 부족 때문에 fail 될 수 있습니다
     if (Hero.Inventory.PurchaseItem[ExpensiveItem]):
         Print("Purchase successful!")
     else:
         Print("Purchase failed - gold remains at {Hero.Inventory.Gold}")
 
-    # 아래는 조건자(Predicate)와 함께 고차 함수를 사용하고 있다
+    # Predicate(조건자)와 함께 고차 함수를 사용하고 있습니다
     IsRareOrLegendary(I:game_item)<computes><decides>:void =
         I.Rarity = item_rarity.rare or I.Rarity = item_rarity.legendary
 
@@ -518,11 +518,11 @@ RunExample<public>()<suspends>:void =
 ```
 <!-- #> -->
 
-This example demonstrates Verse in a practical context. Let's explore what makes this code uniquely Verse:
+이 예시는 Verse를 실제 상황에서 사용하는 방법을 보여줍니다. 이 코드가 Verse만의 특징을 갖는 이유를 살펴보겠습니다:
 
-**Type System and Data Modeling**
+**자료형 시스템과 데이터 모델링**
 
-The example begins with Verse's rich type system. Types flow naturally through the code; many type annotations are omitted as they can be inferred. When we do specify types, like `Items:[]game_item`, they document intent rather than just satisfy the compiler. The `item_rarity` enum provides type-safe constants without the boilerplate of traditional enumerations. The `item_stats` struct marked as `<persistable>` can be saved and loaded from persistent storage, essential for game saves. The `game_item` class is marked `<final>` and `<persistable>` so its instances can be saved and restored; because persistable data is serialized by value, such classes cannot also be `<unique>`.
+이 예시는 Verse 의 풍부한 자료형 시스템으로부터 시작합니다. 코드 전체에 걸쳐 자료형이 자연스럽게 흐르도록 설계되었으며, 많은 type annotation[^TypeAnnotation] 들은 추론이 가능하므로 생략되었습니다. `Items:[]game_item`처럼 타입을 명시한 부분은 컴파일러의 요구 사항을 충족하기 위해서가 아니라 의도를 문서로 남기기 위해 그렇게 했습니다. `item_rarity` 라고 명명된 enum[^enumeration] 은 기존 enum 에서 흔히 사용되는 boilerplate[^Boilerplate] 없이 자료형 안전성이 보장되는 상수를 제공합니다. `<persistable>`로 표시된 `item_stats` 구조는 영구 저장소에 저장하고 불러올 수 있어 게임 저장에 필수적입니다. `game_item` class 는 인스턴스를 저장하고 복원하려는 의도를 담아 `<final>` 및 `<persistable>`로 표시 해두었습니다. 영구 저장소에 저장된 데이터는 값을 기준으로 serialize [^Serialize] 되므로, 이러한 class 는 `<unique>` 속성을 가질 수 없습니다.
 
 **Failure as Control Flow**
 
@@ -890,5 +890,11 @@ All these forms produce the same result. The choice between them is about readab
 Use braces when working with existing brace-heavy code, indentation for cleaner vertical layouts,
 and inline forms for simple expressions. This flexibility lets you write code that reads naturally.
 
-[^BackwardCompatibility]: Backward Compatibility. 하위 호환성. 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
-[^ControlFlow]: Control Flow. 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
+[^BackwardCompatibility]: 하위 호환성. 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
+[^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
+[^Specifiers]: 지정자.
+[^SpeculativeExecution]: 예측 실행. 투기적 실행이라고도 합니다. 실행 결과가 채택될지 확정되지 않은 상태에서 일단 실행한 뒤, 채택이 확정되면 결과값을 반영하고, 그렇지 않으면 결과값을 폐기한 후 롤백하는 방식을 말합니다.
+[^enumeration]: 열거형.
+[^TypeAnnotation]: 자료형 주석.
+[^Boilerplate]: 상용구 코드. 기계적으로 반복 기재해야 했던 준비 코드를 말합니다.
+[^Serialize]: 직렬화. 메모리에서 계산 중인 데이터를 저장, 전송할 수 있는 데이터로 변환하는 절차를 말합니다.
