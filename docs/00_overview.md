@@ -35,7 +35,7 @@ Verse는 다음과 같은 목표를 가지고 있습니다 :
 - 수백만 명의 개발자가 공유 코드베이스에 기여한다.
 - 프로그램이 기본적으로 안전하고, 동시 실행 가능하며, 조합 가능해진다.
 - 하위 호환성 지원이 선택이 아니라 필수가 된다.
-- 컴파일 타임과 런타임의 경계가 유연해진.
+- 컴파일 타임과 런타임의 경계가 유연해진다.
 
 함께 할 준비가 되셨나요? Verse 의 기본적인 자료형을 이해하시려면 [Built-in Types](02_primitives.md) 부터 확인 해보세요. Verse 의 모든 것이 값을 계산하는 방식을 보시려면 [Expressions](01_expressions.md) 부터 확인하셔도 됩니다.
 
@@ -53,7 +53,7 @@ Array :[]int= array{1}
 -->
 <!-- 01 -->
 ```verse
-# 심지어 control flow 조차도 값을 생성합니다.
+# 심지어 control flow[^1] 조차도 값을 생성합니다.
 Result := if (Condition[]) then "yes" else "no"
 
 # Loops 도 표현식입니다.
@@ -891,3 +891,4 @@ Use braces when working with existing brace-heavy code, indentation for cleaner 
 and inline forms for simple expressions. This flexibility lets you write code that reads naturally.
 
 [^1]: 하위 호환성이란, 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
+[^1]: Control Flow (제어 흐름) 란, 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
