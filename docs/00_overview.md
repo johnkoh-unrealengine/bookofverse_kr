@@ -361,7 +361,7 @@ assert:
 # 모듈 선언 - 아래처럼 유틸리티 함수를 가져오는 것부터 시작합니다
 using { /Verse.org/VerseCLR }
 
-# Enumeration(열거형. 이는 Verse 의 자료형 시스템을 보여줍니다)으로 게임 내 아이템 희귀도를 정의합니다
+# Enumeration(이는 Verse 의 자료형 시스템을 보여줍니다)으로 게임 내 아이템 희귀도를 정의합니다
 item_rarity := enum<persistable>:
     common
     uncommon
@@ -522,19 +522,17 @@ RunExample<public>()<suspends>:void =
 
 **자료형 시스템과 데이터 모델링**
 
-이 예시는 Verse 의 풍부한 자료형 시스템으로부터 시작합니다. 코드 전체에 걸쳐 자료형이 자연스럽게 흐르도록 설계되었으며, 많은 type annotation[^TypeAnnotation] 들은 추론이 가능하므로 생략되었습니다. `Items:[]game_item`처럼 타입을 명시한 부분은 컴파일러의 요구 사항을 충족하기 위해서가 아니라 의도를 문서로 남기기 위해 그렇게 했습니다. `item_rarity` 라고 명명된 enum[^enumeration] 은 기존 enum 에서 흔히 사용되는 boilerplate[^Boilerplate] 없이 자료형 안전성이 보장되는 상수를 제공합니다. `<persistable>`로 표시된 `item_stats` 구조는 영구 저장소에 저장하고 불러올 수 있어 게임 저장에 필수적입니다. `game_item` class 는 인스턴스를 저장하고 복원하려는 의도를 담아 `<final>` 및 `<persistable>`로 표시 해두었습니다. 영구 저장소에 저장된 데이터는 값을 기준으로 serialize [^Serialize] 되므로, 이러한 class 는 `<unique>` 속성을 가질 수 없습니다.
+이 예시는 Verse 의 풍부한 자료형 시스템으로부터 시작합니다. 코드 전체에 걸쳐 자료형이 자연스럽게 흐르도록 설계되었으며, 많은 type annotation[^TypeAnnotation] 들은 추론이 가능하므로 생략되었습니다. `Items:[]game_item`처럼 자료을 명시한 부분은 컴파일러의 요구 사항을 충족하기 위해서가 아니라 의도를 문서로 남기기 위해 그렇게 했습니다. `item_rarity` 라고 명명된 enum[^enumeration] 은 기존 enum 에서 흔히 사용되는 boilerplate[^Boilerplate] 없이 자료형 안전성이 보장되는 상수를 제공합니다. `<persistable>`로 표시된 `item_stats` 구조는 영구 저장소에 저장하고 불러올 수 있어 게임 저장에 필수적입니다. `game_item` class 는 인스턴스를 저장하고 복원하려는 의도를 담아 `<final>` 및 `<persistable>`로 표시 해두었습니다. 영구 저장소에 저장된 데이터는 값을 기준으로 serialize [^Serialize] 되므로, 이러한 class 는 `<unique>` 속성을 가질 수 없습니다.
 
-**Failure as Control Flow**
+**Control Flow 로서의 Failure**
 
-Throughout the code, failure drives control flow rather than exceptions or error codes. The `<decides>` effect marks functions that can fail, and failure propagates naturally through expressions. When `GetRarityMultiplier()` encounters an unknown rarity, it does not throw an exception or return a sentinel value - it simply fails, and the calling code handles this gracefully.
-The `AddItem` method demonstrates how failure creates declarative validation. The expression `NewWeight <= MaxWeight` either succeeds (allowing execution to continue) or fails (preventing the item from being added). There's no explicit control flow - just a declarative assertion of what must be true.
+코드 전체에 걸쳐서, 예외 코드나 에러 코드가 아닌 failure 가 control flow 를 주합니다. `<decides>` effect 는 fail 될 수 있는 함수를 표시하고, failure 는 표현식을 통 자연스럽게 전파됩니다. `GetRarityMultiplier()` 함수는 사전에 정의되지 않은 희귀도 값을 맞닥뜨리면 예외를 발생시거나 sentinel 값을 반환하지 않고 단순히 fail 되며, 이를 호출한 코드가 그것을 적절하게[^Gracefully] 처리합니다. `AddItem` Method[^Method] 는 failure 가 어떻게 선언적 유효성 검사 구조를 생성하는지 보여줍니다. `NewWeight <= MaxWeight` 표현식은 성공(이 경우 실행 절차를 계속 합니다)할 수도 있고 실패(이 경우 아이템이 추가되는 것을 막습니다)할 수도 있습니다. 명시적인 control flow 는 없고, 단지 무엇이 참이어야 하는지에 대한 선언적 assertion[^Assertion] 이 있을 뿐입니다.
 
-**Transactional Semantics and Speculative Execution**
+**트랜젝션 의미론과 Speculative Execution**
 
-Methods marked with `<transacts>` provide automatic rollback on failure. In `PurchaseItem`, we deduct gold from the player, then try to add the item. If adding fails (perhaps due to weight limits), the gold deduction is automatically rolled back. This eliminates entire categories of bugs related to partial state updates.
-This transactional behavior extends to complex operations. When multiple changes need to succeed or fail together, Verse ensures consistency without need for manual clean up.
+`<transacts>` 라고 마크 되어 있는 Method 들은 failure 시에 자동으로 롤백 됩니다. `PurchaseItem` 에서 우리는 플레이어로부터 골드를 차감한 뒤, 구매한 아이템을 인벤토리에 추가할 것을 시도 했습니다. 만약 추가에 실패한다면(아마도 무게 제한 때문일 것입니다), 골드 차감 연산은 자동으로 롤백 됩니다. 이는 부분적 상태 갱신과 관련한 버그 발생 가능성을 사전에 모두 제거하는 효과를 갖습니다. 이러한 transactional[^Transactional] 연산 방식은 복잡한 작업에까지 확장됩니다. 여러 변경 사항이 동시에 성공하거나 실패해야 하는 상황에서, Verse는 수동 뒤처리 작업 없이도 연산의 일관성을 보장합니다.
 
-**Functions as First-Class Values**
+**First-Class Values[^FirstClassValues] 로써의 함수**
 
 The `FilterItems` method accepts a predicate function, demonstrating higher-order programming. The nested function `IsRareOrLegendary` in `RunExample` shows how functions can be defined locally and passed around like any other value. This functional programming style combines naturally with the imperative and object-oriented features.
 
@@ -898,3 +896,8 @@ and inline forms for simple expressions. This flexibility lets you write code th
 [^TypeAnnotation]: 자료형 주석.
 [^Boilerplate]: 상용구 코드. 기계적으로 반복 기재해야 했던 준비 코드를 말합니다.
 [^Serialize]: 직렬화. 메모리에서 계산 중인 데이터를 저장, 전송할 수 있는 데이터로 변환하는 절차를 말합니다.
+[^Gracefully]: 원문에는 handle this gracefully 라고 표현되므로, 직역하면 '우아하게 처리한다' 고 번역될 수 있습니다. 하지만 프로그래밍에서 'graceful 하게 처리한다'는 것은 'failure 또는 예외 상황이 발생하더라도 프로그램이 적절하게 대응하여 정상적인 흐름을 유지할 수 있도록 처리한다' 는 의미를 갖는다고 합니다.
+[^Method]: 다른 객체나 클래스에 소속된 함수를 의미합니다. '멤버 함수' 라고 부르기도 합니다. 이와 대조적으로, 독립적으로 존재하는 함수는 Function 이라고 부르며 구분합니다.
+[^Assertion]: 검증 조건. 연산되는 시점에 참이어야 한다고 명시하는 조건을 말합니다. 참이면 연산을 계속 진행하고, 거짓이면 fail 됩니다. 이 예시에서는 NewWeight <= MaxWeight 부분이 이에 해당합니다.
+[^Transactional]: 여러 작업을 하나의 논리적 단위로 취급하는 성질을 가진. 우투리의 갑옷을 예로 들면, 나머지 모든 콩을 제자리에 꿰는 작업이 성공 했더라도, 하나의 콩 만이라도 제자리에 꿰는 작업이 실패한다면, 그 갑옷은 Magical Defense 효과를 잃는다. 즉 fail 된다.
+[^FirstClassValues]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
