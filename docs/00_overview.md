@@ -25,7 +25,7 @@ Verse는 다음과 같은 목표를 가지고 있습니다 :
 
 - **빠를 것.** 실시간 게임 및 시뮬레이션에서 충분히 빠르며, 순수 연산을 적극적으로 최적화할 수 있는 구현 방식을 갖추고 있습니다.
 
-- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 하위 호환성[^하위 호환성]을 보장하고, 구조 변경에 신중합니다.
+- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 하위 호환성[^backward compatibility]을 보장하고, 구조 변경에 신중합니다.
 
 **왜 Verse 인가?**
 
@@ -60,7 +60,7 @@ Result := if (Condition[]) then "yes" else "no"
 Multiply := for (X : Array) { X * 42 }
 ```
 
-**Control Flow[^Control Flow] 로서의 Failure**
+**Control Flow[^control flow] 로서의 Failure**
 
 Boolean 조건과 예외 대신, Verse 는 failure 를 기본 control flow 매커니즘으로 사용합니다. 표현식은 성공할 수도 있고(이 경우 값을 만듭니다.), 실패할 수도 있으며, 이를 통해 자연스러운 control flow 패턴을 만듭니다.
 
@@ -890,5 +890,5 @@ All these forms produce the same result. The choice between them is about readab
 Use braces when working with existing brace-heavy code, indentation for cleaner vertical layouts,
 and inline forms for simple expressions. This flexibility lets you write code that reads naturally.
 
-[^하위 호환성]: 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
-[^Control Flow]: 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
+[^backward compatibility]: Backward Compatibility. 하위 호환성. 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
+[^control flow]: Control Flow. 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
