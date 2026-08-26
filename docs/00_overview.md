@@ -25,7 +25,7 @@ Verse는 다음과 같은 목표를 가지고 있습니다 :
 
 - **빠를 것.** 실시간 게임 및 시뮬레이션에서 충분히 빠르며, 순수 연산을 적극적으로 최적화할 수 있는 구현 방식을 갖추고 있습니다.
 
-- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 하위 호환성을 보장하고, 구조 변경에 신중합니다.
+- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 하위 호환성[^1]을 보장하고, 구조 변경에 신중합니다.
 
 **왜 Verse 인가?**
 
@@ -889,3 +889,5 @@ then { "condition met" } else { "condition not met" }
 All these forms produce the same result. The choice between them is about readability and context. 
 Use braces when working with existing brace-heavy code, indentation for cleaner vertical layouts,
 and inline forms for simple expressions. This flexibility lets you write code that reads naturally.
+
+[^1]: 하위 호환성이란, 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
