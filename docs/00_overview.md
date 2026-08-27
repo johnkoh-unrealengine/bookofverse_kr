@@ -534,18 +534,19 @@ RunExample<public>()<suspends>:void =
 
 **First-Class Values[^FirstClassValues] 로써의 함수**
 
-The `FilterItems` method accepts a predicate function, demonstrating higher-order programming. The nested function `IsRareOrLegendary` in `RunExample` shows how functions can be defined locally and passed around like any other value. This functional programming style combines naturally with the imperative and object-oriented features.
+`FilterItems` method 는 predicate function[^PredicateFunction] 을 인수로 받고 있는데, 이는 고차 프로그래밍의 예가 됩니다. `RunExample` 내부에 있는 nested function[^NestedFunction] 인 `IsRareOrLegendary`는 '함수'가 어떻게 다른 '값'들과 마찬가지로 locally[^Locally] 정의되고, 전달될 수 있는지 보여줍니다. 이러한 함수형 프로그래밍 스타일은 명령형 기능 및 객체지향형 기능과 자연스럽게 결합됩니다.
 
-**Optional Types and Query Operators**
+**Optional[^Optional] 자료형과 쿼리 Operators[^Operators]**
 
-The inventory removal logic uses optional types (`?game_item`) to represent values that might not exist. The query operator `?` extracts values from options, failing if the option is empty. This eliminates null pointer exceptions while providing convenient syntax for handling absent values.
+인벤토리의 제거 로직은 존재하지 않을 수도 있는 값을 표현하기 위해 (`?game_item`) 이라는 Optional 자료형을 사용합니다. 쿼리 operator `?` 는 options 에서 값을 추출하고, 만약 그 option 이 비어있으면 fail 됩니다. 이것은 absent values[^AbsentValues] 를 다루기 위한 편리한 구문을 제공함과 동시에 null pointer exceptions[^NullPointerExceptions] 를 제거 해주기도 합니다.
 
-**Pattern Matching and Control Flow**
+**패턴 매칭과 Control Flow**
 
-The `case` expression in `GetRarityMultiplier` demonstrates pattern matching. Unlike a switch statement, `case` is an expression that produces a value. The underscore `_` provides a catch-all pattern, though in this example it leads to failure.
-The `if` expression similarly produces values and can bind variables in its condition. The compound conditions show how multiple operations can be chained with automatic failure propagation.
+`GetRarityMultiplier` 내부의 `case` 표현식은 패턴 매칭을 보여줍니다. switch 구문과 달리, `case` 는 값을 생성하는 표현식 입니다. 밑줄 `_` 는 catch-all pattern[^CatchAllPattern] 이 사용 됐음을 보여주지만, 이 예시에서는 결과적으로 fail 됩니다. `if` 표현식도 마찬가지로 값을 생성하며, 조건에 변수들을 binding[^Binding] 할 수 있습니다. 예시의 compound conditions[^CompoundConditions] 는 여러 작업이 어떻게 자동 failure 전파에 의해 속박되는지를 보여줍니다.
 
-**Module System and Access Control**
+**모듈 시스템 및 접근 제어**
+
+예시의 코드는 다른 모듈로부터 기능을 가져오는 `using` 구문으로 시작합니다. 경로 기반 모듈 시스템은 dependencies[^Dependencies]의 명확성과 영구적 접근성을 보장합니다. `<public>' 과 같은 Access specifiers[^AccessSpecifiers] 는 세부적인 수준에서 visibility[^Visibility] 를 제어합니다.
 
 The code begins with `using` statements that import functionality from other modules. The path-based module system ensures that dependencies are unambiguous and permanently addressable. Access specifiers like `<public>` control visibility at a fine-grained level.
 
@@ -898,6 +899,19 @@ and inline forms for simple expressions. This flexibility lets you write code th
 [^Serialize]: 직렬화. 메모리에서 계산 중인 데이터를 저장, 전송할 수 있는 데이터로 변환하는 절차를 말합니다.
 [^Gracefully]: 원문에는 handle this gracefully 라고 표현되므로, 직역하면 '우아하게 처리한다' 고 번역될 수 있습니다. 하지만 프로그래밍에서 'graceful 하게 처리한다'는 것은 'failure 또는 예외 상황이 발생하더라도 프로그램이 적절하게 대응하여 정상적인 흐름을 유지할 수 있도록 처리한다' 는 의미를 갖는다고 합니다.
 [^Method]: 다른 객체나 클래스에 소속된 함수를 의미합니다. '멤버 함수' 라고 부르기도 합니다. 이와 대조적으로, 독립적으로 존재하는 함수는 Function 이라고 부르며 구분합니다.
-[^Assertion]: 검증 조건. 연산되는 시점에 참이어야 한다고 명시하는 조건을 말합니다. 참이면 연산을 계속 진행하고, 거짓이면 fail 됩니다. 이 예시에서는 NewWeight <= MaxWeight 부분이 이에 해당합니다.
-[^Transactional]: 여러 작업을 하나의 논리적 단위로 취급하는 성질을 가진. 우투리의 갑옷을 예로 들면, 나머지 모든 콩을 제자리에 꿰는 작업이 성공 했더라도, 하나의 콩 만이라도 제자리에 꿰는 작업이 실패한다면, 그 갑옷은 Magical Defense 효과를 잃는다. 즉 fail 된다.
+[^Assertion]: 검증 조건. 연산되는 시점에 참이어야 한다고 명시하는 조건을 말합니다. 참이면 연산을 계속 진행하고, 거짓이면 fail 됩니다. 이 예시에서는 NewWeight <= MaxWeight 부분이 이에 해당합니다. 4딸라
+[^Transactional]: 여러 작업을 하나의 논리적 단위로 취급하는 성질을 가진. 아킬레우스의 발목 - 발목이 적셔지지 않았기 때문에(fail 되었으므로), 다른 모든 신체부위가 스틱스 강물에 적셔졌더라도(success) 전체 연산 결과(무적 효과 부여)가 fail(무적 효과 부여 실패) 됨.
 [^FirstClassValues]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
+[^PredicateFunction]: 프레디케이트 함수. 입력값을 받아 참(True) 또는 거짓(False)을 반환하는 함수를 말합니다.
+[^NestedFunction]: 중첩 함수. 어떤 다른 함수의 내부에 선언된 함수를 말합니다.
+[^Locally]: 지역적으로. 어떤 함수에 선언된 값을 그 함수 내부에서만 쓸 수 있게 한 경우, 그 값이 '지역적으로' 선언되었다고 합니다. <> Globally (전역적으로)
+[^Optional]: 자료형(Types) 중 하나. '값이 있을 수도 있고 없을 수도 있는 상태'를 표현할 수 있다는 특징이 있습니다. 형용사로써 직역하면 '선택적인' 이라는 의미가 되지만, float, int 등과 같은 자료형을 나타내는 명사로 이해하는게 받아들이기 쉽습니다. 
+[^Operators]: 연산자. 값과 변수를 이용한 특정 연산을 수행하도록 지시하는 기호를 말합니다. 산술, 할당, 비교, 논리, 증감, 삼항 연산자를 총칭합니다.
+[^AbsentValues]: 결측값. NA(Not Available) 이나 404 not found 처럼, 시스템이 가리킨 주소를 찾아갔는데 들어있는 값이 없는 없어 '비어있다' 고 읽어야 하는 값.
+[^NullPointerExceptions]: 할당된 주소가 존재하지 않기 때문에 발생하는 예외. (1) Null : '없는 번호 입니다.' 처럼, 아예 찾아갈 주소가 없는 경우를 말합니다 (2) NA : Not Available. 주소는 있지만 막상 찾아간 주소에 아무것도 없는 경우를 말합니다 (3) NAN : Not A Number. 찾아갈 주소고 있고, 찾아보니 들어있는 값도 있는데, 숫자가 아니거나 수학적으로 처리할 수 없는 경우를 말합니다.
+[^CatchAllPattern]: 처리 방식을 따로 지정하지 않은 나머지 모든 값들을 일괄처리 하는 방식을 말합니다.
+[^Binding]: A = x 처럼, 어떤 변수에 값을 지정하는 것을 말합니다. 예시에서 if 구문의 조건 입력 부분인 괄호를 보면, 등호를 이용해 변수에 값을 binding 해주고 있습니다.
+[^CompoundConditions]: 복합 조건. 예시의 if 구문 괄호 안의 내용과 같이, 하나의 조건식에 2개 이상의 조건을 건 경우, 그 조건들을 복합 조건이라고 합니다.
+[^Dependencies]: 의존성. 어떤 코드가 정상적으로 작동하기 위해 다른 코드나 모듈 등을 필요로 하는 관계를 말합니다.
+[^AccessSpecifiers]: 접근 한정자. 어떤 코드 요소를 '어디에서 접근할 수 있는가'를 지정하는 역할을 합니다. Public, Private 등이 있습니다.
+[^Visibility]: 가시성. 다른 코드에서 어떤 변수를 참조할 수 있는지 없는지의 여부를 말합니다.
