@@ -75,7 +75,7 @@ extra_javascript:
     path: js/Verse.js
 
 nav:
-  - Home (홈): index.md
+  - Home: index.md
   - Overview: 00_overview.md
   - Expressions: 01_expressions.md
   - Primitive types: 02_primitives.md
