@@ -546,19 +546,17 @@ RunExample<public>()<suspends>:void =
 
 **모듈 시스템 및 접근 제어**
 
-예시의 코드는 다른 모듈로부터 기능을 가져오는 `using` 구문으로 시작합니다. 경로 기반 모듈 시스템은 dependencies[^Dependencies]의 명확성과 영구적 접근성을 보장합니다. `<public>' 과 같은 Access specifiers[^AccessSpecifiers] 는 세부적인 수준에서 visibility[^Visibility] 를 제어합니다.
+예시의 코드는 다른 모듈로부터 기능을 가져오는 `using` 구문으로 시작합니다. 경로 기반 모듈 시스템은 dependencies[^Dependencies]의 명확성과 영구적 접근성을 보장합니다. `<public>` 과 같은 Access specifiers[^AccessSpecifiers] 는 세부적인 수준에서 visibility[^Visibility] 를 제어합니다.
 
-The code begins with `using` statements that import functionality from other modules. The path-based module system ensures that dependencies are unambiguous and permanently addressable. Access specifiers like `<public>` control visibility at a fine-grained level.
+**기본적 변경 불가능성**
 
-**Immutable by Default**
+데이터 구조는 `var` 에 의해 명시적으로 마크 되지 않는 한 변경 불가합니다. 이렇게 하면 많은 종류의 버그를 제거하고 동시 프로그래밍을 더욱 안전하게 만들 수 있습니다. 의도적 변경이 필요한 경우에는 그것이 코드 상에 명시적으로 표현되고, effect 시스템에 의해서 추적됩니다. `var` 과 `set` 에 대한 보다 자세한 정보는 [Mutability](05_mutability.md) 를 확인 해보세요.
 
-Data structures are immutable unless explicitly marked with `var`. This eliminates large classes of bugs and makes concurrent programming safer. When we do need mutation, it is explicit and tracked by the effect system. See [Mutability](05_mutability.md) for complete details on `var` and `set`.
+## 명명 규칙
 
-## Naming Conventions
+Verse 에는 코드를 읽기 쉽고 예측 가능하게 하는 명명 규칙이 있습니다. 언어 자체가 이 규칙을 강제하지는 않습니다. 하지만 규칙을 준수하면 작성하신 코드가 Verse 생태계 전반과 잘 통합되고, 다른 Verse 개발자들이 그것을 쉽게 알아볼 수 있게 됩니다.
 
-Verse has a set of naming conventions that make code readable and predictable. While the language does not enforce these conventions, following them ensures your code integrates well with the broader Verse ecosystem and is immediately familiar to other Verse developers.
-
-Identifiers should be in PascalCase (CamelCase starting with uppercase):
+Identifiers[^Identifiers] 는 PascalCase(대문자로 시작하는 CamelCase) 이어야 합니다 :
 
 <!--versetest
 player_record := struct:
@@ -575,19 +573,19 @@ PlayerDatabase(Id:int)<decides>:player_record =
 -->
 <!-- 09 -->
 ```verse
-# Variables and constants use PascalCase
+# PascalCase 를 이용한 변수와 상수들
 PlayerHealth:int = 100
 MaxInventorySize:int = 50
 IsGameActive:logic = true
 
-# Functions use PascalCase
+# PascalCase 를 이용한 함수들
 CalculateDamage(Base:float, Multiplier:float):float =
     Base * Multiplier
 
 GetPlayerName(Id:int)<decides>:string =
     PlayerDatabase[Id].Name
 
-# Classes and structs use snake_case
+# snake_case 를 이용한 Classes 와 structs
 player_character := class:
     Name:string
     Level:int
@@ -596,7 +594,7 @@ inventory_item := struct:
     ItemId:int
     Quantity:int
 
-# Enums and their values use snake_case
+# Enums 와 그 값들에는 snake_case 를 씁니다
 game_state := enum:
     main_menu
     in_game
@@ -604,44 +602,44 @@ game_state := enum:
     game_over
 ```
 
-Generic type parameters use single lowercase letters or short descriptive names:
+Generic[^Generic] 자료형 파라미터는 소문자 한 개를 쓰거나, 의미가 직관적으로 전달되는 짧은 이름을 씁니다 :
 
 <!--versetest-->
 <!-- 10 -->
 ```verse
-# Single letter for simple generics
+# 간단한 Generic 파라미터 표현을 위해 소문자 한 개가 쓰인 경우
 Find(Array:[]t, Target:t where t:type):?int = false
 
-# Descriptive names for complex relationships
+# 복잡한 관계 표현을 위해 짧은 이름이 사용된 경우 (인풋 자료형을 뜻하는 in_t 과 아웃풋 자료형을 뜻하는 out_t)
 Transform(Input:in_t, Processor:type{_(:in_t):out_t} where in_t:type, out_t:type):?out_t = false
 ```
 
 
-Module names always use PascalCase, including path segments:
+모듈 이름은 언제나 PascalCase 를 씁니다. 모든 path segments[^PathSegments] 에 대해서도 그렇게 합니다 :
 
 <!--NoCompile-->
 <!-- 11 -->
 ```verse
-# Module definition
+# 모듈 정의 부분
 InventorySystem := module:
-    # Module contents
+    # 모듈 내용이 들어가는 부분
 
-# Path segments also use PascalCase
+# Path segments 에도 PascalCase 를 씁니다.
 using { /Fortnite.com/Characters/PlayerController }
 using { /MyGame.com/Systems/CombatSystem }
 using { /Verse.org/Random }
 ```
 
-Class and struct fields use PascalCase, and methods follow the same PascalCase convention as functions:
+Class 와 struct 의 fields[^Fields] 는 PascalCase 를 사용하고, methods 도 같은 PascalCase 이름을 함수로서 그대로 씁니다.
 
 <!--versetest-->
 <!-- 12 -->
 ```verse
 player := class:
-    Name:string          # PascalCase for fields
+    Name:string          # Class 의 field 가 PascalCase 를 쓰고 있습니다
     var Health:float= 0.0
 
-    # Methods use PascalCase like functions
+    # Method 도 함수와 마찬가지로 PascalCase 를 씁니다.
     TakeDamage(Amount:float):void =
         set Health = Max(0.0, Health - Amount)
 
@@ -897,7 +895,7 @@ and inline forms for simple expressions. This flexibility lets you write code th
 [^TypeAnnotation]: 자료형 주석.
 [^Boilerplate]: 상용구 코드. 기계적으로 반복 기재해야 했던 준비 코드를 말합니다.
 [^Serialize]: 직렬화. 메모리에서 계산 중인 데이터를 저장, 전송할 수 있는 데이터로 변환하는 절차를 말합니다.
-[^Gracefully]: 원문에는 handle this gracefully 라고 표현되므로, 직역하면 '우아하게 처리한다' 고 번역될 수 있습니다. 하지만 프로그래밍에서 'graceful 하게 처리한다'는 것은 'failure 또는 예외 상황이 발생하더라도 프로그램이 적절하게 대응하여 정상적인 흐름을 유지할 수 있도록 처리한다' 는 의미를 갖는다고 합니다.
+[^Gracefully]: 원문에는 handle this gracefully 라고 표현되므로, 직역하면 '우아하게' 처리 한다고 번역될 수 있습니다. 하지만 프로그래밍에서 'gracefully'는 'failure 또는 예외가 발생해도 프로그램이 적절하게 대응하여 정상적인 흐름을 유지할 수 있게' 를 의미합니다.
 [^Method]: 다른 객체나 클래스에 소속된 함수를 의미합니다. '멤버 함수' 라고 부르기도 합니다. 이와 대조적으로, 독립적으로 존재하는 함수는 Function 이라고 부르며 구분합니다.
 [^Assertion]: 검증 조건. 연산되는 시점에 참이어야 한다고 명시하는 조건을 말합니다. 참이면 연산을 계속 진행하고, 거짓이면 fail 됩니다. 이 예시에서는 NewWeight <= MaxWeight 부분이 이에 해당합니다. 4딸라
 [^Transactional]: 여러 작업을 하나의 논리적 단위로 취급하는 성질을 가진. 아킬레우스의 발목 - 발목이 적셔지지 않았기 때문에(fail 되었으므로), 다른 모든 신체부위가 스틱스 강물에 적셔졌더라도(success) 전체 연산 결과(무적 효과 부여)가 fail(무적 효과 부여 실패) 됨.
@@ -915,3 +913,7 @@ and inline forms for simple expressions. This flexibility lets you write code th
 [^Dependencies]: 의존성. 어떤 코드가 정상적으로 작동하기 위해 다른 코드나 모듈 등을 필요로 하는 관계를 말합니다.
 [^AccessSpecifiers]: 접근 한정자. 어떤 코드 요소를 '어디에서 접근할 수 있는가'를 지정하는 역할을 합니다. Public, Private 등이 있습니다.
 [^Visibility]: 가시성. 다른 코드에서 어떤 변수를 참조할 수 있는지 없는지의 여부를 말합니다.
+[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
+[^Generic]: 자료형(Types) 중 하나. 구체적인 자료형을 미리 정하지 않고, 나중에 자료형을 지정해서 사용할 수 있다는 특징이 있습니다.
+[^PathSegments]: 경로 분절. 예를 들어 경로가 /Fortnite.com/Characters/PlayerController 인 경우, 'Fortnite.com', 'Characters', 'PlayerController' 각각을 하나의 path segment 라고 말합니다.
+[^Fields]: Class 또는 struct 하위에 정의된 각각의 데이터 항목을 말합니다. 본문 예시 중 'item_stats' 라는 이름으로 명명된 struct 하위의 Damage, Defense, Weight, Value 등이 각각 field 의 예시가 됩니다.
