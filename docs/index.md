@@ -1,27 +1,22 @@
 # Verse Language Documentation
 
-This documentation provides an in-depth look at the Verse programming
-language, its philosophy, and core concepts.
+이 문서에서는 Verse 프로그래밍 언어, 그 철학 및 핵심 개념에 대해 자세히 살펴봅니다.
 
-Verse is a multi-paradigm programming language developed by Epic
-Games, drawing from functional, logic, and imperative traditions to
-create a coherent system for building metaverse experiences.
+Verse는 Epic Games에서 개발한 다중 패러다임 프로그래밍 언어로, 함수형, 논리형, 명령형 전통을 기반으로 메타버스 경험을 구축하기 위한 일관된 시스템을 만듭니다.
 
 
-Verse has three core principles:
+Verse에는 세 가지 핵심 원칙이 있습니다:
 
-- **It's just code** - Complex concepts are expressed as primitive Verse constructs
-- **Just one language** - Same constructs for compile-time and run-time
-- **Metaverse first** - Designed for a global simulation environment
+- **그냥 코드 입니다** - 복잡한 개념들도 Verse 의 기본 구조로 표현됩니다.
+- **한 종류의 언어로 되어 있습니다** - 하나의 언어 구문이 컴파일에도 쓰이고, 런타임에도 쓰입니다.
+- **메타버스를 우선시 합니다** - 글로벌 시뮬레이션 환경을 위해 고안되었습니다.
 
-!!! note
-      The documentation pertains to the head of the main
-      development branch of Verse, some features may be discussed
-      before they are officially released and are thus subject to
-      change. Some Epic internal features may also be discussed.
+!!! 주의
+      본 문서의 내용은 Verse의 메인 개발 브랜치에 속하며,
+      일부 기능은 공식 출시 전 논의를 반영하여 변경될 수 있습니다.
+      몇몇 Epic 내부 기능들도 논의의 대상이 될 수 있습니다.
 
-
-## Documentation Sections
+## 문서 구성
 
 - [Overview](00_overview.md) - Introduction to Verse philosophy and features
 - [Expressions](01_expressions.md) - Everything is an expression paradigm
