@@ -17,19 +17,19 @@ Verse는 코드가 단일 글로벌 시뮬레이션인 메타버스에서 실행
 
 Verse는 다음과 같은 목표를 가지고 있습니다 :
 
-- **간결할 것.** 프로그래밍을 처음 접하는 사람도 쉽게 배울 수 있을 만큼 간단하며, 규칙이 일관적이고, 예외 처리가 필요한 경우가 최소화되어 있습니다.
+- **간결할 것.** 프로그래밍을 처음 접하는 사람도 쉽게 배울 수 있을 만큼 간단하며, 규칙이 일관적이고, 특이 케이스가 최소화되어 있습니다.
 
 - **표현력이 좋을 것.** 정교한 게임 로직과 분산 시스템에 필요한 표현력을 갖추고 있으며, 대규모 코드베이스에 맞춰 확장 가능한 고급 기능을 제공합니다.
 
-- **안전할 것.** 신뢰할 수 없는 코드가 공유 환경에서 실행될 수 있을 만큼 안전하며, 강력한 샌드박싱 및 영향 추적 기능을 제공합니다.
+- **안전할 것.** 신뢰할 수 없는 코드가 공유 환경에서 실행될 수 있을 만큼 안전하며, 강력한 샌드박싱 및 effect 추적 기능을 제공합니다.
 
-- **빠를 것.** 실시간 게임 및 시뮬레이션에서 충분히 빠르며, 순수 연산을 적극적으로 최적화할 수 있는 구현 방식을 갖추고 있습니다.
+- **빠를 것.** 실시간 게임 및 시뮬레이션에서 충분히 빠르며, pure computations[^PureComputations] 를 적극적으로 최적화할 수 있는 구현 방식을 갖추고 있습니다.
 
 - **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 Backward Compatibility[^BackwardCompatibility]를 보장하고, 구조 변경에 신중합니다.
 
 **왜 Verse 인가?**
 
-기존 프로그래밍 언어는 수십 년에 걸친 역사적 유산과 설계상의 타협점을 안고 있습니다. Verse는 과거에서 배우되 과거에 얽매이지 않고 새롭게 시작합니다. Verse는 향후 변화할 프로그래밍의 다음과 같은 특징들에 대응하기 위해 설계되었습니다:
+기존 프로그래밍 언어는 수십 년에 걸친 역사적 유산과 설계상의 타협점을 안고 있습니다. Verse는 과거에서 배우되, 과거에 얽매이지 않고 새롭게 시작합니다. Verse는 향후 변화할 프로그래밍의 다음과 같은 특징들에 대응하기 위해 설계되었습니다 :
 
 - 코드가 영구적인 메타버스 속에 영원히 잔류한다.
 - 수백만 명의 개발자가 공유 코드베이스에 기여한다.
@@ -53,10 +53,10 @@ Array :[]int= array{1}
 -->
 <!-- 01 -->
 ```verse
-# 심지어 control flow 조차도 값을 생성합니다.
+# 심지어 control flow 조차도 값을 생성합니다
 Result := if (Condition[]) then "yes" else "no"
 
-# Loops 도 표현식입니다.
+# Loops 도 표현식입니다
 Multiply := for (X : Array) { X * 42 }
 ```
 
@@ -77,8 +77,8 @@ M()<decides>:void=
 -->
 <!-- 02 -->
 ```verse
-ValidateInput[Data]  # 대괄호는 이 함수가 실패할 수도 있음을 의미합니다.
-ProcessData(Data)    # 유효한 Data만 처리되며, 괄호는 이 함수가 반드시 성공함을 의미합니다.
+ValidateInput[Data]  # 대괄호는 이 함수가 실패할 수도 있음을 의미합니다
+ProcessData(Data)    # 유효한 Data만 처리되며, 괄호는 이 함수가 반드시 성공함을 의미합니다
 ```
 <!-- #> -->
 
@@ -86,13 +86,13 @@ ProcessData(Data)    # 유효한 Data만 처리되며, 괄호는 이 함수가 �
 
 **추론 기능을 갖춘 강력한 정적 자료형 검사**
 
-Verse는 강력한 자료형 시스템은 컴파일 타임에 오류를 잡아내고, 추론 방식을 적용해 자료형을 수동으로 지정할 필요성을 최소화합니다. 자료형 시스템 및 보조 자료형에 대한 자세한 내용은 [Types](11_types.md)를 참조하세요.
+Verse 의 강력한 자료형 시스템은 컴파일 타임에 오류를 잡아내고, 추론 방식을 적용해 자료형을 수동으로 지정할 필요성을 최소화합니다. 자료형 시스템 및 보조 자료형에 대한 자세한 내용은 [Types](11_types.md)를 참조하세요.
 
 <!--versetest-->
 <!-- 03 -->
 ```verse
-X := 42                    # X : int = 42 로 적지 않아도 자료형이 추론됩니다.
-Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형이 추론됩니.
+X := 42                    # X : int = 42 로 적지 않아도 자료형이 추론됩니다
+Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형이 추론됩니다
 ```
 
 **Effect 추적**
@@ -110,9 +110,9 @@ x := class:
 -->
 <!-- 04 -->
 ```verse
-PureCompute()<computes>:int = 2 + 2              # side effects 가 없습니다. 즉, 내부 연산만 합니다.
-ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태를 읽을 수 있습니다.
-UpdateGame()<transacts>:void = set Score += 10   # 읽고, 쓰고, 할당할 수 있습니다.
+PureCompute()<computes>:int = 2 + 2              # side effects 가 없습니다
+ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태를 읽을 수 있습니다
+UpdateGame()<transacts>:void = set Score += 10   # 읽고, 쓰고, 할당할 수 있습니다
 ```
 <!-- #> -->
 
@@ -143,13 +143,13 @@ M()<suspends>:void=
 -->
 <!-- 05 -->
 ```verse
-# 여러 작업을 동시에 실행하고, 모든 작업이 완료될 때까지 기다립니다.
+# 여러 작업을 동시에 실행하고, 모든 작업이 완료될 때까지 기다립니다
 sync:
     TaskA()
     TaskB()
     TaskC()
 
-# 여러 작업을 동시에 실행하고, 가장 먼저 도출된 결과를 채택합니다.
+# 여러 작업을 동시에 실행하고, 가장 먼저 도출된 결과를 채택합니다
 race:
     FastPath()
     SlowButReliablePath()
@@ -166,9 +166,9 @@ TryComplexOperation()<computes><decides>:void={}
 <!-- 06 -->
 ```verse
 if (TryComplexOperation[]):
-    # TryComplexOperation[] 에 의한 변경 사항이 커밋 됩니다.
+    # TryComplexOperation[] 에 의한 변경 사항이 커밋 됩니다
 else:
-    # TryComplexOperation[] 에 의한 변경 사항이 자동으로 롤백 됩니다.
+    # TryComplexOperation[] 에 의한 변경 사항이 자동으로 롤백 됩니다
 ```
 
 **실시간 변수를 사용하는 반응형 프로그래밍**
@@ -184,9 +184,9 @@ var MaxHealth:int = 100
 var Damage:int = 0
 var live Health:int = MaxHealth - Damage
 
-# 종속성이 변경되면 Health 값이 자동으로 업데이트 됩니다.
-set Damage = 20      # Health 값이 80 이 됩니다.
-set MaxHealth = 150  # Health 값이 130 이 됩니다.
+# 종속성이 변경되면 Health 값이 자동으로 업데이트 됩니다
+set Damage = 20      # Health 값이 80 이 됩니다
+set MaxHealth = 150  # Health 값이 130 이 됩니다
 
 # 이벤트 처리를 위한 반응형 구조
 when(Health < 25):
@@ -454,7 +454,7 @@ inventory_system := class:
             set Total += Item.Stats.Weight
         Total
 
-# 컴포지션을 사용하는(이 경우엔 inventory_system 이라는 이름의 Class 를 포함함) player_character 라는 이름의 Class 를 선언합니다
+# Composition 을 사용하는 Class (player_character)
 player_character<public> := class:
     Name<public>:string
     var Level:int = 1
@@ -495,7 +495,7 @@ RunExample<public>()<suspends>:void =
     if (Hero.EquipStarterGear[]):
         Print("Hero equipped with starter gear")
 
-    # Transactional (여러 작업을 하나의 논리적 단위로 취급하는) 작동 방식을 보여줍니다
+    # Transactional 작동 방식을 보여줍니다
     ExpensiveItem := game_item{
         Name := "Golden Crown"
         Rarity := item_rarity.epic
@@ -518,11 +518,11 @@ RunExample<public>()<suspends>:void =
 ```
 <!-- #> -->
 
-이 예시는 Verse를 실제 상황에서 사용하는 방법을 보여줍니다. 이 코드가 Verse만의 특징을 갖는 이유를 살펴보겠습니다:
+이 예시는 Verse를 실제 상황에서 사용하는 방법을 보여줍니다. 이 코드가 Verse만의 특징을 갖는 이유를 살펴보겠습니다 :
 
 **자료형 시스템과 데이터 모델링**
 
-이 예시는 Verse 의 풍부한 자료형 시스템으로부터 시작합니다. 코드 전체에 걸쳐 자료형이 자연스럽게 흐르도록 설계되었으며, 많은 type annotation[^TypeAnnotation] 들은 추론이 가능하므로 생략되었습니다. `Items:[]game_item`처럼 자료을 명시한 부분은 컴파일러의 요구 사항을 충족하기 위해서가 아니라 의도를 문서로 남기기 위해 그렇게 했습니다. `item_rarity` 라고 명명된 enum[^enumeration] 은 기존 enum 에서 흔히 사용되는 boilerplate[^Boilerplate] 없이 자료형 안전성이 보장되는 상수를 제공합니다. `<persistable>`로 표시된 `item_stats` 구조는 영구 저장소에 저장하고 불러올 수 있어 게임 저장에 필수적입니다. `game_item` class 는 인스턴스를 저장하고 복원하려는 의도를 담아 `<final>` 및 `<persistable>`로 표시 해두었습니다. 영구 저장소에 저장된 데이터는 값을 기준으로 serialize [^Serialize] 되므로, 이러한 class 는 `<unique>` 속성을 가질 수 없습니다.
+이 예시는 Verse 의 풍부한 자료형 시스템으로부터 시작합니다. 코드 전체에 걸쳐 자료형이 자연스럽게 흐르도록 설계되었으며, 많은 type annotation[^TypeAnnotation] 들은 추론이 가능하므로 생략되었습니다. `Items:[]game_item`처럼 자료형을 명시한 부분은 컴파일러의 요구 사항을 충족하기 위해서가 아니라 의도를 문서로 남기기 위해 그렇게 했습니다. `item_rarity` 라고 명명된 enum[^enumeration] 은 기존 enum 에서 흔히 사용되는 boilerplate[^Boilerplate] 없이 자료형 안전성이 보장되는 상수를 제공합니다. `<persistable>`로 표시된 `item_stats` 구조는 영구 저장소에 저장하고 불러올 수 있어 게임 저장에 필수적입니다. `game_item` class 는 인스턴스를 저장하고 복원하려는 의도를 담아 `<final>` 및 `<persistable>`로 표시 해두었습니다. 영구 저장소에 저장된 데이터는 값을 기준으로 serialize [^Serialize] 되므로, 이러한 class 는 `<unique>` 속성을 가질 수 없습니다.
 
 **Control Flow 로서의 Failure**
 
@@ -651,7 +651,7 @@ player := class:
 
 Verse 코드는 가독성을 높이기 위해 일관된 서식을 따릅니다.
 
-코드 블록을 들여쓰기 하려면 스페이스를 네번 씁니다. 쌍점 기호는 블록을 나타내며, 그 아래로 이어지는 줄들은 들여쓰기 됩니다 :
+코드 블록을 들여쓰기 하려면 스페이스를 네번 씁니다. 쌍점 기호는 블록을 나타내며, 그 아래로 이어지는 줄들은 들여쓰기 합니다 :
 
 <!--versetest
 Condition()<decides><transacts>:void = {}
@@ -730,7 +730,7 @@ CalculateTimeBonus(CompletionTime:float):int = 50
 -->
 <!-- 15 -->
 ```verse
-# 간단한 pure function (연산에 내부 값만 사용하는 함수)
+# 간단한 pure function (연산에 주어진 값만 사용하는 함수)
 Add(X:int, Y:int)<computes>:int = X + Y
 
 # effect (여기서는 <transacts> 와 <decides>) 가 지정된 함수
@@ -753,7 +753,7 @@ CalculateReward(
 
 ## 주석
 
-주석은 연산에는 아무 효과가 없지만, 코드를 이해하거 유지 보수 하는데 도움을 줍니다. Verse 는 다양한 문서상의 수요를 충족하기 위해 여러 스타일의 주석을 제공합니다. 가장 간단한 것은 `#` 으로 시작해서 그 코드 줄 끝까지 이어지는 한 줄 짜리 주석 입니다.
+주석은 연산에는 아무 효과가 없지만, 코드를 이해하거나 유지 보수 하는데 도움을 줍니다. Verse 는 다양한 문서상의 수요를 충족하기 위해 여러 스타일의 주석을 제공합니다. 가장 간단한 것은 `#` 으로 시작해서 그 코드 줄 끝까지 이어지는 한 줄 짜리 주석 입니다.
 
 <!--versetest-->
 <!-- 16 -->
@@ -882,30 +882,31 @@ Result := if:
 then { "condition met" } else { "condition not met" }
 ```
 
-위의 모든 양식은 그 결과가 같습니다. 무엇을 선택할지는 가독성과 문맥의 문제일 뿐입니다. 중괄호가 많이 사용된 기존 코드와 함께 작업할 때는 중괄호를 쓰고, 세로 레이아웃을 깔끔하게 정리하고자 하는 경우에는 들여쓰기 방식을 쓰고, 간단한 표현식에는 인라인 형식을 쓰시면 됩니다. 이러한 유연성에 바탕으로 자연스럽게 읽히는 코드를 쓰실 수 있습니다.
+위의 모든 양식은 그 결과가 같습니다. 무엇을 선택할지는 가독성과 문맥의 문제일 뿐입니다. 중괄호가 많이 사용된 기존 코드와 함께 작업할 때는 중괄호를 쓰고, 세로 레이아웃을 깔끔하게 정리하고자 하는 경우에는 들여쓰기 방식을 쓰고, 간단한 표현식에는 인라인 형식을 쓰시면 됩니다. 이러한 유연성을 바탕으로 자연스럽게 읽히는 코드를 쓰실 수 있습니다.
 
 
-[^SideEffects]: 부수 효과. '함수 내부에서 이뤄지는 연산이 해당 함수 외부의 상태 변경에 미치는 효과' 을 말합니다. 직역할 때 익숙한 '부작용' 의 의미와는 구분되어야 합니다. '함수가 수행하는 계산상의 특성' 전체를 아우르는 표현인 'effect' 와도 구분되어야 합니다.
+[^SideEffects]: 부수 효과. 함수 내부에서 이뤄지는 연산이 해당 함수 외부의 상태 변경에 미치는 효과를 말합니다.
+[^PureComputations]: 순수 연산. 주어진 입력만으로 결과가 결정되며, 외부 상태에 의존하지 않고 외부 상태를 변경하지도 않는 연산을 말합니다.
 [^BackwardCompatibility]: 하위 호환성. 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
 [^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
-[^Specifiers]: 지정자.
+[^Specifiers]: 지정자. 대상의 속성, 조건, 동작 등을 구체적으로 명시하는 문법 요소를 말합니다.
 [^SpeculativeExecution]: 예측 실행. 투기적 실행이라고도 합니다. 실행 결과가 채택될지 확정되지 않은 상태에서 일단 실행한 뒤, 채택이 확정되면 결과값을 반영하고, 그렇지 않으면 결과값을 폐기한 후 롤백하는 방식을 말합니다.
-[^enumeration]: 열거형.
+[^enumeration]: 열거형. 미리 정해 놓은 여러 개의 선택지 중 하나를 나타내는 형식의 자료형을 말합니다.
 [^TypeAnnotation]: 자료형 주석.
 [^Boilerplate]: 상용구 코드. 기계적으로 반복 기재해야 했던 준비 코드를 말합니다.
 [^Serialize]: 직렬화. 메모리에서 계산 중인 데이터를 저장, 전송할 수 있는 데이터로 변환하는 절차를 말합니다.
 [^Gracefully]: 원문에는 handle this gracefully 라고 표현되므로, 직역하면 '우아하게' 처리 한다고 번역될 수 있습니다. 하지만 프로그래밍에서 'gracefully'는 'failure 또는 예외가 발생해도 프로그램이 적절하게 대응하여 정상적인 흐름을 유지할 수 있게' 를 의미합니다.
-[^Method]: 다른 객체나 클래스에 소속된 함수를 의미합니다. '멤버 함수' 라고 부르기도 합니다. 이와 대조적으로, 독립적으로 존재하는 함수는 Function 이라고 부르며 구분합니다.
+[^Method]: 멤버 함수. 다른 객체나 클래스에 소속된 함수를 의미합니다. 이와 대조적으로, 독립적으로 존재하는 함수는 Function 이라고 부르며 구분합니다.
 [^Assertion]: 검증 조건. 연산되는 시점에 참이어야 한다고 명시하는 조건을 말합니다. 참이면 연산을 계속 진행하고, 거짓이면 fail 됩니다. 이 예시에서는 NewWeight <= MaxWeight 부분이 이에 해당합니다. 4딸라
-[^Transactional]: 여러 작업을 하나의 논리적 단위로 취급하는 성질을 가진. 아킬레우스의 발목 - 발목이 적셔지지 않았기 때문에(fail 되었으므로), 다른 모든 신체부위가 스틱스 강물에 적셔졌더라도(success) 전체 연산 결과(무적 효과 부여)가 fail(무적 효과 부여 실패) 됨.
+[^Transactional]: 여러 작업을 하나의 논리적 단위로 취급하는 프로그래밍 방식을 말합니다. 아킬레우스의 발목 - 발목이 적셔지지 않았기 때문에(fail), 다른 모든 신체부위가 스틱스 강물에 적셔졌더라도(success) 전체 연산 결과(무적 효과 부여 기능)가 fail 됨.
 [^FirstClassValues]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
 [^PredicateFunction]: 프레디케이트 함수. 입력값을 받아 참(True) 또는 거짓(False)을 반환하는 함수를 말합니다.
 [^NestedFunction]: 중첩 함수. 어떤 다른 함수의 내부에 선언된 함수를 말합니다.
 [^Locally]: 지역적으로. 어떤 함수에 선언된 값을 그 함수 내부에서만 쓸 수 있게 한 경우, 그 값이 '지역적으로' 선언되었다고 합니다. <> Globally (전역적으로)
-[^Optional]: 자료형(Types) 중 하나. '값이 있을 수도 있고 없을 수도 있는 상태'를 표현할 수 있다는 특징이 있습니다. 형용사로써 직역하면 '선택적인' 이라는 의미가 되지만, float, int 등과 같은 자료형을 나타내는 명사로 이해하는게 받아들이기 쉽습니다. 
+[^Optional]: 자료형(Types) 중 하나. '값이 있을 수도 있고 없을 수도 있는 상태'를 표현할 수 있다는 특징이 있습니다.
 [^Operators]: 연산자. 값과 변수를 이용한 특정 연산을 수행하도록 지시하는 기호를 말합니다. 산술, 할당, 비교, 논리, 증감, 삼항 연산자를 총칭합니다.
-[^AbsentValues]: 결측값. NA(Not Available) 이나 404 not found 처럼, 시스템이 가리킨 주소를 찾아갔는데 들어있는 값이 없는 없어 '비어있다' 고 읽어야 하는 값.
-[^NullPointerExceptions]: 할당된 주소가 존재하지 않기 때문에 발생하는 예외. (1) Null : '없는 번호 입니다.' 처럼, 아예 찾아갈 주소가 없는 경우를 말합니다 (2) NA : Not Available. 주소는 있지만 막상 찾아간 주소에 아무것도 없는 경우를 말합니다 (3) NAN : Not A Number. 찾아갈 주소고 있고, 찾아보니 들어있는 값도 있는데, 숫자가 아니거나 수학적으로 처리할 수 없는 경우를 말합니다.
+[^AbsentValues]: 결측값. 시스템이 가리킨 주소를 찾아갔는데 들어있는 값이 없어 '비어있다' 고 읽어야 하는 값을 말합니다.
+[^NullPointerExceptions]: 할당된 주소가 존재하지 않기 때문에 발생하는 예외를 말합니다.
 [^CatchAllPattern]: 처리 방식을 따로 지정하지 않은 나머지 모든 값들을 일괄처리 하는 방식을 말합니다.
 [^Binding]: A = x 처럼, 어떤 변수에 값을 지정하는 것을 말합니다. 예시에서 if 구문의 조건 입력 부분인 괄호를 보면, 등호를 이용해 변수에 값을 binding 해주고 있습니다.
 [^CompoundConditions]: 복합 조건. 예시의 if 구문 괄호 안의 내용과 같이, 하나의 조건식에 2개 이상의 조건을 건 경우, 그 조건들을 복합 조건이라고 합니다.
