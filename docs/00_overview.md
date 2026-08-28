@@ -13,7 +13,7 @@ Verse 는 세가지 근본적인 원칙을 지켜 만들어졌습니다 :
 하나의 언어 구문이 컴파일에도 쓰이고, 런타임에도 쓰입니다. 둘 사이의 처리 과정 없이 작성 내용이 그대로 실행됩니다.
 
 - **메타버스를 우선시 합니다** :
-Verse는 코드가 단일 글로벌 시뮬레이션인 메타버스에서 실행되는 미래를 위해 설계되었습니다. 이는 강력한 호환성 보장부터 부작용을 추적하고 안전한 동시 실행을 보장하는 이펙트 시스템에 이르기까지 언어의 모든 측면에 영향을 미칩니다.
+Verse는 코드가 단일 글로벌 시뮬레이션인 메타버스에서 실행되는 미래를 위해 설계되었습니다. 이는 강력한 호환성 보장부터 side effects[^SideEffects] 를 추적하고 안전한 동시 실행을 보장하는 effect 시스템에 이르기까지 언어의 모든 측면에 영향을 미칩니다.
 
 Verse는 다음과 같은 목표를 가지고 있습니다 :
 
@@ -97,7 +97,7 @@ Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형
 
 **Effect 추적**
 
-함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 Specifiers[^Specifiers] 를 통해 부수 효과를 선언합니다. 이러한 Effect Specifiers 를 보면 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 빠르고 명확하게 알 수 있습니다:
+함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 Specifiers[^Specifiers] 를 통해 side effects 를 선언합니다. 이러한 Effect Specifiers 를 보면 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 빠르고 명확하게 알 수 있습니다:
 
 <!--versetest
 x := class:
@@ -110,7 +110,7 @@ x := class:
 -->
 <!-- 04 -->
 ```verse
-PureCompute()<computes>:int = 2 + 2              # 부수 효과가 없습니다. 즉, 내부 연산만 합니다.
+PureCompute()<computes>:int = 2 + 2              # side effects 가 없습니다. 즉, 내부 연산만 합니다.
 ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태를 읽을 수 있습니다.
 UpdateGame()<transacts>:void = set Score += 10   # 읽고, 쓰고, 할당할 수 있습니다.
 ```
@@ -647,11 +647,11 @@ player := class:
         logic{Health > 0.0}
 ```
 
-## Code Formatting
+## 코드 서식
 
-Verse code follows consistent formatting patterns to emphasize readability.
+Verse 코드는 가독성을 높이기 위해 일관된 서식을 따릅니다.
 
-Use four spaces to indent code blocks. The colon introduces a block, with subsequent lines indented:
+코드 블록을 들여쓰기 하려면 스페이스를 네번 씁니다. 쌍점 기호는 블록을 나타내며, 그 아래로 이어지는 줄들은 들여쓰기 됩니다 :
 
 <!--versetest
 Condition()<decides><transacts>:void = {}
@@ -681,7 +681,7 @@ class_definition := class:
         ImplementationHere()
 ```
 
-Complex expressions benefit from clear formatting that shows structure:
+복잡한 표현식에는 구조를 보여주는 명확한 서식을 사용합니다 :
 
 <!--versetest
 player_type := struct{Health:int = 75}
@@ -695,7 +695,7 @@ rarity_type := enum{common; uncommon; rare; epic; legendary}
 Player:player_type = player_type{}
 Rarity:rarity_type = rarity_type.rare
 
-# Multi-line conditionals
+# 여러 줄로 작성된 conditionals (조건식)
 Result := if (Player.Health > 50):
     "healthy"
 else if (Player.Health > 20):
@@ -703,13 +703,13 @@ else if (Player.Health > 20):
 else:
     "critical"
 
-# Chained operations with clear precedence
+# 우선순위가 명확한 연쇄 작업
 FinalDamage :=
     BaseDamage *
     LevelMultiplier *
     (1.0 + BonusPercentage / 100.0)
 
-# Pattern matching with aligned cases
+# 정렬된 케이스를 사용한 패턴 매칭
 DamageMultiplier := case(Rarity):
     rarity_type.common => 1.0
     rarity_type.uncommon => 1.5
@@ -718,7 +718,7 @@ DamageMultiplier := case(Rarity):
     rarity_type.legendary => 5.0
 ```
 
-Functions follow a consistent pattern with effects and return types clearly specified:
+함수는 effect 와 반환 자료형을 명확하게 지정하는 일관된 형식을 따릅니다 :
 
 <!--versetest
 difficulty_level := enum{easy; medium; hard}
@@ -730,16 +730,16 @@ CalculateTimeBonus(CompletionTime:float):int = 50
 -->
 <!-- 15 -->
 ```verse
-# Simple pure function
+# 간단한 pure function (연산에 내부 값만 사용하는 함수)
 Add(X:int, Y:int)<computes>:int = X + Y
 
-# Function with effects
+# effect (여기서는 <transacts> 와 <decides>) 가 지정된 함수
 ProcessTransaction(Amount:int)<transacts><decides>:void =
     ValidateAmount[Amount]
     DeductBalance(Amount)
     RecordTransaction()
 
-# Multi-line function with clear structure
+# 구조가 명확한 여러 줄 함수
 CalculateReward(
     PlayerLevel:int,
     Difficulty:difficulty_level,
@@ -751,17 +751,17 @@ CalculateReward(
     BaseReward + LevelBonus + TimeBonus
 ```
 
-## Comments
+## 주석
 
-Comments are ignored during execution but help with understanding and maintaining code. Verse offers several styles of comments to suit different documentation needs. The simplest is the single-line comment, which begins with `#` and continues to the end of the line:
+주석은 연산에는 아무 효과가 없지만, 코드를 이해하거 유지 보수 하는데 도움을 줍니다. Verse 는 다양한 문서상의 수요를 충족하기 위해 여러 스타일의 주석을 제공합니다. 가장 간단한 것은 `#` 으로 시작해서 그 코드 줄 끝까지 이어지는 한 줄 짜리 주석 입니다.
 
 <!--versetest-->
 <!-- 16 -->
 ```verse
-CalculateDamage := 100 * 1.5   # Apply critical hit multiplier
+CalculateDamage := 100 * 1.5   # 치명타 배율을 적용합니다
 ```
 
-When you need to document something within a line of code without breaking it up, inline block comments provide the perfect solution. These are enclosed between `<#` and `#>`:
+코드 줄을 나누지 않고 중간에 내용을 적어야 하는 경우에는 인라인 블록 주석을 쓰시면 됩니다. 이 주석의 내용은 `<#` 와 `#>` 사이에 봉해집니다 :
 
 <!--versetest
 BaseValue:int = 100
@@ -770,34 +770,33 @@ Bonus:int = 10
 -->
 <!-- 17 -->
 ```verse
-Result := BaseValue <# original amount #> * Multiplier <# scaling factor #> + Bonus
+Result := BaseValue <# 원래의 양 #> * Multiplier <# 배율 #> + Bonus
 ```
 
-The same can be used to write multi-line block comments, making them ideal for explaining complex algorithms or providing detailed context:
+같은 방식으로 여러 줄 블록 주석도 작성할 수 있어서, 복잡한 알고리즘에 대한 설명이나 자세한 맥락을 제공하는데 적합합니다 :
 
 <!--versetest-->
 <!-- 18 -->
 ```verse
-<# This function implements the quadratic damage falloff formula
-   used throughout the game. The falloff ensures that damage
-   decreases smoothly with distance, creating strategic positioning
-   choices for players. #>
+<# 이 함수는 게임 전반에 걸쳐 사용되는 2차 피해 감소 공식을 구현합니다.
+   이 감소 공식은 피해가 거리에 따라 부드럽게 감소하도록 하여,
+   플레이어에게 전략적인 위치 선정 기회를 제공합니다. #>
 CalculateFalloffDamage(Distance:float, MaxDamage:float):float =
-    MaxDamage  # Implementation here
+    MaxDamage  # 여기에 구현
 ```
 
-Block comments nest, which allows you to temporarily disable code that already contains comments without having to remove or modify existing documentation:
+중첩 블록 주석 기능은 이미 주석 처리가 되어있는 코드를 지우거나 수정하지 않아도 일시적으로 비활성화 할 수 있게 해줍니다 :
 
 <!--versetest-->
 <!-- 19 -->
 ```verse
-<# Temporarily disabled for testing
-   OriginalFunction()  <# This had a bug #>
-   NewFunction()       # Testing this approach
+<# 실험중이라 일시적으로 비활성화 시켜둔 부분
+   OriginalFunction()  <# 여기서 버그 발견됐으니 주의! #>
+   NewFunction()       # 이걸로 해볼 것
 #>
 ```
 
-Indented comments begin with a `<#>` on its own line; everything indented by four spaces on subsequent lines becomes part of the comment:
+새 줄에서 `<#>` 로 시작하는 들여쓰기 주석; 이것은 스페이스 키 4 번으로 들여쓰기 된 후속 코드 줄들을 모두 해당 주석에 포함 시킵니다 :
 
 <!--versetest
 DoSomething():void = {}
@@ -805,18 +804,18 @@ DoSomething():void = {}
 <!-- 20 -->
 ```verse
 <#>
-    This entire block is a comment because it is indented.
-    It provides a clean way to write longer documentation
-    without cluttering each line with comment markers.
+    들여쓰기가 되어 있으므로 이 블록 전체가 주석입니다.
+    이를 통해 각 줄에 주석 표시를 덕지덕지 붙이지 않고도
+    긴 문서를 깔끔하게 작성할 수 있습니다.
 
-DoSomething()  # Not part of the comment.
+DoSomething()  # 반면 이 부분은 위 주석에 포함되지 않는 별개의 주석입니다
 ```
 
-## Syntactic Styles
+## 구문 스타일
 
-Verse offers flexible syntax to accommodate different programming styles. The same logic can be expressed using braces, indentation, or inline forms, allowing you to choose the clearest representation for each context.
+Verse 는 다양한 프로그래밍 스타일을 수용할 수 있도록 유연한 구문을 지원합니다. 같은 로직이 괄호로도, 들여쓰기로도, 한 줄로 표현될 수도 있어서, 각 상황에 가장 적합한 표현 방식을 선택할 수 있습니다.
 
-The braced style uses curly braces to delimit blocks, familiar from C-family languages:
+중괄호 스타일은 C 계열 언어에서 흔히 볼 수 있는 중괄호를 사용하여 코드 블록을 구분합니다 :
 
 <!--versetest
 Score:int = 85
@@ -832,7 +831,7 @@ Result := if (Score > 90) {
 }
 ```
 
-The indented style uses colons and indentation to define structure, similar to Python:
+들여쓰기 스타일은 파이썬과 유사하게 쌍점과 들여쓰기를 사용하여 구조를 정의합니다 :
 
 <!--versetest
 Score:int = 85
@@ -847,7 +846,7 @@ else:
     "needs improvement"
 ```
 
-For simple expressions, the inline style keeps everything on one line:
+간단한 표현식의 경우 인라인 스타일을 사용하면 모든 내용이 한 줄에 표시됩니다 :
 
 <!--versetest
 Score:int = 85
@@ -857,7 +856,7 @@ Score:int = 85
 Result := if (Score > 90) then "excellent" else if (Score > 70) then "good" else "needs improvement"
 ```
 
-The dotted style uses a period to introduce the expression:
+점 표기 방식은 마침표를 사용해서 표현식을 나타냅니다 :
 
 <!--versetest
 Score:int = 85
@@ -867,7 +866,7 @@ Score:int = 85
 Result := if (Score > 90). "excellent" else if (Score > 70). "good" else. "needs improvement"
 ```
 
-You can even mix styles when it makes sense:
+문법적으로 문제가 없다면 여러 스타일을 섞어 쓸 수도 있습니다 :
 
 <!--versetest
 ComplexCondition()<transacts><decides>:void = {}
@@ -883,10 +882,10 @@ Result := if:
 then { "condition met" } else { "condition not met" }
 ```
 
-All these forms produce the same result. The choice between them is about readability and context. 
-Use braces when working with existing brace-heavy code, indentation for cleaner vertical layouts,
-and inline forms for simple expressions. This flexibility lets you write code that reads naturally.
+위의 모든 양식은 그 결과가 같습니다. 무엇을 선택할지는 가독성과 문맥의 문제일 뿐입니다. 중괄호가 많이 사용된 기존 코드와 함께 작업할 때는 중괄호를 쓰고, 세로 레이아웃을 깔끔하게 정리하고자 하는 경우에는 들여쓰기 방식을 쓰고, 간단한 표현식에는 인라인 형식을 쓰시면 됩니다. 이러한 유연성에 바탕으로 자연스럽게 읽히는 코드를 쓰실 수 있습니다.
 
+
+[^SideEffects]: 부수 효과. '함수 내부에서 이뤄지는 연산이 해당 함수 외부의 상태 변경에 미치는 효과' 을 말합니다. 직역할 때 익숙한 '부작용' 의 의미와는 구분되어야 합니다. '함수가 수행하는 계산상의 특성' 전체를 아우르는 표현인 'effect' 와도 구분되어야 합니다.
 [^BackwardCompatibility]: 하위 호환성. 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
 [^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
 [^Specifiers]: 지정자.
