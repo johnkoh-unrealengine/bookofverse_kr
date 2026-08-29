@@ -1,11 +1,6 @@
-# Expressions
+# Expressions[^Expressions]
 
-Everything is an expression. This design principle sets Verse apart
-from many other languages where statements and expressions are
-distinct concepts. Every piece of code you write produces a value,
-even constructs you might expect to be purely side-effecting. This
-creates a programming model where code can be composed and combined in
-ways that feel natural and predictable.
+모든 것이 expressions 입니다. 이 설계 원칙이 Verse 를 다른 많은 프로그래밍 언어들과 구분하는 차별점이 됩니다. 다른 프로그래밍 언어들은 statements[^statements] 와 expressions 가 서로 구분되기 때문입니다. 당신이 작성하신 모든 코드 조각들은 값을 생성합니다. 심지어 순전히 side effect[^SideEffect] 만 있을 것이라고 예상하시는 구조에서도 마찬가지 입니다. 이것은 자연스럽고 예측 가능한 방식으로 코드가 구성되고 결합되는 프로그래밍 모델을 만듭니다.
 
 ## Primary Expressions
 
