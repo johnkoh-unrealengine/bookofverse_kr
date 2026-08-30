@@ -1,13 +1,10 @@
 # Expressions[^Expressions]
 
-모든 것이 expressions 입니다. 이 설계 원칙이 Verse 를 다른 많은 프로그래밍 언어들과 구분하는 차별점이 됩니다. 다른 프로그래밍 언어들은 statements[^Statements] 와 expressions 가 서로 구분되기 때문입니다. 당신이 작성하신 모든 코드 조각들은 값을 생성합니다. 심지어 순전히 side effect[^SideEffect] 만 있을 것이라고 예상하시는 구조에서도 마찬가지 입니다. 이것은 자연스럽고 예측 가능한 방식으로 코드가 구성되고 결합되는 프로그래밍 모델을 만듭니다.
+모든 것이 expressions 입니다. 이 설계 원칙이 Verse 가 다른 많은 프로그래밍 언어들과 구분되는 차별점이 됩니다. 다른 프로그래밍 언어들은 statements[^Statements] 와 expressions 가 서로 구분되기 때문입니다. 당신이 작성하신 모든 코드 조각들은 값을 생성합니다. 심지어 순전히 side effect[^SideEffect] 만 있을 것이라고 예상하시는 구조에서도 마찬가지 입니다. 이 특징은 Verse 에 의한 프로그래밍 모델이 더 자연스럽고 예측 가능한 방식으로 구성될 수 있도록 도와줍니다.
 
-## Primary Expressions
+## 기본 Expressions
 
-Everything starts with primary expressions—the atomic units from which
-more complex expressions are built. These include literals,
-identifiers, parenthesized expressions, and the tuple construct that
-provides lightweight data aggregation.
+모든것은 기본 expressions 로부터 시작됩니다. 여기서 말하는 기본 expressions 란, 더 복잡한 표현식을 구성하는 가장 기본적인 단위를 말합니다. 이는 literals[^Literals], identifiers[^Identifiers], 괄호로 묶은 expressions, 그리고 여러 데이터를 가볍게 묶을 수 있는 tuple[^Tuple] 구조를 포함합니다.
 
 ### Basic Values
 
@@ -1397,6 +1394,9 @@ Colors := array:
     "yellow"
 ```
 
-[^Expressions]: 설명.
-[^Statements]: 설명.
-[^SideEffect]: 설명.
+[^Expressions]: 표현식. evaluation(평가) 된 결괏값을 도출하는 코드를 말합니다.
+[^Statements]: 명령문. 동작을 지시하는 코드를 말합니다. 
+[^SideEffect]: 부수 효과. 함수 내부에서 이뤄지는 연산이 해당 함수 외부의 상태 변경에 미치는 효과를 말합니다.
+[^Literals]: 리터럴. Damage := 100 에서의 100 처럼, identifier 를 사용하지 않고 직접 입력된 값을 말합니다. 만약 identifier 를 사용한다면 Damage := BaseDamage 처럼 표현될 수 있을 것입니다.
+[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
+[^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.
