@@ -23,9 +23,9 @@ point{X:=0.0, Y:=1.0}                        # object 구조 내부의 Float lit
 
 #### Integer Literals
 
-Integer literals represent whole numbers and can be written in two formats:
+Integer literals 는 정수를 나타내고, 두 가지 형식으로 쓰일 수 있습니다 :
 
-*Decimal notation* uses standard digits:
+*소수점 표기법*은 표준 숫자를 사용합니다 :
 
 <!--versetest-->
 <!-- 02 -->
@@ -33,11 +33,10 @@ Integer literals represent whole numbers and can be written in two formats:
 Count := 42
 Negative := -17
 Zero := 0
-Large := 9223372036854775807                # Maximum 64-bit signed integer literals
+Large := 9223372036854775807                # 최대 64-bit 의 부호 있는 integer literals 를 표현할 수 있습니다
 ```
 
-*Hexadecimal notation* uses the `0x` prefix followed by hex digits
-(0-9, a-f, A-F):
+*16진수 표기법*은 `0x` 접두사 뒤에 (0-9, a-f, A-F) 로 이뤄진 16진수 숫자를 사용합니다 :
 
 <!--versetest-->
 <!-- 03 -->
@@ -50,14 +49,9 @@ UppercaseHex := 0xABCDEF
 
 **Literal Limits vs Runtime Behavior:**
 
-Integer literals must fit within a 64-bit signed integer range
-(`-9223372036854775808` to `9223372036854775807`). This is a compile-time
-restriction on what values you can write directly in your code.
+Integer literals 는 64-bit 의 부호 있는 정수 값 범위(`-9223372036854775808` to `9223372036854775807`) 내에 있어야 합니다. 이는 코드에 직접 입력할 수 있는 값에 대한 제한으로, 컴파일 시점에 적용 됩니다.
 
-At runtime, integer values use arbitrary precision arithmetic and can grow
-beyond 64-bit limits through computation. However, integers exceeding 64-bit
-range have limited support (e.g., cannot be used in string interpolation
-or persisted).
+런타임 중에, integer 값은 arbitrary precision arithmetic[^ArbitraryPrecisionArithmetic] 방식을 사용하며, 연산 과정에서 64-bit 제한을 넘을 수 있습니다. 하지만, 64-bit 를 넘은 integers 는 제한된 지원만 받을 수 있습니다. (예를 들어, string interpolation[^StringInterpolation] 을 쓸 수 없거나 persisted[^Persisted] 가 될 수 없습니다.)
 
 #### Float Literals
 
@@ -1403,6 +1397,8 @@ Colors := array:
 [^Strings]: 문자열을 표현할 수 있는 자료형을 말합니다. Hello World, Lorem Ipsum 등을 표현할 수 있습니다.
 [^Booleans]: 참 또는 거짓을 표현할 수 있는 자료형을 말합니다.
 [^Functions]: 함수를 표현할 수 있는 자료형을 말합니다. 함수는 입력을 받아 결과를 도출하는 코드를 말하지만, Verse 에서는 함수 자체가 값으로 취급될 수 있어서 functions 라는 용어가 자료형 중 하나로도 쓰입니다. 
-
+[^ArbitraryPrecisionArithmetic]: 임의 연산 방식. 저장 공간의 크기를 미리 32비트, 64비트 등으로 제한하지 않고, 필요한 만큼 늘려가며 계산하는 방식을 말합니다. int64 와 같은 자료형은 저장 공간이 64-bit 로 제한되어 있어서, 범위를 넘는 값을 표현하면 Overflow (값이 순환되거나 오류를 발생시키는 현상) 가 발생합니다. 임의 연산 방식을 사용할 경우, 범위가 제한되어 있지 않아 Overflow 발생을 예방할 수 있습니다.
+[^StringInterpolation]: 문자열 안에 값을 삽입하는 기능을 말합니다. Print("Found {Items.Quantity} Items !") 라는 코드에서, {Items.Quantity} 부분을 통해 값을 넣는 등을 예로 들 수 있습니다.
+[^Persisted]: 프로그램의 실행이 끝나거나 환경이 바뀌어도 계속 유지되도록 저장된 데이터를 말합니다.
 
 
