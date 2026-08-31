@@ -6,12 +6,9 @@
 
 모든것은 기본 expressions 로부터 시작됩니다. 여기서 말하는 기본 expressions 란, 더 복잡한 표현식을 구성하는 가장 기본적인 단위를 말합니다. 이는 literals[^Literals], identifiers[^Identifiers], 괄호로 묶은 expressions, 그리고 여러 데이터를 가볍게 묶을 수 있는 tuple[^Tuple] 구조를 포함합니다.
 
-### Basic Values
+### 기본 값
 
-Literals are source code representations of constant values.
-Verse provides literals for all its primitive types: integers, floats, characters,
-strings, booleans, and functions. Each type has its own literal syntax and rules
-governing valid values and their interpretation at compile time.
+Literals 는 상수 값을 소스 코드로 표현한 것입니다. Verse 는 integers[^Integers], floats[^Floats], characters[^Characters], strings[^Strings], booleans[^Booleans], 그리고 functions[^Functions] 와 같은 기본 자료형에 대한 literals 를 제공합니다. 각각의 자료형은 그것의 고유한 literal 구문을 갖고, 컴파일 시점에 유효한 값과 그 해석을 규정하는 규칙을 갖습니다.
 
 <!--versetest
 point := struct{X:float, Y:float}
@@ -19,9 +16,9 @@ Condition:logic = true
 -->
 <!-- 01 -->
 ```verse
-Result := if (Condition?) then 42 else 3.14  # Integer and float literals
-array{1, 2, 3}                               # Integer literals in array construction
-point{X:=0.0, Y:=1.0}                        # Float literals in object construction
+Result := if (Condition?) then 42 else 3.14  # Integer 와 float 자료형인 literals
+array{1, 2, 3}                               # 배열 구조 내부의 Integer literals
+point{X:=0.0, Y:=1.0}                        # object 구조 내부의 Float literals
 ```
 
 #### Integer Literals
@@ -1400,3 +1397,12 @@ Colors := array:
 [^Literals]: 리터럴. Damage := 100 에서의 100 처럼, identifier 를 사용하지 않고 직접 입력된 값을 말합니다. 만약 identifier 를 사용한다면 Damage := BaseDamage 처럼 표현될 수 있을 것입니다.
 [^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
 [^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.
+[^Integers]: 정수를 표현할 수 있는 자료형을 말합니다. 1, 10, 100 등을 표현할 수 있습니다.
+[^Floats]: 소수를 표현할 수 있는 자료형을 말합니다. 1.618, 3.14 등을 표현할 수 있습니다.
+[^Characters]: 단일 문자를 표현할 수 있는 자료형을 말합니다. A, a, ! 등을 표현할 수 있습니다.
+[^Strings]: 문자열을 표현할 수 있는 자료형을 말합니다. Hello World, Lorem Ipsum 등을 표현할 수 있습니다.
+[^Booleans]: 참 또는 거짓을 표현할 수 있는 자료형을 말합니다.
+[^Functions]: 함수를 표현할 수 있는 자료형을 말합니다. 함수는 입력을 받아 결과를 도출하는 코드를 말하지만, Verse 에서는 함수 자체가 값으로 취급될 수 있어서 functions 라는 용어가 자료형 중 하나로도 쓰입니다. 
+
+
+
