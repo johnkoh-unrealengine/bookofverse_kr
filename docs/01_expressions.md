@@ -47,23 +47,22 @@ LowercaseHex := 0xabcdef
 UppercaseHex := 0xABCDEF
 ```
 
-**Literal Limits vs Runtime Behavior:**
+**Literal 자료형에 대한 제한과 Runtime 에서의 작동 방식 :**
 
 Integer literals 는 64-bit 의 부호 있는 정수 값 범위(`-9223372036854775808` to `9223372036854775807`) 내에 있어야 합니다. 이는 코드에 직접 입력할 수 있는 값에 대한 제한으로, 컴파일 시점에 적용 됩니다.
 
 런타임 중에, integer 값은 arbitrary precision arithmetic[^ArbitraryPrecisionArithmetic] 방식을 사용하며, 연산 과정에서 64-bit 제한을 넘을 수 있습니다. 하지만, 64-bit 를 넘은 integers 는 제한된 지원만 받을 수 있습니다. (예를 들어, string interpolation[^StringInterpolation] 을 쓸 수 없거나 persisted[^Persisted] 가 될 수 없습니다.)
 
-#### Float Literals
+#### 자료형이 Float 인 Literals
 
-Floating-point literals represent decimal numbers, they must include a
-decimal point and in some cases the `f64` suffix.
+소수점을 사용한 literals 는 십진법 숫자로 읽히므로, 올바른 소수점을 포함해야 합니다. 또, 경우에 따라서는 `f64`[^f64] 라는 접미사를 포함해야 합니다.
 
 <!--versetest-->
 <!-- 04 -->
 ```verse
 Pi := 3.14159
 Half := 0.5
-Explicit := 12.34f64    # Explicit bit-depth suffix
+Explicit := 12.34f64    # 명시적으로 bit 심도를 표현하는 접미사
 ```
 
 Scientific notation expresses very large or small numbers using exponents:
@@ -1400,5 +1399,6 @@ Colors := array:
 [^ArbitraryPrecisionArithmetic]: 임의 연산 방식. 저장 공간의 크기를 미리 32비트, 64비트 등으로 제한하지 않고, 필요한 만큼 늘려가며 계산하는 방식을 말합니다. int64 와 같은 자료형은 저장 공간이 64-bit 로 제한되어 있어서, 범위를 넘는 값을 표현하면 Overflow (값이 순환되거나 오류를 발생시키는 현상) 가 발생합니다. 임의 연산 방식을 사용할 경우, 범위가 제한되어 있지 않아 Overflow 발생을 예방할 수 있습니다.
 [^StringInterpolation]: 문자열 안에 값을 삽입하는 기능을 말합니다. Print("Found {Items.Quantity} Items !") 라는 코드에서, {Items.Quantity} 부분을 통해 값을 넣는 등을 예로 들 수 있습니다.
 [^Persisted]: 프로그램의 실행이 끝나거나 환경이 바뀌어도 계속 유지되도록 저장된 데이터를 말합니다.
+[^f64]: 숫자를 처리하는 방식 중 하나를 말합니다. 64bit 중 1bit 는 부호(sign) 표시에, 11bit 는 지수(exponent) 표시에, 나머지 52bit 는 분수로 표현되는 유효숫자(significand) 표시에 사용하는 방식입니다. 32bit 를 사용하는 f32 방식에 비해 소수점 이하 수를 정밀하게 표현할 수 있습니다. 단, 예시에서는 접미사로써 사용되는 것이므로, '앞선 값을 64비트 부동소수점 값으로 취급한다.' 는 의도를 명시적으로 표기하는 효과를 얻는데 그치고, 이 접미사를 적는다고 해서 12.34 라는 값의 소수점 셋째 자리 이하에 없던 값이 추가적으로 생성되는 것은 아닙니다.
 
 
