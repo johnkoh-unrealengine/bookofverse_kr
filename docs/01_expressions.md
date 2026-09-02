@@ -47,7 +47,7 @@ LowercaseHex := 0xabcdef
 UppercaseHex := 0xABCDEF
 ```
 
-**Literal 자료형에 대한 제한과 Runtime 에서의 작동 방식 :**
+**Literal 자료형에 대한 제한과 런타임 중의 작동 방식 :**
 
 Integer literals 는 64-bit 의 부호 있는 정수 값 범위(`-9223372036854775808` to `9223372036854775807`) 내에 있어야 합니다. 이는 코드에 직접 입력할 수 있는 값에 대한 제한으로, 컴파일 시점에 적용 됩니다.
 
