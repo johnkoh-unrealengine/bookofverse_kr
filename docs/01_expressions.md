@@ -65,18 +65,18 @@ Half := 0.5
 Explicit := 12.34f64    # 명시적으로 bit 심도를 표현하는 접미사
 ```
 
-Scientific notation expresses very large or small numbers using exponents:
+과학적 표기법은 지수를 이용해서 아주 크거나 아주 작은 수를 표현합니다 :
 
 <!--versetest-->
 <!-- 05 -->
 ```verse
-Large := 1.0e10         # 10,000,000,000 (sign optional)
+Large := 1.0e10         # 10,000,000,000 (양의 부호는 생략할 수 있습니다)
 Small := 1.0e-5         # 0.00001
-WithSign := 2.5e+3      # 2,500 (explicit + sign)
-Compact := 1.5e2        # 150 (no sign defaults to +)
+WithSign := 2.5e+3      # 2,500 (양의 부호를 명시적으로 적을 수도 있습니다)
+Compact := 1.5e2        # 150 (부호가 없으면 양의 부호로 간주됩니다)
 ```
 
-Float literals must include a decimal point (`1.0` is valid, but `1` is an integer). A final decimal point without digits is invalid (`1.` is a syntax error). All floats are 64-bit (IEEE 754 double precision); the `f64` suffix is optional. Unary operators work as with integers: `-1.0`, `+1.0`.
+Float literals 는 소수점이 꼭 포함되어야 합니다 (`1.0` 은 float literals 로서 유효하지만, `1` 은 integer 로 읽힙니다). 뒤에 숫자가 없이 소수점으로 끝나는 표현은 유효하지 않습니다 (`1.` 은 구문 오류 입니다). 모든 floats 자료형은 64-bit (IEEE 754[^IEEE754] double precision[^DoublePrecision]) 이고, `f64` 접미사는 생략할 수 있습니다. `-1.0`, `+1.0` 등과 같이, floats 에 대한 Unary operators[^UnaryOperators] 는 integers 에 대한 Unary operators 와 같은 방식으로 작동합니다.
 
 **Overflow and Underflow Behavior:**
 
@@ -1400,5 +1400,8 @@ Colors := array:
 [^StringInterpolation]: 문자열 안에 값을 삽입하는 기능을 말합니다. Print("Found {Items.Quantity} Items !") 라는 코드에서, {Items.Quantity} 부분을 통해 값을 넣는 등을 예로 들 수 있습니다.
 [^Persisted]: 프로그램의 실행이 끝나거나 환경이 바뀌어도 계속 유지되도록 저장된 데이터를 말합니다.
 [^f64]: 숫자를 처리하는 방식 중 하나를 말합니다. 64bit 중 1bit 는 부호(sign) 표시에, 11bit 는 지수(exponent) 표시에, 나머지 52bit 는 분수로 표현되는 유효숫자(significand) 표시에 사용하는 방식입니다. 32bit 를 사용하는 f32 방식에 비해 소수점 이하 수를 정밀하게 표현할 수 있습니다. 단, 예시에서는 접미사로써 사용되는 것이므로, '앞선 값을 64비트 부동소수점 값으로 취급한다.' 는 의도를 명시적으로 표기하는 효과를 얻는데 그치고, 이 접미사를 적는다고 해서 12.34 라는 값의 소수점 셋째 자리 이하에 없던 값이 추가적으로 생성되는 것은 아닙니다.
+[^IEEE754]: 미국 전기전자공학회인 IEEE (Institute of Electrical and Electronics Engineers)가 제정한 floats 산술 표준을 말합니다.
+[^DoublePrecision]: 배정밀도. floats 자료형이 얼마나 많은 유효 숫자를 정확하게 표현할 수 있는지 비교하기 위한 표현 중 하나입니다. 64bit 를 double precision(배정밀도), 32bit 를 single precision(단정밀도) 로 구분해 부릅니다.
+[^UnaryOperators]: 단항 연산자. 피연산자(operand)를 하나만 필요로 하는 연산자를 말합니다. 예시의 -1.0 에서 - 를, +1.0 에서 + 를 Unary Operators 라고 부릅니다. <> 이해를 위한 개념으로, Binary operator(이항 연산자)가 있습니다. Binary operator 는 피연산자를 두 개 필요로 합니다. 예를 들어, 1+2 라는 예시 식에서 + 는 1 과 2 라는 두 피연산자를 갖는 Binary operator 입니다.
 
 
