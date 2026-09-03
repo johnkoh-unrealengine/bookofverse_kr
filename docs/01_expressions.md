@@ -78,34 +78,39 @@ Compact := 1.5e2        # 150 (부호가 없으면 양의 부호로 간주됩니
 
 Float literals 는 소수점이 꼭 포함되어야 합니다 (`1.0` 은 float literals 로서 유효하지만, `1` 은 integer 로 읽힙니다). 뒤에 숫자가 없이 소수점으로 끝나는 표현은 유효하지 않습니다 (`1.` 은 구문 오류 입니다). 모든 floats 자료형은 64-bit (IEEE 754[^IEEE754] double precision[^DoublePrecision]) 이고, `f64` 접미사는 생략할 수 있습니다. `-1.0`, `+1.0` 등과 같이, floats 에 대한 Unary operators[^UnaryOperators] 는 integers 에 대한 Unary operators 와 같은 방식으로 작동합니다.
 
-**Overflow and Underflow Behavior:**
+**Overflow[^Overflow] 및 Underflow[^Underflow] 발생 시의 작동 방식 :**
 
-Float literals outside the IEEE 754 double-precision range produce
-**compile-time errors**:
+IEEE 754 double-precision 범위를 벗어난 float literals 는 **compile-time errors**[^CompileTimeErrors] 를 발생시킵니다 :
 
 <!--versetest-->
 <!-- 06 -->
 ```verse
-#TooBig := 1.7976931348623159e+308    # Compile error: literal overflow
-Maximum := 1.7976931348623158e+308    # OK: Maximum finite float
+#TooBig := 1.7976931348623159e+308    # 입력된 literal 이 overflow 를 유발하므로 Compile error 가 발생합니다
+Maximum := 1.7976931348623158e+308    # 유한 float 값 중 최대치이긴 하지만, 어쨌든 입력 가능합니다
 ```
 
-However, **runtime** float arithmetic follows standard IEEE 754 semantics:
+하지만, **runtime**[^Runtime] 중의 float 연산은 표준 IEEE 754 semantics[^Semantics] 를 따릅니다 :
 
 <!--versetest-->
 <!-- 666 -->
 ```verse
-# Runtime overflow produces infinity
+# runtime 중에 발생한 overflow 는 무한대로 처리됩니다
 Large := 1.0e308
-Overflow := Large * 10.0    # Overflow produces infinity
+Overflow := Large * 10.0    # Overflow 가 무한대로 처리됩니다
 
-# Division by zero produces infinity
+# 0으로 나눈 값은 무한대로 처리됩니다
 PosInf := 1.0 / 0.0
 NegInf := -1.0 / 0.0
 
-# Underflow produces denormalized numbers or zero
+# Underflow 는 denormalized numbers 또는 0 으로 처리됩니다
+<#>
+    Denormalized numbers(=Subnormal numbers):
+    비정규 수. 점진적으로 더 작은 수를 표현하다보면 어느 순간 Normal numbers(정규수) 로는 표현할 수 있는 범위를 넘어가게 되는데,
+    아주 작으면서도 동시에 0 보다는 큰 수이기 때문에, 단순히 0 으로 읽히지 않아야 하는 경우가 있습니다.
+    이런 숫자를 표현하기 위해서 0 근처에 특별히 마련된 float 영역을 만들어 두는데, 이를 Denormalized numbers 라고 말합니다.
+    
 Small := 1.0e-320
-Smaller := Small / 1.0e10   # Underflows gracefully
+Smaller := Small / 1.0e10   # Underflows 가 발생하더라도 적절하게 처리됩니다
 ```
 
 Float operations follow IEEE 754 semantics. Operations that would
@@ -1403,5 +1408,9 @@ Colors := array:
 [^IEEE754]: 미국 전기전자공학회인 IEEE (Institute of Electrical and Electronics Engineers)가 제정한 floats 산술 표준을 말합니다.
 [^DoublePrecision]: 배정밀도. floats 자료형이 얼마나 많은 유효 숫자를 정확하게 표현할 수 있는지 비교하기 위한 표현 중 하나입니다. 64bit 를 double precision(배정밀도), 32bit 를 single precision(단정밀도) 로 구분해 부릅니다.
 [^UnaryOperators]: 단항 연산자. 피연산자(operand)를 하나만 필요로 하는 연산자를 말합니다. 예시의 -1.0 에서 - 를, +1.0 에서 + 를 Unary Operators 라고 부릅니다. <> 이해를 위한 개념으로, Binary operator(이항 연산자)가 있습니다. Binary operator 는 피연산자를 두 개 필요로 합니다. 예를 들어, 1+2 라는 예시 식에서 + 는 1 과 2 라는 두 피연산자를 갖는 Binary operator 입니다.
-
+[^Overflow]: 입력된 값이 시스템의 처리 상한을 넘는 상태를 총칭 합니다. 현재 맥락에서는 Floats 자료형의 64-bit 에 담을 수 있는 최대값 이상의 값을 담은 경우에 발생하는 floats overflow 만을 의미합니다. 구분되어야 할 개념으로 Integer overflow, stack overflow, buffer overflow 가 있습니다.
+[^Underflow]: 입력된 값이 시스템의 처리 하한을 넘거나, 처리에 필요한 최소량에 미치지 못하는 상태를 총칭 합니다. 현재 맥락에서는 Floats 자료형의 64-bit 에 담을 수 있는 최소값 이하의 값을 담은 경우에 발생하는 floats underflow 만을 의미합니다. 구분되어야 할 개념으로 Integer underflow, stack underflow, buffer underflow 가 있습니다.
+[^CompileTimeErrors]: 컴파일 타임 에러. Compile 은 소스 코드를 실행 가능한 프로그램으로 전환하는 절차를 말하고, 이 절차 중에 발생하는 에러를 Compile-time errors 라고 합니다.
+[^Runtime]: 런타임. 프로그램이 실행중인 상태를 말합니다.
+[^Semantics]: 특정 코드나 연산이 실제로 어떤 의미를 가지며, 어떤 결과를 내야 하는지를 정의하는 규칙을 말합니다. 보통 '의미론' 이라고 번역됩니다.
 
