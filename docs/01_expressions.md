@@ -153,7 +153,7 @@ LetterA := 0x61         # 16진수 표기법 : 0xXX (10진수로는 97 이 'a' �
     
 ```
 
-자료형이 `char32`  literals 는 represent Unicode code points[^UnicodeCodePoints] 를 표현합니다 :
+자료형이 `char32` 인 literals 는 Unicode code points[^UnicodeCodePoints] 를 표현합니다 :
 
 <!--versetest-->
 <!-- 08 -->
