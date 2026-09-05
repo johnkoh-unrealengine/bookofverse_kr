@@ -113,32 +113,51 @@ Small := 1.0e-320
 Smaller := Small / 1.0e10   # Underflows 가 발생하더라도 적절하게 처리됩니다
 ```
 
-Float operations follow IEEE 754 semantics. Operations that would
-produce NaN (like `0.0 / 0.0`, `Inf - Inf`, or `Sqrt(-1.0)`) return
-NaN values rather than failing. NaN propagates through arithmetic
-operations.
+Float 연산은 IEEE 754 semantics 를 따릅니다. NaN(`0.0 / 0.0`, `Inf - Inf`, 또는 `Sqrt(-1.0)` 등) 을 생성하는 연산은 failing 처리되지 않고 NaN 값을 반환합니다. NaN 은 산술 연산을 통해 전파됩니다.
 
-#### Character Literals
+#### 자료형이 Character 인 Literals
 
-Character literals represent individual text units. Verse has two character types with different literal syntax:
+자료형이 Character 인 literals 는 낱개의 글자를 표현합니다. Verse 에는 literals 구문이 서로 다른 두 가지 character 유형이 있습니다 :
 
-`char` literals represent UTF-8 code units (single bytes, 0-255):
+자료형이 `char` 인 literals 는 UTF-8 코드 단위(단일 bytes, 0 에서 255 까지)를 표현합니다 :
 
 <!--versetest-->
 <!-- 07 -->
 ```verse
-LetterA := 'a'          # Printable ASCII character
+LetterA := 'a'          # 인쇄 가능한 ASCII character
+
+<#>
+    ASCII (American Standard Code for Information Interchange):
+    아스키. 컴퓨터에서 문자(character)를 숫자로 표현하기 위해 만든 문자 인코딩 표준입니다.
+
 Space := ' '
 Tab := '\t'             # Escape sequence
-LetterA := 0o61         # Hexadecimal notation: 0oXX (97 decimal = 'a')
+
+<#>
+    Escape sequence:
+    Strings 또는 Characters 자료형 안에서
+    '일반적인 문자 표기만으로 표현하기 어려운 문자'나
+    '특수한 의미를 가진 문자'를 표현하기 위해 사용하는 특별한 문자 조합을 말합니다.
+    예를 들어 줄바꿈을 \n 으로 표현하는 식입니다.
+    이때 \ 자체는 escape character 라고 하고, \n 를 escape sequence 라고 말합니다.
+
+LetterA := 0x61         # 16진수 표기법 : 0xXX (10진수로는 97 이 'a' 에 해당합니다)
+
+<#>
+    역자 주:
+    원문에는 LetterA := 0o61 라고 적혀있지만, 0o61 의 ASCII 값은 'a' 가 아닌 '1' 입니다.
+    0oXX 과 같이 0o 을 접두사로 갖는 형식은 8진수 표기법이기 때문입니다.
+    또한, 16진수 표기법은 0x 를 접두사로 갖는다는 특징이 있을 뿐, 뒷 자리가 두 자리로 고정되어 있지 않습니다.
+    예를 들어, 0x3131 은 한국어 완성형 인코딩 방식을 사용하면 한글 자음 'ㄱ' 을 나타냅니다.
+    
 ```
 
-`char32` literals represent Unicode code points:
+자료형이 `char32`  literals 는 represent Unicode code points[^UnicodeCodePoints] 를 표현합니다 :
 
 <!--versetest-->
 <!-- 08 -->
 ```verse
-Emoji := '😀'           # Non-ASCII automatically char32
+Emoji := '😀'           # 자료형이 character 인 literals 가 ASCII로 표현될 수 없는 것 경우, 자동으로 char32로 취급됩니다.
 Accented := 'é'
 ChineseChar := '好'
 HexUnicode := 0u1f600   # Hex notation: 0uXXXXX (😀)
@@ -1413,4 +1432,5 @@ Colors := array:
 [^CompileTimeErrors]: 컴파일 타임 에러. Compile 은 소스 코드를 실행 가능한 프로그램으로 전환하는 절차를 말하고, 이 절차 중에 발생하는 에러를 Compile-time errors 라고 합니다.
 [^Runtime]: 런타임. 프로그램이 실행중인 상태를 말합니다.
 [^Semantics]: 특정 코드나 연산이 실제로 어떤 의미를 가지며, 어떤 결과를 내야 하는지를 정의하는 규칙을 말합니다. 보통 '의미론' 이라고 번역됩니다.
+[^UnicodeCodePoints]: Unicode 표준에서 각 문자를 식별하기 위해 부여한 고유한 번호를 말합니다. 예를 들어, 문자 'a' 의 Unicode Code Points 는 U+0061 입니다. 
 
