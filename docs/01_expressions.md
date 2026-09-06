@@ -1444,7 +1444,7 @@ Colors := array:
 [^Overflow]: 입력된 값이 시스템의 처리 상한을 넘는 상태를 총칭 합니다. 현재 맥락에서는 Floats 자료형의 64-bit 에 담을 수 있는 최대값 이상의 값을 담은 경우에 발생하는 floats overflow 만을 의미합니다. 구분되어야 할 개념으로 Integer overflow, stack overflow, buffer overflow 가 있습니다.
 [^Underflow]: 입력된 값이 시스템의 처리 하한을 넘거나, 처리에 필요한 최소량에 미치지 못하는 상태를 총칭 합니다. 현재 맥락에서는 Floats 자료형의 64-bit 에 담을 수 있는 최소값 이하의 값을 담은 경우에 발생하는 floats underflow 만을 의미합니다. 구분되어야 할 개념으로 Integer underflow, stack underflow, buffer underflow 가 있습니다.
 [^CompileTimeErrors]: 컴파일 타임 에러. Compile 은 소스 코드를 실행 가능한 프로그램으로 전환하는 절차를 말하고, 이 절차 중에 발생하는 에러를 Compile-time errors 라고 합니다.
-[^Runtime]: 런타임. 프로그램이 실행중인 상태를 말합니다.
+[^Runtime]: 런타임. 이미 컴파일을 마친 상태의 프로그램이 실행중인 상태를 말합니다.
 [^Semantics]: 특정 코드나 연산이 실제로 어떤 의미를 가지며, 어떤 결과를 내야 하는지를 정의하는 규칙을 말합니다. 보통 '의미론' 이라고 번역됩니다.
 [^UnicodeCodePoints]: Unicode 표준에서 각 문자를 식별하기 위해 부여한 고유한 번호를 말합니다. 예를 들어, 문자 'a' 의 Unicode Code Points 는 U+0061 입니다.
 [^ImplicitConversion]: 암시적 형 변환. 개발자가 자료형 변환 코드를 직접 작성하지 않았어도 언어의 규칙에 따라 자동으로 형이 변환되는 것을 말합니다.
