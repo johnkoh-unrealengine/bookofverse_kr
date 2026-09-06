@@ -161,22 +161,26 @@ LetterA := 0x61         # 16진수 표기법 : 0xXX (10진수로는 97 이 'a' �
 Emoji := '😀'           # 자료형이 character 인 literals 가 ASCII로 표현될 수 없는 경우, 자동으로 char32로 취급됩니다.
 Accented := 'é'
 ChineseChar := '好'
-HexUnicode := 0u1f600   # Hex notation: 0uXXXXX (😀)
+HexUnicode := 0u1f600   # 16진수 표기법: 0uXXXXX (😀)
+
+<#>
+    일반적인 16진수 표기법은 0x 접두사를 씁니다.
+    0u 접두사는 Verse 가 Unicode code point literals 를 표현하기 위해 정의한 접두사 입니다.
 ```
 
-Type inference from literals:
+literals 로부터의 자료형 추론 :
 
-- ASCII characters (`U+0000` to `U+007F`): `'a'` has type `char`
-- Non-ASCII characters: `'😀'` has type `char32`
-- No implicit conversion between `char` and `char32`
+- ASCII 범위 내의 characters (`U+0000` 부터 `U+007F`): `'a'` 가 `char` 자료형으로 추론 됩니다.
+- ASCII 범위 외의 characters: `'😀'` 가 `char32` 자료형으로 추론 됩니다.
+- `char` 와 `char32` 는 상호간 implicit conversion[^ImplicitConversion] 되지 않습니다.
 
-Escape sequences work in both `char` and strings:
+Escape sequences 는 `char` 자료형과 strings 자료형에서 모두 작동합니다 :
 
 | Escape | Meaning | Codepoint |
 |--------|---------|-----------|
 | `\t`   | Tab     | U+0009 |
 | `\n`   | Newline | U+000A |
-| `\r`   | Carriage return | U+000D |
+| `\r`   | Carriage return (현재 글줄의 시작으로 이동) | U+000D |
 | `\"`   | Double quote | U+0022 |
 | `\'`   | Single quote | U+0027 |
 | `\\`   | Backslash | U+005C |
@@ -188,16 +192,16 @@ Escape sequences work in both `char` and strings:
 | `\#`   | Hash      | U+0023 |
 | `\~`   | Tilde     | U+007E |
 
-Numeric character notation works as follows:
+숫자 character 표기법은 다음과 같습니다 :
 
-- `0oXX` for `char` (hexadecimal notation, `0o00` to `0oFF` for values 0-255)
-- `0uXXXXXX` for `char32` (hexadecimal notation, `0u000000` to `0u10ffff`)
+- `char` 자료형에는 `0xXX` 를 씁니다. (16진수 표기법, 0 부터 255 를 표현하는 `0x00` 부터 `0xFF`)
+- `char32` 자료형에는 `0uXXXXXX` 를 씁니다. (16진수 표기법, `0u000000` 부터 `0u10ffff`)
 
-Character literals cannot be empty or contain multiple characters.
+Character literals 는 비어있을 수 없고, 하나의 Character literal 에 다수의 문자를 담을 수 없습니다.
 
-#### String Literals
+#### 자료형이 String 인 Literals
 
-String literals represent text sequences and support interpolation for embedding expressions. Basic strings use double quotes:
+자료형이 String 인 literals 는 연속된 문자를 표현하고, 사이에 expressions 를 끼워 넣을 수 있도록 interpolation 기능을 원합니다. 기본 strings 자료형은 쌍따옴표 사이에 표현합니다.
 
 <!--versetest-->
 <!-- 09 -->
@@ -207,7 +211,7 @@ Empty := ""
 WithEscapes := "Line 1\nLine 2\tTabbed"
 ```
 
-String interpolation embeds expressions using curly braces:
+String interpolation 은 중괄호를 이용해서 expressions 를 끼워 넣습니다.
 
 <!--versetest
 Format(D:float, ?Decimals:int):string=""
@@ -217,19 +221,28 @@ Format(D:float, ?Decimals:int):string=""
 Name := "Alice"
 Age := 30
 
-# Simple interpolation
-Message := "Hello, {Name}!"                      # "Hello, Alice!"
+# 단순한 interpolation
+Message := "Hello, {Name}!"                      # "Hello, Alice!" 라고 표현됩니다.
 
-# Expression interpolation
-Info := "Age next year: {Age + 1}"               # "Age next year: 31"
+# Expression 이 들어가는 interpolation
+Info := "Age next year: {Age + 1}"               # "Age next year: 31" 라고 표현됩니다.
 
-# Function calls
+# 함수를 호출하는 interpolation
 Score := 100
-Text := "Score: {ToString(Score)}"               # "Score: 100"
+Text := "Score: {ToString(Score)}"               # "Score: 100" 라고 표현됩니다.
 
-# Function calls with named arguments
+# Named arguments 를 사용한 함수를 호출하는 interpolation
 Distance := 5.5
 Formatted := "Distance: {Format(Distance, ?Decimals:=2)}"
+
+<#>
+    Named arguments (명명된 인수) :
+    위 예에서 Format 이라는 함수는 Format(Value, ?Decimals) 의 형식으로 정의되어 있습니다.
+    함수를 호출하는 경우, 매개변수의 순서에 따라 값을 넣으면 되므로, 보통은 Format(Distance, 2) 정도로 호출할 수 있습니다.
+    그런데 CreateCharacter(Name, Health, Speed, IsEnemy) 처럼 함수의 매개변수가 많아지면, 인수만 넣어서는 순서가 헷갈리는 경우가 있습니다.
+    이런 함수에 대해서, CreateCharacter("Goblin", ?Health:=100, ?Speed:=3.5, ?IsEnemy:=true) 와 같이
+    인수가 들어갈 매개변수를 명시적으로 함께 적어줄 수 있는데,
+    이렇게 입력된 인수를 Named arguments 라고 말합니다.
 ```
 
 Multi-line strings can span multiple lines using interpolation braces for continuation:
@@ -1433,5 +1446,6 @@ Colors := array:
 [^CompileTimeErrors]: 컴파일 타임 에러. Compile 은 소스 코드를 실행 가능한 프로그램으로 전환하는 절차를 말하고, 이 절차 중에 발생하는 에러를 Compile-time errors 라고 합니다.
 [^Runtime]: 런타임. 프로그램이 실행중인 상태를 말합니다.
 [^Semantics]: 특정 코드나 연산이 실제로 어떤 의미를 가지며, 어떤 결과를 내야 하는지를 정의하는 규칙을 말합니다. 보통 '의미론' 이라고 번역됩니다.
-[^UnicodeCodePoints]: Unicode 표준에서 각 문자를 식별하기 위해 부여한 고유한 번호를 말합니다. 예를 들어, 문자 'a' 의 Unicode Code Points 는 U+0061 입니다. 
+[^UnicodeCodePoints]: Unicode 표준에서 각 문자를 식별하기 위해 부여한 고유한 번호를 말합니다. 예를 들어, 문자 'a' 의 Unicode Code Points 는 U+0061 입니다.
+[^ImplicitConversion]: 암시적 형 변환. 개발자가 자료형 변환 코드를 직접 작성하지 않았어도 언어의 규칙에 따라 자동으로 형이 변환되는 것을 말합니다.
 
