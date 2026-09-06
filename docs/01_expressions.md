@@ -201,7 +201,7 @@ Character literals 는 비어있을 수 없고, 하나의 Character literal 에 
 
 #### 자료형이 String 인 Literals
 
-자료형이 String 인 literals 는 연속된 문자를 표현하고, 사이에 expressions 를 끼워 넣을 수 있도록 interpolation 기능을 원합니다. 기본 strings 자료형은 쌍따옴표 사이에 표현합니다.
+자료형이 String 인 literals 는 연속된 문자를 표현하고, 사이에 expressions 를 끼워 넣을 수 있도록 interpolation 기능을 지원합니다. 기본 strings 자료형은 쌍따옴표 사이에 표현합니다.
 
 <!--versetest-->
 <!-- 09 -->
