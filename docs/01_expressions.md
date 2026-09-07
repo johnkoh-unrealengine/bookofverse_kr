@@ -245,54 +245,54 @@ Formatted := "Distance: {Format(Distance, ?Decimals:=2)}"
     이렇게 입력된 인수를 Named arguments 라고 말합니다.
 ```
 
-Multi-line strings can span multiple lines using interpolation braces for continuation:
+여러 줄로 된 strings 는 중괄호를 사용하여 여러 줄에 걸쳐 이어 쓸 수 있습니다 :
 
 <!--versetest-->
 <!-- 11 -->
 ```verse
-LongMessage := "This is a multi-line {
-}string that continues across {
-}multiple lines."
-# Result: "This is a multi-line string that continues across multiple lines."
+LongMessage := "이 문장은 {
+}여러 줄에 걸쳐서 쓰인 {
+}multi-line string 입니다."
+# 결과 : "이 문장은 여러 줄에 걸쳐서 쓰인 multi-line string 입니다."
 
-OtherMessage := "Another message{
-}    with some empty{
-}    spaces."
-# Result := "Another message    with some empty    spaces."
+OtherMessage := "중간에{
+}    빈 공간이 있는{
+}    또 다른 문장."
+# Result := "중간에    빈 공간이 있는    또 다른 문장."
 ```
 
-The compiler ignores empty interpolants:
+컴파일러는 중괄호 사이의 빈 공간을 무시합니다 :
 
 <!--versetest-->
 <!-- 12 -->
 ```verse
-Text1 := "ab{}cd"        # Same as "abcd"
+Text1 := "ab{}cd"        # "abcd" 로 표시됩니다
 Text2 := "ab{
-}cd"                    # Same as "abcd" (newline ignored)
+}cd"                    # 이것도 "abcd" 로 표시됩니다 (즉, 새 코드 줄에 쓰인 것을 무시합니다)
 ```
 
-Curly braces must be escaped (`"\{ \}"`) to appear as literal characters in strings. The `string` type is an alias for `[]char` (array of UTF-8 code units). Since UTF-8 code units are single bytes, strings are byte sequences rather than Unicode character sequences. For example, `"José".Length` returns `5` (5 code units/bytes, not 4 characters, since é takes 2 code units).
+Strings 내부에 literal characters 를 써 넣으려면, 중괄호가 (`"\{ \}"`) 의 방식으로 escape 되어야 합니다. `string` 자료형은 `[]char` (UTF-8 코드 유닛들의 array 자료형으로서의 표현) 의 또 다른 이름입니다. UTF-8 코드 유닛들이 각각 1 byte 로 이뤄져 있기 때문에, strings 는 Unicode 글자의 연속이라기 보다는 byte 의 연속입니다. 예를 들어, `"José".Length` 는 `5` 를 반환합니다. (글자로서 읽힌다면 4 를 반환하겠지만, 코드 유닛/bytes 로서 읽히기 때문에 5를 반환하는 것입니다. é 가 2개의 코드 유닛을 차지하기 때문입니다)
 
-String-array equivalence:
+String 자료형과 array 자료형의 동등성 :
 
 <!--versetest-->
 <!-- 13 -->
 ```verse
-Test1 := logic{"abc" = array{'a', 'b', 'c'}}    # True
-Test2 := logic{"" = array{}}                    # True
+Test1 := logic{"abc" = array{'a', 'b', 'c'}}    # True. 좌변(String) 과 우변(Array) 값은 논리적으로 동등합니다
+Test2 := logic{"" = array{}}                    # True. 좌변(빈 String) 과 우변(빈 Array) 값은 논리적으로 동등합니다
 ```
 
-The compiler removes comments from strings:
+컴파일러는 Strings 에서 주석 부분을 무시합니다 :
 
 <!--versetest-->
 <!-- 14 -->
 ```verse
-Text1 := "abc<#comment#>def"     # Same as "abcdef"
+Text1 := "abc<#comment#>def"     # "abcdef" 로 표현됩니다.
 ```
 
-#### Boolean Literals
+#### 자료형이 Boolean 인 Literals
 
-The `logic` type has two literal values:
+`logic` 자료형은 두 종류의 literal 값(true 아니면 false)을 갖습니다 :
 
 <!--versetest-->
 <!-- 15 -->
@@ -301,7 +301,7 @@ IsReady := true
 IsComplete := false
 ```
 
-Use boolean values with the query operator `?` or in comparisons:
+Query operator[^QueryOperator] 인 `?` 또는 comparisons[^Comparisons] 에서 boolean 값을 사용합니다 :
 
 <!--versetest
 StartGame():void = {}
@@ -1448,4 +1448,6 @@ Colors := array:
 [^Semantics]: 특정 코드나 연산이 실제로 어떤 의미를 가지며, 어떤 결과를 내야 하는지를 정의하는 규칙을 말합니다. 보통 '의미론' 이라고 번역됩니다.
 [^UnicodeCodePoints]: Unicode 표준에서 각 문자를 식별하기 위해 부여한 고유한 번호를 말합니다. 예를 들어, 문자 'a' 의 Unicode Code Points 는 U+0061 입니다.
 [^ImplicitConversion]: 암시적 형 변환. 개발자가 자료형 변환 코드를 직접 작성하지 않았어도 언어의 규칙에 따라 자동으로 형이 변환되는 것을 말합니다.
+[^QueryOperator]: 쿼리 연산자. 데이터 집합(데이터 베이스, 배열, 리스트 등)에서 원하는 데이터를 찾고, 거르고, 정렬하고, 변환하기 위해 사용하는 기호나 함수를 말합니다.
+[^Comparisons]: 비교연산. 두 개 이상의 값을 서로 대조하여 그 관계가 참(True)인지 거짓(False)인지 판단하는 연산을 말합니다.
 
