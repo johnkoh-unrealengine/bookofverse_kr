@@ -48,11 +48,11 @@ markdown_extensions:
  - toc:
      permalink: true
      toc_depth: 3
- - pymdownx.highlight:
-     default_lang: verse
-     linenums: false
-     pygments_style: monokai
- - pymdownx.superfences
+# - pymdownx.highlight:
+#     default_lang: verse
+#     linenums: false
+#     pygments_style: monokai
+# - pymdownx.superfences
 
 plugins:
   - search:
