@@ -318,8 +318,7 @@ if (IsComplete = true):
     ShowResults()
 ```
 
-
-The `logic{}` expression creates boolean values from failable expressions (see [Failure](08_failure.md) for details on failable expressions):
+`logic{}` expressions 는 fail 될 수 있는 expressions 에서 boolean 값을 생성합니다 (fail 될 수 있는 expressions 에 대한 자세한 내용은 [Failure](08_failure.md) 를 확인하세요) :
 
 <!--versetest
 Operation()<computes><decides>:void = {}
@@ -330,40 +329,47 @@ Y:int = 1
 <!-- 17 -->
 ```verse
 # Converts <decides> expression to logic value
-Success := logic{Operation[]}        # True if succeeds, false if fails
-HasValue := logic{Optional?}         # True if optional has value
-IsEqual := logic{X = Y}              # True if equal, false otherwise
+Success := logic{Operation[]}        # 성공하면 true 를, 실패하면 false 를 생성합니다.
+HasValue := logic{Optional?}         # Optional 자료형이 값을 가지고 있으면 true 를 생성합니다.
+IsEqual := logic{X = Y}              # 동등하면 true 를, 그렇지 않으면 false 를 생성합니다.
 ```
 
-The `logic{}` expression requires at least a superficial possibility of failure. Pure expressions without `<decides>` effect cause errors:
+`logic{}` expression 는 최소한 하나의 형식상 실패 가능성이 있어야 합니다. `<decides>` effect 없는 pure expressions 는 오류를 유발합니다 :
 
 <!--versetest-->
 <!-- 18 -->
 ```verse
-# ERROR: logic{0} has no decides effect
-# ERROR: logic{} is empty
-Valid := logic{false?}               # OK: false? can fail
+# logic{0} 와 같은 표현은 decides effect 가 없어서 오류를 유발합니다
+# logic{}  와 같은 표현은 비어있어서 오류를 유발합니다
+Valid := logic{false?}               # 사용 가능합니다. false? 에 실패 가능성이 있기 때문입니다
 ```
 
-Multiple expressions inside `logic{}` can be separated by semicolons or commas (see [Semicolons vs Commas](#semicolons-vs-commas) for details):
+`logic{}` 내부에 입력되는 복수의 expressions 는 세미콜론(;)이나 콤마(,)로 구분됩니다 (자세한 내용은 [Semicolons vs Commas](#semicolons-vs-commas) 를 확인하세요) :
 
 <!--versetest-->
 <!-- 19 -->
 ```verse
-Result1 := logic{true?; true?}       # Semicolon separator
-Result2 := logic{true?, true?}       # Comma separator
+Result1 := logic{true?; true?}       # 세미콜론으로 구분된 예시
+Result2 := logic{true?, true?}       # 콤마로 구분된 예시
 ```
 
-#### Path Literals
+#### 경로 Literals
 
+경로 literals 는 계층적 명명 체계를 통해 modules[^Modules] 과 packages[^Packages] 를 식별합니다 :
 Path literals identify modules and packages using a hierarchical naming scheme:
 
 <!--NoCompile-->
 <!-- 21 -->
 ```verse
-/Verse.org/Verse                    # Standard library path
-/YourGame/Player/Inventory          # Custom module path
-/user@example.com/MyModule          # Personal namespace
+/Verse.org/Verse                    # 표준 라이브러리 경로
+/YourGame/Player/Inventory          # 커스텀 module 경로
+/user@example.com/MyModule          # 개인용 namespace
+
+<#>
+    namespace (이름 공간) :
+    변수, 함수, 클래스 등의 이름이 중복되는 것을 막고,
+    코드를 논리적으로 그룹화하기 위해 사용하는 이름의 범위(영역)를 말합니다.
+    같은 이름의 에셋도 다른 namespace 에 위치하면 중복 처리 되지 않습니다.
 ```
 
 Path syntax follows specific rules:
@@ -1450,4 +1456,7 @@ Colors := array:
 [^ImplicitConversion]: 암시적 형 변환. 개발자가 자료형 변환 코드를 직접 작성하지 않았어도 언어의 규칙에 따라 자동으로 형이 변환되는 것을 말합니다.
 [^QueryOperator]: 쿼리 연산자. 데이터 집합(데이터 베이스, 배열, 리스트 등)에서 원하는 데이터를 찾고, 거르고, 정렬하고, 변환하기 위해 사용하는 기호나 함수를 말합니다.
 [^Comparisons]: 비교연산. 두 개 이상의 값을 서로 대조하여 그 관계가 참(True)인지 거짓(False)인지 판단하는 연산을 말합니다.
+[^Modules]: 모듈. 특정 기능들을 수행하는 소스 코드(변수, 함수, 클래스 등)를 모아놓은 하나의 파일을 말합니다.
+[^Packages]: 패키지. 여러 모듈을 모아둔 폴더(디렉터리)입니다. 
+
 
