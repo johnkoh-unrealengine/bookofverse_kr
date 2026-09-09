@@ -356,7 +356,6 @@ Result2 := logic{true?, true?}       # 콤마로 구분된 예시
 #### 경로 Literals
 
 경로 literals 는 계층적 명명 체계를 통해 modules[^Modules] 과 packages[^Packages] 를 식별합니다 :
-Path literals identify modules and packages using a hierarchical naming scheme:
 
 <!--NoCompile-->
 <!-- 21 -->
@@ -372,46 +371,42 @@ Path literals identify modules and packages using a hierarchical naming scheme:
     같은 이름의 에셋도 다른 namespace 에 위치하면 중복 처리 되지 않습니다.
 ```
 
-Path syntax follows specific rules:
+경로 구문은 특정한 규칙을 따릅니다 :
 
-- Starts with `/`
-- Contains label (alphanumeric, `.`, `-`)
-- Identifiers must start with letter or `_`
+- `/` 로 시작합니다
+- Alphanumeric[^Alphanumeric], `.`, `-` 과 같은 레이블을 포함합니다
+- Path segnemts[^PathSegments] 는 반드시 글자 또는 `_` 로 시작해야 합니다
 
-The Modules chapter covers path literals in detail.
+Modules 챕터에서 경로 literals 에 대해 더 자세하게 다룹니다.
 
-### Identifiers and References
+### Identifiers[^Identifiers] 와 참조
 
-Identifiers serve as references to values, whether they are constants,
-variables, functions, or types. An identifier consists of:
+주어진 값이 constants 이든, variables 이든, functions 이든, 자료형이든, Identifiers 는 그 값을 참조하기 위해 사용됩니다. 하나의 identifier 는 다음 요소로 구성되어 있습니다 :
 
-- **First character:** Letter (A-Z, a-z) or underscore (`_`)
-- **Subsequent characters:** Letters, digits (0-9), or underscores
-- **Reserved:** Single underscore `_` cannot be used as an identifier
+- **첫번째 글자:** 글자 (A-Z, a-z) or 밑줄 (`_`)
+- **이어지는 글자들:** 글자들, 숫자들 (0-9), 또는 밑줄
+- **사용 제한:** 밑줄 한 개 (`_`) 만 입력한 값은 identifier 로써 사용될 수 없습니다
 
-Identifiers are case-sensitive and use only ASCII characters—Unicode
-characters are not supported in identifiers.
+Identifiers 는 대소문자를 구분하며, ASCII 문자만 사용할 수 있습니다. 즉, Unicode 문자는 identifiers 로 사용할 수 없습니다.
 
 <!--NoCompile-->
 <!-- 22 -->
 ```verse
-int               # Reference to the int type
-GetValue          # Reference to a function
-Counter           # Reference to a variable
-my_class          # Reference to a class
-_private          # Leading underscore allowed
-variable123       # Digits allowed after first character
+int               # int 자료형을 참조하는 identifier
+GetValue          # Function 을 참조하는 identifier
+Counter           # Variable 을 참조하는 identifier
+my_class          # Class 를 참조하는 identifier
+_private          # 맨 앞이 밑줄인 identifier 는 허용됩니다
+variable123       # 맨 앞을 제외한 곳에 숫자를 사용한 identifier 도 허용됩니다
 
-# Invalid identifiers:
-# 123invalid      # Cannot start with digit
-# my-variable     # Hyphen not allowed
-# café            # Unicode not supported
-# _               # Single underscore is reserved
+# 허용되지 않는 identifiers:
+# 123invalid      # 숫자부터 시작할 수는 없습니다
+# my-variable     # Hyphen (-) 은 쓸 수 없습니다
+# café            # Unicode 문자 (여기서는 é)는 사용할 수 없습니다
+# _               # 밑줄 하나 만으로는 identifier 로 사용할 수 없습니다
 ```
 
-The language does not syntactically distinguish between different kinds
-of identifiers (types, functions, variables)—the context determines how
-each identifier is used.
+Verse 에서는 구문 그 자체만으로는 서로 다른 종류의 identifier (자료형, functions, variables 등) 들이 구분되지 않습니다. 각 identifier 가 어떻게 사용될지는 문맥에 따라서 결정됩니다.
 
 ### Parentheses and Grouping
 
@@ -1457,6 +1452,9 @@ Colors := array:
 [^QueryOperator]: 쿼리 연산자. 데이터 집합(데이터 베이스, 배열, 리스트 등)에서 원하는 데이터를 찾고, 거르고, 정렬하고, 변환하기 위해 사용하는 기호나 함수를 말합니다.
 [^Comparisons]: 비교연산. 두 개 이상의 값을 서로 대조하여 그 관계가 참(True)인지 거짓(False)인지 판단하는 연산을 말합니다.
 [^Modules]: 모듈. 특정 기능들을 수행하는 소스 코드(변수, 함수, 클래스 등)를 모아놓은 하나의 파일을 말합니다.
-[^Packages]: 패키지. 여러 모듈을 모아둔 폴더(디렉터리)입니다. 
+[^Packages]: 패키지. 여러 모듈을 모아둔 폴더(디렉터리)입니다.
+[^Alphanumeric]: 영숫자. 영어의 알파벳과 0~9 의 숫자로 이뤄진 구성을 말합니다.
+[^PathSegments]: 경로 분절. 예를 들어 경로가 /Fortnite.com/Characters/PlayerController 인 경우, 'Fortnite.com', 'Characters', 'PlayerController' 각각을 하나의 path segment 라고 말합니다. 원문에는 Path segments 가 아닌 'Identifiers' 라고 표현되어 있는데, 맥락상의 명확성을 감안하여 Path segments 로 수정했습니다.
+[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다. ↩
 
 
