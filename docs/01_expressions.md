@@ -158,7 +158,7 @@ LetterA := 0x61         # 16진수 표기법 : 0xXX (10진수로는 97 이 'a' �
 <!--versetest-->
 <!-- 08 -->
 ```verse
-Emoji := '😀'           # 자료형이 character 인 literals 가 ASCII로 표현될 수 없는 경우, 자동으로 char32로 취급됩니다.
+Emoji := '😀'           # 자료형이 character 인 literals 가 ASCII로 표현될 수 없는 경우, 자동으로 char32로 취급됩니다
 Accented := 'é'
 ChineseChar := '好'
 HexUnicode := 0u1f600   # 16진수 표기법: 0uXXXXX (😀)
@@ -222,14 +222,14 @@ Name := "Alice"
 Age := 30
 
 # 단순한 interpolation
-Message := "Hello, {Name}!"                      # "Hello, Alice!" 라고 표현됩니다.
+Message := "Hello, {Name}!"                      # "Hello, Alice!" 라고 표현됩니다
 
 # Expression 이 들어가는 interpolation
-Info := "Age next year: {Age + 1}"               # "Age next year: 31" 라고 표현됩니다.
+Info := "Age next year: {Age + 1}"               # "Age next year: 31" 라고 표현됩니다
 
 # 함수를 호출하는 interpolation
 Score := 100
-Text := "Score: {ToString(Score)}"               # "Score: 100" 라고 표현됩니다.
+Text := "Score: {ToString(Score)}"               # "Score: 100" 라고 표현됩니다
 
 # Named arguments 를 사용한 함수를 호출하는 interpolation
 Distance := 5.5
@@ -266,9 +266,9 @@ OtherMessage := "중간에{
 <!--versetest-->
 <!-- 12 -->
 ```verse
-Text1 := "ab{}cd"      # "abcd" 로 표시됩니다
+Text1 := "ab{}cd"      # "abcd" 로 표현됩니다
 Text2 := "ab{
-}cd"                   # "abcd" 로 표시됩니다 (즉, 새 코드 줄에 쓰인 것을 무시합니다)
+}cd"                   # "abcd" 로 표현됩니다 (즉, 새 코드 줄에 쓰인 것을 무시합니다)
 ```
 
 Strings 내부에 literal characters 를 써 넣으려면, 중괄호가 (`"\{ \}"`) 의 방식으로 escape 되어야 합니다. `string` 자료형은 `[]char` (UTF-8 코드 유닛들의 array 자료형으로서의 표현) 의 또 다른 이름입니다. UTF-8 코드 유닛들이 각각 1 byte 로 이뤄져 있기 때문에, strings 는 Unicode 글자의 연속이라기 보다는 byte 의 연속입니다. 예를 들어, `"José".Length` 는 `5` 를 반환합니다. (글자로서 읽힌다면 4 를 반환하겠지만, 코드 유닛/bytes 로서 읽히므로 5를 반환하는 것입니다. é 가 2개의 코드 유닛을 차지하기 때문입니다)
@@ -287,7 +287,7 @@ Test2 := logic{"" = array{}}                    # True. 좌변(빈 String) 과 �
 <!--versetest-->
 <!-- 14 -->
 ```verse
-Text1 := "abc<#comment#>def"     # "abcdef" 로 표현됩니다.
+Text1 := "abc<#comment#>def"     # "abcdef" 로 표현됩니다
 ```
 
 #### 자료형이 Boolean 인 Literals
@@ -329,9 +329,9 @@ Y:int = 1
 <!-- 17 -->
 ```verse
 # Converts <decides> expression to logic value
-Success := logic{Operation[]}        # 성공하면 true 를, 실패하면 false 를 생성합니다.
-HasValue := logic{Optional?}         # Optional 자료형이 값을 가지고 있으면 true 를 생성합니다.
-IsEqual := logic{X = Y}              # 동등하면 true 를, 그렇지 않으면 false 를 생성합니다.
+Success := logic{Operation[]}        # 성공하면 true 를, 실패하면 false 를 생성합니다
+HasValue := logic{Optional?}         # Optional 자료형이 값을 가지고 있으면 true 를 생성합니다
+IsEqual := logic{X = Y}              # 동등하면 true 를, 그렇지 않으면 false 를 생성합니다
 ```
 
 `logic{}` expression 는 최소한 하나의 형식상 실패 가능성이 있어야 합니다. `<decides>` effect 없는 pure expressions 는 오류를 유발합니다 :
@@ -375,7 +375,7 @@ Result2 := logic{true?, true?}       # 콤마로 구분된 예시
 
 - `/` 로 시작합니다
 - Alphanumeric[^Alphanumeric], `.`, `-` 과 같은 레이블을 포함합니다
-- Path segnemts[^PathSegments] 는 반드시 글자 또는 `_` 로 시작해야 합니다
+- Path segments[^PathSegments] 는 반드시 글자 또는 `_` 로 시작해야 합니다
 
 Modules 챕터에서 경로 literals 에 대해 더 자세하게 다룹니다.
 
