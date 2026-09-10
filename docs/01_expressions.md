@@ -408,12 +408,9 @@ variable123       # 맨 앞을 제외한 곳에 숫자를 사용한 identifier �
 
 Verse 에서는 구문 그 자체만으로는 서로 다른 종류의 identifier (자료형, functions, variables 등) 들이 구분되지 않습니다. 각 identifier 가 어떻게 사용될지는 문맥에 따라서 결정됩니다.
 
-### Parentheses and Grouping
+### 괄호와 그룹 만들기
 
-Parentheses serve dual purposes: they group expressions to control
-evaluation order, and they create tuple expressions. A parenthesized
-expression simply evaluates to the value of its contents, allowing you
-to override the default operator precedence or improve readability:
+괄호는 두 가지 역할을 합니다 : 하나는 evaluation[^Evaluation] 순서를 관리할 수 있도록 expression 들을 그룹으로 만드는 것이고, 다른 하나는 tuple[^Tuple] expressions 를 만드는 것입니다. 괄호로 묶인 expression 은 단순히 그 내용물로써 evaluate 되기 때문에, 기본 operator 의 연산 우선순위가 재정의 됩니다. 그리고 가독성도 좋아집니다 :
 
 <!--versetest
 A:int = 1
@@ -426,7 +423,7 @@ Negative:string = "negative"
 -->
 <!-- 23 -->
 ```verse
-(A + B) * C       # Group addition before multiplication
+(A + B) * C       # 곱셈에 앞서 덧셈 부분을 그룹으로 만들었습니다
 if (X > 0 and Y > 0) then Positive else Negative
 ```
 
@@ -1455,6 +1452,8 @@ Colors := array:
 [^Packages]: 패키지. 여러 모듈을 모아둔 폴더(디렉터리)입니다.
 [^Alphanumeric]: 영숫자. 영어의 알파벳과 0~9 의 숫자로 이뤄진 구성을 말합니다.
 [^PathSegments]: 경로 분절. 예를 들어 경로가 /Fortnite.com/Characters/PlayerController 인 경우, 'Fortnite.com', 'Characters', 'PlayerController' 각각을 하나의 path segment 라고 말합니다. 원문에는 Path segments 가 아닌 'Identifiers' 라고 표현되어 있는데, 맥락상의 명확성을 감안하여 Path segments 로 수정했습니다.
-[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다. ↩
+[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
+[^Evaluation]: 평가. expression 을 실제로 계산하여 그 결과값(value)을 얻는 것을 말합니다.
+[^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.↩
 
 
