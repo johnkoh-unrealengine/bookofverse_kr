@@ -429,10 +429,7 @@ if (X > 0 and Y > 0) then Positive else Negative
 
 ### Tuples
 
-Tuples provide a way to group two or more values with little
-ceremony. The syntax distinguishes between parentheses used for
-grouping and those used for tuple construction through the presence of
-commas:
+Tuples 는 간단하게 둘 이상의 값을 묶는 방법을 제공합니다. 구문은 쉼표(,)의 유무로 Tuples 구성에 사용되는 괄호와 그룹화(바로 위에 기재된 내용인 evaluation 순서 관리용 그룹)에 사용되는 괄호를 구분합니다 : 
 
 <!--versetest
 X:int = 5
@@ -440,21 +437,21 @@ Y:int = 10
 -->
 <!-- 24 -->
 ```verse
-(X, Y)            # Two-element tuple
-(1, "hello", true) # Mixed-type tuple
+(X, Y)              # 성분이 두 개인 tuple
+(1, "hello", true)  # 여러 자료형이 섞인 tuple
 ```
 
-Tuples can be accessed using function-call syntax with a single integer argument:
+Tuples 는 단일 integer 자료형 인수를 사용하는 function-call 구문을 통해 접근할 수 있습니다 :
 
 <!--versetest-->
 <!-- 25 -->
 ```verse
 point := (10, 20)
-x := point(0)     # Access first element
-y := point(1)     # Access second element
+x := point(0)     # 첫번째 element (10) 에 접근합니다
+y := point(1)     # 두번째 element (20) 에 접근합니다
 ```
 
-Write tuple types as follows:
+Tuple 자료형은 아래처럼 쓰시면 됩니다 :
 
 <!--versetest
 GetPoint():tuple(int,int) = (10, 20)
@@ -468,14 +465,12 @@ tuple(int,string,logic)
 ```
 <!-- #> -->
 
-While the compiler accepts single-element tuple types like `tuple(int)`,
-there is currently no syntax to construct a single-element tuple value.
+Compiler 는 `tuple(int)` 와 같이 element 가 한 개인 tuple 자료형을 허용하지만, 현재로서는 element 가 한 개인 tuple 값을 construct[^Construct] 할 구문이 제공되지 않습니다. - 역자 주 : 예를 들어, tuple(int) 과 같이 element 가 한 개인 tuple 은 construct 하려면 (120) 과 같이 표기해야 하는데, 이와 같은 표기는 단순히 int 값으로 읽히는데 그치고, tuple(int) 를 construct 하는 구문으로서 읽히지 않는다는 것입니다.
 
-## Postfix Operations
 
-Postfix operations are operations that follow their operand and can be
-chained together. This creates a left-to-right reading order that
-feels natural and allows for intuitive composition.
+## Postfix 연산
+
+Postfix 연산은 operand[^Operand] 뒤에 따라오는 연산으로, 연쇄적으로 사용할 수 있습니다. 이를 통해 자연스럽게 왼쪽에서 오른쪽으로 읽는 순서가 만들어지므로, 직관적으로 작업할 수 있게 됩니다.
 
 ### Member Access
 
@@ -1455,5 +1450,5 @@ Colors := array:
 [^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
 [^Evaluation]: 평가. expression 을 실제로 계산하여 그 결과값(value)을 얻는 것을 말합니다.
 [^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.↩
-
-
+[^Construct]: 생성. 설정된 특정 타입에 해당하는 실제 값이나 객체를 만들어내는 것을 말합니다.
+[^Operand]: 피연산자. Operator(연산자) 가 연산을 수행하는 대상이 되는 값이나 표현식을 말합니다.
