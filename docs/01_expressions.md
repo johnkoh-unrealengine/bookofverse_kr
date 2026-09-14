@@ -491,7 +491,7 @@ Point.X                 # struct field 에 접근
     위의 예시에서는 Health, MaxPlayers, X 가 field 입니다.
 ```
 
-Member 에의 접근은 연쇄적으로 이뤄질 수 있고, 그에 따라 하위 구조를 통하는 경로를 만들 수 있습니다 :
+Member 에의 접근은 연쇄적으로 이뤄질 수 있고, 그에 따라 하위 구조 통과 경로를 만들 수 있습니다 :
 
 <!--versetest
 item := class{Name:string = "Sword"}
