@@ -443,7 +443,7 @@ inventory_system := class:
         # 모든 과정에 성공한 경우 - 변경사항이 커밋 됩니다
         Print("Purchased {ShopItem.Name} for {Price} gold")
 
-    # 자료형 파라미터와 자료형 제약 구문을 사용하는 고차 함수
+    # 자료형 파라미터와 자료형 제약 구문을 사용하는 중첩 함수
     FilterItems(Predicate:type{_(:game_item)<computes><decides>:void})<reads><decides>:[]game_item =
         for (Item : Items, Predicate[Item]):
             Item
