@@ -472,22 +472,26 @@ Compiler 는 `tuple(int)` 와 같이 element 가 한 개인 tuple 자료형을 �
 
 Postfix 연산은 operand[^Operand] 뒤에 따라오는 연산으로, 연쇄적으로 사용할 수 있습니다. 이를 통해 자연스럽게 왼쪽에서 오른쪽으로 읽는 순서가 만들어지므로, 직관적으로 작업할 수 있게 됩니다.
 
-### Member Access
+### Member[^Member] 에의 접근
 
-The dot operator provides access to members of objects, modules, and
-other structured values. Member access expressions evaluate to the
-value of the specified member:
+점 operator `.` 는 objects, modules 또는 struct[^Struct] 의 members 에 접근할 수 있게 해줍니다. Member 에 접근하는 expressions 는 그 지정된 member 가 실제로 갖는 값으로 evaluate 됩니다 :
 
 <!--NoCompile-->
 <!-- 27 -->
 ```verse
-Player.Health           # Access field
-Config.MaxPlayers       # Access nested value
-math.Sqrt(16.0)         # Access module function
-Point.X                 # Access struct field
+Player.Health           # field 에 접근
+Config.MaxPlayers       # 하위 값에 접근
+math.Sqrt(16.0)         # module 의 function 에 접근
+Point.X                 # struct field 에 접근
+
+<#>
+    Field (필드) :
+    객체나 구조체가 가지고 있는 member 들 중 '값을 저장하는' member 들을 말합니다.
+    이와 달리, function 이나 method 는 '동작을 수행하는' member 이므로, 이들을 Field 라고 할 수는 없습니다.
+    위의 예시에서는 Health, MaxPlayers, X 가 field 입니다.
 ```
 
-Member access can be chained, creating paths through nested structures:
+Member 에의 접근은 연쇄적으로 이뤄질 수 있고, 그에 따라 하위 구조를 통하는 경로를 만들 수 있습니다 :
 
 <!--versetest
 item := class{Name:string = "Sword"}
@@ -1452,3 +1456,5 @@ Colors := array:
 [^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.↩
 [^Construct]: 생성. 설정된 특정 타입에 해당하는 실제 값이나 객체를 만들어내는 것을 말합니다.
 [^Operand]: 피연산자. Operator(연산자) 가 연산을 수행하는 대상이 되는 값이나 표현식을 말합니다.
+[^Member]: 멤버. 어떤 Structure, Object 또는 자료형에 소속된 구성 요소를 말합니다.
+[^Struct]: 구조체. 서로 다른 여러 자료형의 데이터를 하나로 묶은 사용자 지정 자료형 입니다. 예를 들어, 자료형이 float 인 AmountOfDamage, 자료형이 Emumeration 인 DamageType, 자료형이 Boolean 인 CanBeBlocked 라는 구성 요소들을 모아 DamageInfo 라는 이름의 struct 로 만들 수 있습니다.
