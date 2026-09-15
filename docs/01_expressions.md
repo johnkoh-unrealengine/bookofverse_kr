@@ -509,11 +509,9 @@ Game.Players[0].Inventory.Items[0].Name
 ```
 <!-- #> -->
 
-### Computed Access
+### Computed Access[^ComputedAccess]
 
-Square brackets provide computed access to elements, whether for
-arrays, maps, or other indexable structures. Verse evaluates the expression within
-brackets to determine which element to access:
+대괄호를 이용하면 arrays, maps[^Maps], 기타 indexable 구조의 구성요소에 Computed Access 할 수 있습니다. Verse 는 어떤 구성요소에 접근할지 판단하기 위해 대괄호 안의 expression 을 evaluate 합니다 :
 
 <!--versetest
 ComputeIndex():int = 0
@@ -534,29 +532,44 @@ M()<decides>:void =
 ```verse
 Array[0]                # Array indexing
 Map["key"]              # Map lookup
-Matrix[Row][Col]        # Nested indexing
-Data[ComputeIndex()]    # Dynamic index computation
+Matrix[Row][Col]        # Nested indexing - 먼저 [Row] 에 접근한 뒤 [Col] 에 접근합니다
+Data[ComputeIndex()]    # 동적 index 연산 - 먼저 내부의 ComputeIndex() 를 연산한 뒤 접근합니다
+
+<#>
+    Indexing 과 LookUp 의 차이
+    - Indexing : 이미 지정되어 있는 0, 1, 2 등의 순서를 기반으로 검색합니다.
+    - LookUp : 사용자가 지정한 key 들을 기반으로 검색합니다.
+
 ```
 <!-- #> -->
 
-The square bracket syntax `Func[]` is **required** for calling
-functions that may fail (those with the `<decides>` effect). Use regular
-parentheses `Func()` for functions that always succeed. Array
-indexing also uses `[]` because it can fail when the index is out of bounds.
+대괄호 구문 `Func[]` 는 fail 될 수 있는 functions(`<decides>` 효과가 있는 functions)를 호출할 때 **필수** 입니다. 항상 성공하는 functions 에는 반드시 괄호 구문 `Func()` 를 사용하셔야 합니다. Array indexing 도 index 가 범위를 벗어나면 fail 될 수 있기 때문에 `[]` 를 사용하셔야 합니다.
 
 ```verse
+<!--
 GetValue()<decides>:int = ...
 GetData():int = ...
 
-# Must use [] for functions that may fail
+# fail 될 수 있는 functions 에는 반드시 [] 를 쓰셔야 합니다
 if (X := GetValue[]):
     Print("Got: {X}")
 
-# Must use () for functions that always succeed
+# 항상 성공하는 functions 에는 반드시 () 를 쓰셔야 합니다
 Y := GetData()
 
-# ERROR: Cannot use () for failable functions
-# Z := GetValue()  # Compile error!
+# fail 될 수 있는 functions 에는 () 를 쓸 수 없으므로, 아래의 예는 에러가 납니다
+# Z := GetValue()  # Compile 에러 발생!
+--!>
+
+GetValue()<transacts><decides>:int = 42
+GetData():int = 7
+
+# GetValue 가 fail 될 수 있기 때문에 [] 가 쓰여야 합니다
+if (X := GetValue[]):
+    Print("Got: {X}")
+
+# GetData 가 항상 성공하므로, () 가 쓰여야 합니다
+Y := GetData()
 ```
 
 ### Function Calls
@@ -1458,3 +1471,5 @@ Colors := array:
 [^Operand]: 피연산자. Operator(연산자) 가 연산을 수행하는 대상이 되는 값이나 표현식을 말합니다.
 [^Member]: 멤버. 어떤 Structure, Object 또는 자료형에 소속된 구성 요소를 말합니다.
 [^Struct]: 구조체. 서로 다른 여러 자료형의 데이터를 하나로 묶은 사용자 지정 자료형 입니다. 예를 들어, 자료형이 float 인 AmountOfDamage, 자료형이 Emumeration 인 DamageType, 자료형이 Boolean 인 CanBeBlocked 라는 구성 요소들을 모아 DamageInfo 라는 이름의 struct 로 만들 수 있습니다.
+[^ComputedAccess]: 접근할 대상이 고정된 Member 가 아니고, 어떤 표현식의 평가 결과일 때, 그에 대한 접근을 Computed Accecss 라고 말합니다. 이와 달리, 고정된 Member 에의 접근은 Direct Access 라고 말합니다.
+[^Maps]: Key 와 Value 를 1:1 로 매칭시킨 목록을 갖는 자료형을 말합니다.
