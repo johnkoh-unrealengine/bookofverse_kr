@@ -559,8 +559,7 @@ Y := GetData()
 
 # fail 될 수 있는 functions 에는 () 를 쓸 수 없으므로, 아래의 예는 에러가 납니다
 # Z := GetValue()  # Compile 에러 발생!
---!>
-
+-->
 GetValue()<transacts><decides>:int = 42
 GetData():int = 7
 
