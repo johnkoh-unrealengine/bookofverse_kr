@@ -545,7 +545,6 @@ Data[ComputeIndex()]    # 동적 index 연산 - 먼저 내부의 ComputeIndex() 
 
 대괄호 구문 `Func[]` 는 fail 될 수 있는 functions(`<decides>` 효과가 있는 functions)를 호출할 때 **필수** 입니다. 항상 성공하는 functions 에는 반드시 괄호 구문 `Func()` 를 사용하셔야 합니다. Array indexing 도 index 가 범위를 벗어나면 fail 될 수 있기 때문에 `[]` 를 사용하셔야 합니다.
 
-```verse
 <!--
 GetValue()<decides>:int = ...
 GetData():int = ...
@@ -560,6 +559,7 @@ Y := GetData()
 # fail 될 수 있는 functions 에는 () 를 쓸 수 없으므로, 아래의 예는 에러가 납니다
 # Z := GetValue()  # Compile 에러 발생!
 -->
+```verse
 GetValue()<transacts><decides>:int = 42
 GetData():int = 7
 
