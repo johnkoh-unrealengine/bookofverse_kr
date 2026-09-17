@@ -638,6 +638,7 @@ Game := game_state{
     },
     Settings := config{Difficulty:="hard"}
 }
+Game.Player.Inventory.Capacity = 20
 ```
 
 ## Expressions 으로서의 Control Flow[^ControlFlow]
@@ -657,7 +658,8 @@ Condition:logic = true
 <!-- 33 -->
 ```verse
 Result := if (X > 0) then "positive" else "negative"
-Value := if (Condition=true) then ComputeA() else ComputeB()
+Result = "positive"
+Value := if (Condition?) then ComputeA() else ComputeB()
 ```
 
 else 문은 생략될 수 있지만, expression 의 자료형에 영향을 미칩니다. Verse 는 if expressions 을 위한 여러 종류의 구문 양식들을 제공합니다. '괄호로 묶인 조건문'과 '들여쓰기 된 본문' 등이 이 양식들에 해당합니다 :
