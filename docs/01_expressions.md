@@ -571,11 +571,9 @@ if (X := GetValue[]):
 Y := GetData()
 ```
 
-### Function Calls
+### Function 호출
 
-Function calls use parentheses with comma-separated arguments. The
-language treats function calls as expressions that evaluate to the
-function's return value:
+Function 을 호출하려면 괄호와 콤마(,) 로 나뉘는 인수를 사용합니다. Verse 는 function 호출을 그 function 의 반환 값으로 평가되는 expression 으로 취급합니다.
 
 <!--versetest
 Sqrt(X:int):float = 4.0
@@ -595,18 +593,16 @@ M()<decides>:void =
 -->
 <!-- 30 -->
 ```verse
-Sqrt(16)                        # Single argument
-MaxOf(A, B)                     # Multiple arguments
-Initialize()                    # No arguments
-Process[GetData(), Transform()] # Nested calls, outer call may fail
+Sqrt(16)                        # 인수가 한 개인 function 의 호출
+MaxOf(A, B)                     # 인수가 여러 개인 function 의 호출 
+Initialize()                    # 인수가 없는 function 의 호출
+Process[GetData(), Transform()] # Nested 호출 - 외부 호출은 fail 될 수 있습니다
 ```
 <!-- #> -->
 
-## Object Construction
+## Object 구성
 
-Object construction uses a distinctive brace syntax to indicates the
-creation of a new instance. The syntax requires explicit field
-initialization using the `:=` operator:
+Object 를 구성할 때에는 새 instance 생성을 나타내기 위해 독특한 중괄호 구문을 사용합니다. 이 구문에는 `:=` operator 를 이용한 명시적인 field 초기화가 필요합니다.
 
 <!--versetest
 point := struct{ X:int, Y:int }
@@ -624,10 +620,7 @@ config{
 }
 ```
 
-The use of `:=` for field initialization reinforces that these are
-binding operations—you're binding values to fields at construction
-time. Object constructors can be nested, creating complex
-initialization expressions:
+field 초기화를 위해 사용되는 `:=` 는 이러한 작업이 binding 작업임을 강조합니다. 즉, 이 작업을 통해 우리는 Object 가 구성되는 시점에 맞추어 필드에 값을 Binding 하는 것입니다. Object 구성은 nested 될 수 있고, 복잡한 초기화 expressions 를 생성합니다.
 
 <!--versetest
 point:=struct{ X:int, Y:int}
@@ -647,17 +640,13 @@ Game := game_state{
 }
 ```
 
-## Control Flow as Expressions
+## Expressions 으로서의 Control Flow[^ControlFlow]
 
-One of Verse's distinctive features is that control flow constructs
-are expressions, not statements. This means that if-expressions,
-loops, and case expressions all produce values that can be used in
-larger expressions.
+Verse 의 독특한 특징 중 하나는 control flow 구조가 statements 가 아니라 expressions 라는 점입니다. 이것은 'if', 'loop', 'case' expressions 가 모두 더 큰 expressions 에 쓰이는 값들을 생성한다는 것을 의미합니다.
 
-### Conditional
+### 조건문
 
-The if-then-else construct is an expression that evaluates to one of
-two values based on a condition:
+if-then-else 구조는 조건에 따라 두 값 중 하나로 평가되는 expression 입니다 : 
 
 <!--versetest
 ComputeA():int=1
@@ -671,10 +660,7 @@ Result := if (X > 0) then "positive" else "negative"
 Value := if (Condition=true) then ComputeA() else ComputeB()
 ```
 
-The else clause can be omitted, though this affects the type of the
-expression. Verse supports multiple syntactic forms for
-if-expressions, including parenthesized conditions and indented
-bodies:
+else 문은 생략될 수 있지만, expression 의 자료형에 영향을 미칩니다. Verse 는 if expressions 을 위한 여러 종류의 구문 양식들을 제공합니다. '괄호로 묶인 조건문'과 '들여쓰기 된 본문' 등이 이 양식들에 해당합니다 :
 
 <!--versetest
 Condition:logic = true
@@ -683,10 +669,10 @@ Value2:int = 100
 -->
 <!-- 34 -->
 ```verse
-# Standard form
+# 표준 양식
 if (Condition?) then Value1 else Value2
 
-# Indented form
+# 들여쓰기 양식
 if:
     Condition?
 then:
@@ -1472,3 +1458,4 @@ Colors := array:
 [^Struct]: 구조체. 서로 다른 여러 자료형의 데이터를 하나로 묶은 사용자 지정 자료형 입니다. 예를 들어, 자료형이 float 인 AmountOfDamage, 자료형이 Emumeration 인 DamageType, 자료형이 Boolean 인 CanBeBlocked 라는 구성 요소들을 모아 DamageInfo 라는 이름의 struct 로 만들 수 있습니다.
 [^ComputedAccess]: 접근할 대상이 고정된 Member 가 아니고, 어떤 표현식의 평가 결과일 때, 그에 대한 접근을 Computed Accecss 라고 말합니다. 이와 달리, 고정된 Member 에의 접근은 Direct Access 라고 말합니다.
 [^Maps]: Key 와 Value 를 1:1 로 매칭시킨 목록을 갖는 자료형을 말합니다.
+[^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
