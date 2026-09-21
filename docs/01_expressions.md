@@ -683,10 +683,9 @@ else:
     Value2
 ```
 
-### For
+### For 문
 
-For expressions iterate over collections and produce values. The basic
-form iterates over elements:
+For expressions 는 collections[^Collections] 를 순회하며 값을 생성합니다. 기본형은 매 element[^Element] 마다 반복됩니다 :
 
 <!--versetest
 Process(Item:int):void={}
@@ -695,10 +694,12 @@ Collection:[]int = array{1, 2, 3}
 <!-- 35 -->
 ```verse
 for (Item : Collection) { Process(Item) }
+
+Doubled := for (Item : Collection) { Item * 2 }
+Doubled = array{2, 4, 6}      # array 로 평가되는 for expression
 ```
 
-An extended form provides access to both index and item--in the case
-of a `Map`, indices are not limited to integers:
+확장형은 index 와 item 모두에 접근할 수 있습니다. `Map` 의 경우 index 들은 integers 로 제한되지 않습니다 :
 
 <!--versetest
 Collection:[]int = array{1, 2, 3}
@@ -710,15 +711,11 @@ for (Index -> Item : Collection) {
 }
 ```
 
-Since for expressions are themselves expressions, they produce array
-values and compose with other expressions. Verse evaluates the body of a for
-expression for each successful iteration, and these evaluations determine
-the value of the expression as a whole.
+for expressions 들은 그 자체로 expressions 이기 때문에, array 값들을 생성하고, 다른 expressions 와 결합됩니다. Verse 는 for 문이 성공적으로 순회할 때마다 body[^Body] 부분을 evaluate 하고, 그 evaluation 이 expressions 의 전체적인 결과값을 결정합니다.
 
-### Loop
+### Loop 문
 
-Loop expressions provide indefinite iteration, continuing until
-explicitly terminated through failure or other control flow:
+Loop expressions 는 기한이 없는 순환 기능을 제공하고, failure 나 다른 control flow 에 의해 명시적으로 종료될 때까지 계속됩니다.
 
 <!--versetest
 GetNext():int=1
@@ -742,22 +739,23 @@ loop {
 ```
 <!-- #> -->
 
-The loop construct can use indented syntax for clarity.
+Loop 구조는 가독성을 위해 들여쓰기 구문을 사용할 수 있습니다.
 
-A loop expression produces a value of type `true`, regardless of what
-expressions appear in its body. This value has no practical use—loops are typically used for their side effects rather than their return value.
+Loop expressions 는 그 body 부분에 어떤 expressions 가 있는지와 무관하게 `true` 자료형의 값들을 생성합니다. 단, 이 값들 자체가 실질적으로 사용되는 것은 아닙니다. (일반적으로 loop 문은 return 값 자체보다는 side effect 를 활용하기 위해 사용됩니다.)
 
 ```verse
-Result := loop:
-    ProcessData()
-    if (ShouldStop[]):
+var Count:int = 0
+
+Result := loop:          # Result 가 'true' 자료형을 갖습니다
+    set Count += 1
+    if (Count >= 3):
         break
-# Result has type 'true' (and returns `true`)
+Count = 3
 ```
 
-### Case
+### Case 문
 
-Case expressions provide multi-way branching based on value matching:
+Case expressions 는 값 대조에 기반해서 연산에 다중 분기 기능을 제공합니다 : 
 
 <!--versetest
 color := enum:
@@ -775,12 +773,10 @@ Description := case(Color) {
     color.Green => "Safe",
     _ => "Unknown"
 }
+Description = "Danger"
 ```
 
-The `_` pattern serves as a catch-all, ensuring the case expression is
-exhaustive. Case expressions evaluate to the value of the matched
-branch, making them useful for value computation as well as control
-flow.
+`_` 패턴은 지정한 Case 들을 벗어나는 포괄적 사항 전부를 처리하는 기능으로써 제공되고, case expression 이 모든 경우에 대해 완전히 대응한 상태에 놓일 수 있도록 해줍니다. Case expressions 는 값 대조 결과가 일치하는 분기의 값으로 evaluate 되므로, control flow 로 유용할 뿐 아니라 값 연산에도 유용하게 사용됩니다.
 
 ## Binary Operations
 
@@ -1457,7 +1453,10 @@ Colors := array:
 [^Construct]: 생성. 설정된 특정 타입에 해당하는 실제 값이나 객체를 만들어내는 것을 말합니다.
 [^Operand]: 피연산자. Operator(연산자) 가 연산을 수행하는 대상이 되는 값이나 표현식을 말합니다.
 [^Member]: 멤버. 어떤 Structure, Object 또는 자료형에 소속된 구성 요소를 말합니다.
-[^Struct]: 구조체. 서로 다른 여러 자료형의 데이터를 하나로 묶은 사용자 지정 자료형 입니다. 예를 들어, 자료형이 float 인 AmountOfDamage, 자료형이 Emumeration 인 DamageType, 자료형이 Boolean 인 CanBeBlocked 라는 구성 요소들을 모아 DamageInfo 라는 이름의 struct 로 만들 수 있습니다.
+[^Struct]: 구조체. 서로 다른 여러 자료형의 데이터를 하나로 묶은 사용자 지정 자료형 입니다. 한 대상과 관련된 여러 특성을 한번에 관리하기 위해 씁니다. 예를 들어, 자료형이 float 인 AmountOfDamage, 자료형이 Emumeration 인 DamageType, 자료형이 Boolean 인 CanBeBlocked 라는 구성 요소들을 모아 '피해'와 관련된 여러 특성을 관리하는 DamageInfo 라는 이름의 struct 로 만들 수 있습니다.
 [^ComputedAccess]: 접근할 대상이 고정된 Member 가 아니고, 어떤 표현식의 평가 결과일 때, 그에 대한 접근을 Computed Accecss 라고 말합니다. 이와 달리, 고정된 Member 에의 접근은 Direct Access 라고 말합니다.
 [^Maps]: Key 와 Value 를 1:1 로 매칭시킨 목록을 갖는 자료형을 말합니다.
 [^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
+[^Collections]: 여러 값을 묶어 놓은 자료형을 말합니다.
+[^Element]: 어떤 Collection 내부의 개별 값들을 말합니다.
+[^Body]: 본문. 각 회차에서 반복적으로 evaluate 되는 부분을 말합니다. 위 문장에서는 Print("Item at {Index} is {Item}") 부분이 Body 입니다.
