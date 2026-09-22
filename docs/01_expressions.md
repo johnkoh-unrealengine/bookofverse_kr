@@ -778,23 +778,28 @@ Description = "Danger"
 
 `_` 패턴은 지정한 Case 들을 벗어나는 포괄적 사항 전부를 처리하는 기능으로써 제공되고, case expression 이 모든 경우에 대해 완전히 대응한 상태에 놓일 수 있도록 해줍니다. Case expressions 는 값 대조 결과가 일치하는 분기의 값으로 evaluate 되므로, control flow 로 유용할 뿐 아니라 값 연산에도 유용하게 사용됩니다.
 
-## Binary Operations
+## 이진법 연산
 
-Binary expressions follow a carefully designed precedence hierarchy
-that balances mathematical conventions with programming practicality.
+이진법 expressions 는 수학적 관례와 프로그래밍 실용성 사이의 균형을 맞추도록 신중하게 설계된 우선순위 계층구조를 따릅니다.  
 
-### Assignment and Binding
+### Assignment[^Assignment] 와 Binding[^Binding]
 
-At the lowest precedence level, assignment operators bind values to
-identifiers. The `:=` operator creates immutable bindings, while `set
-=` performs mutable assignment:
+가장 낮은 precedence level[^PrecedenceLevel] 에서, assignment operators 는 identifier 에 값을 bind 합니다. `:=` operator 는 변경 불가한 binding 을 생성하는 반면, `set=` operator 는 변경 가능한 assignment 를 수행합니다 :
 
 <!--versetest-->
 <!-- 39 -->
 ```verse
-X := 42           # Immutable binding
-Y := X * 2        # Binding to computed value
+X := 42           # 변경 불가한 binding
+Y := X * 2        # computed value 에의 binding
+Y = 84
+
 Z := W := 10      # Right-associative chaining
+Z = W
+
+<#>
+    Right-associative chaining :
+      precedence level 이 같은 연산자를 여러 번 연속해서 사용할 때,
+      오른쪽부터 묶어서 해석하도록 하는 규칙을 말합니다.
 ```
 
 Assignment operators are right-associative, meaning that `a := b := c`
@@ -1460,3 +1465,6 @@ Colors := array:
 [^Collections]: 여러 값을 묶어 놓은 자료형을 말합니다.
 [^Element]: 어떤 Collection 내부의 개별 값들을 말합니다.
 [^Body]: 본문. 각 회차에서 반복적으로 evaluate 되는 부분을 말합니다. 위 문장에서는 Print("Item at {Index} is {Item}") 부분이 Body 입니다.
+[^Assignment]: 할당. 어떤 값을 특정한 variables 나 identifiers 에 입력하여, 그 이름으로 해당 값을 참조할 수 있도록 하는 것을 말합니다.
+[^Binding]: 어떤 값이 특정한 variables, identifiers, functions 등에 대응된 상태를 말합니다.
+[^PrecedenceLevel]: 우선순위. Operator 들이 처리되는 순서를 말합니다. precedence level 이 가장 낮은(lowest) operator 라고 하면, 가장 '나중에' 연산되는 operator 를 의미합니다. 예를 들어, 1+2= 에서 lowest precedence level 에 있는 operator 는 = 입니다. 
