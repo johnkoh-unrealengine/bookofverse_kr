@@ -798,15 +798,13 @@ Z = W
 
 <#>
     Right-associative chaining :
-      precedence level 이 같은 연산자를 여러 번 연속해서 사용할 때,
-      오른쪽부터 묶어서 해석하도록 하는 규칙을 말합니다.
+    precedence level 이 같은 연산자를 여러 번 연속해서 사용할 때,
+    오른쪽부터 묶어서 해석하도록 하는 규칙을 말합니다.
 ```
 
-Assignment operators are right-associative, meaning that `a := b := c`
-groups as `a := (b := c)`. This allows for natural chaining of
-assignments while maintaining clarity about evaluation order.
+Assignment operators 는 right-associative 연산을 합니다. 이는 `a := b := c` 와 같은 그룹을 `a := (b := c)` 로 보고 연산한다는 것을 의미합니다. 이로 인해 evaluation 순서에 대한 명확성을 유지하면서도 여러 assignment 를 자연스럽게 연계할 수 있습니다.
 
-Compound assignments provide shorthand for common update patterns:
+Compound assignments 는 일반적인 업데이트 패턴들을 간략하게 표현하는 표기법 입니다 :
 
 <!--versetest
 F()<transacts>:void=
@@ -819,12 +817,14 @@ F()<transacts>:void=
 -->
 <!-- 40 -->
 ```verse
-set Counter += 1      # Equivalent to: set Counter = Counter + 1
-set Total *= Factor   # Equivalent to: set Total = Total * Factor
+var Total:int = 3
+set Total += 1        # 다음과 같은 표현입니다 : set Total = Total + 1
+set Total *= 2        # 다음과 같은 표현입니다 : set Total = Total * 2
+Total = 8
 ```
 <!-- #> -->
 
-Compound assignment operators evaluate the left-hand side expression only once, which is observable when the expression has side effects:
+Compound assignment operators 는 좌변에 놓인 expression 을 한 번만 evaluate 합니다. 그리고 이것은 해당 expression 이 side effects 를 발생시킬 때 볼 수 있습니다 :
 
 <!--versetest
 assert:
@@ -843,23 +843,19 @@ assert:
     TestArray[1] = 21
 -->
 ```verse
+var Values:[]int = array{10, 20, 30}
 var Index:int = 0
+
+# 매번 call 될 때마다 직전 회차보다 1 더 큰 수를 반환합니다
 Inc():int =
     set Index += 1
     Index
 
-# Compound assignment calls Inc() one
-set Array[Inc()] += 1
-# Result: Array[1] = Array[1] + 1
-
-# Expanded form would call Inc() twice
-# set Array[Inc()] = Array[Inc()] + 1
-# Result: Array[1] = Array[2] + 1  (different!)
+# Inc() 가 한 번 실행되므로, Value[1] 을 읽고 씁니다
+set Values[Inc()] += 1
 ```
 
-In the compound assignment `set Array[Inc()] += 1`, Verse calls the function `Inc()`
-once to determine the index, then reads that location,
-increments it, and stores the result back.
+`set Values[Inc()] += 1` 라는 compound assignment 에서, Verse 는 index 를 결정하기 위해 Inc() 라는 function 을 한 번 call 합니다. 그 다음 location 을 읽고, location 을 하나 늘린 다음, 결과를 원래 location 에 저장합니다. 만약 `set Values[Inc()] = Values[Inc()] + 1`로 확장된다면, 두 call 은 서로 다른 element 를 가리킬 것입니다.
 
 ### Range Expressions
 
