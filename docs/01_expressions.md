@@ -857,11 +857,9 @@ set Values[Inc()] += 1
 
 `set Values[Inc()] += 1` 라는 compound assignment 에서, Verse 는 index 를 결정하기 위해 Inc() 라는 function 을 한 번 call 합니다. 그 다음 location 을 읽고, location 을 하나 늘린 다음, 결과를 원래 location 에 저장합니다. 만약 `set Values[Inc()] = Values[Inc()] + 1`로 확장된다면, 두 call 은 서로 다른 element 를 가리킬 것입니다.
 
-### Range Expressions
+### 범위 Expressions
 
-The range operator (`..`) creates integer ranges for iteration in
-`for` loops. Ranges are **inclusive on both ends** and can only appear
-directly in for loop iteration clauses:
+범위 operator (`..`) 는 `for` 내부의 반복에 사용되는 integer 범위를 생성합니다. 범위는 **양 끝을 모두 포함하고** for 반복문에서만 직접적으로 나타납니다. 또, : 이 아니라 := 으로 bind 해야 합니다. bind 그 자체는 임의의 integer expression 이 될 수 있습니다 :
 
 <!--versetest
 End()<computes>:int=10
@@ -876,17 +874,14 @@ F():void=
 -->
 <!-- 41 -->
 ```verse
-1..10             # Range from 1 to 10 (inclusive)
-Start..End        # Variable-defined range
-for (I := 0..Count):  # Must use := syntax, not :
-    Process(I)
+Count := 4
+Squares := for (I := 1..Count - 1) { I * I }
+Squares = array{1, 4, 9}
 ```
 <!-- #> -->
 
-Ranges are not first-class values. They cannot be stored in variables
-or used outside of `for` loop iteration clauses. See the [Range
-Operator Restrictions](07_control.md#for-expressions)
-section for details.
+Ranges 는 first-class value[^FirstClassValue] 가 될 수 없습니다. Ranges 는 variables 에 저장할 수 없고, `for` 반복문 외부에서 사용할 수도 없습니다. 자세한 내용은 [Range
+Operator Restrictions](07_control.md#for-expressions) 를 참조하세요.
 
 ### Logical Operations
 
@@ -1464,3 +1459,4 @@ Colors := array:
 [^Assignment]: 할당. 어떤 값을 특정한 variables 나 identifiers 에 입력하여, 그 이름으로 해당 값을 참조할 수 있도록 하는 것을 말합니다.
 [^Binding]: 어떤 값이 특정한 variables, identifiers, functions 등에 대응된 상태를 말합니다.
 [^PrecedenceLevel]: 우선순위. Operator 들이 처리되는 순서를 말합니다. precedence level 이 가장 낮은(lowest) operator 라고 하면, 가장 '나중에' 연산되는 operator 를 의미합니다. 예를 들어, 1+2= 에서 lowest precedence level 에 있는 operator 는 = 입니다. 
+[^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다. ↩
