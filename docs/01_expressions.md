@@ -883,12 +883,9 @@ Squares = array{1, 4, 9}
 Ranges 는 first-class value[^FirstClassValue] 가 될 수 없습니다. Ranges 는 variables 에 저장할 수 없고, `for` 반복문 외부에서 사용할 수도 없습니다. 자세한 내용은 [Range
 Operator Restrictions](07_control.md#for-expressions) 를 참조하세요.
 
-### Logical Operations
+### 논리 Operations
 
-Logical operators combine boolean values with short-circuit
-evaluation. Their result is either success or failure. Verse uses
-keyword operators (`and`, `or`, `not`) rather than symbols, improving
-readability:
+논리 operators 는 boolean 값들을 short-circuit evaluation[^ShortCircuitEvaluation] 와 합성합니다. 그 결과는 성공 또는 실패 입니다. Verse 는 기호 대신 `and`, `or`, `not` 와 같은 키워드 operator 들을 이용하여 가독성을 높입니다.
 
 <!--versetest
 ProcessQuadrant()<computes>:void = {}
@@ -906,9 +903,9 @@ M()<transacts>:void =
 -->
 <!-- 42 -->
 ```verse
-if (X > 0 and Y > 0) then ProcessQuadrant()
-Result := logic{Validated? or UseDefault[]}
-if (not IsReady[]) then Wait()
+if (X > 0 and Y > 0) then Quadrant()
+Chosen := logic{Validated? or UseDefault[]}
+if (not Ready[]) then Wait()
 ```
 <!-- #> -->
 
@@ -1459,4 +1456,5 @@ Colors := array:
 [^Assignment]: 할당. 어떤 값을 특정한 variables 나 identifiers 에 입력하여, 그 이름으로 해당 값을 참조할 수 있도록 하는 것을 말합니다.
 [^Binding]: 어떤 값이 특정한 variables, identifiers, functions 등에 대응된 상태를 말합니다.
 [^PrecedenceLevel]: 우선순위. Operator 들이 처리되는 순서를 말합니다. precedence level 이 가장 낮은(lowest) operator 라고 하면, 가장 '나중에' 연산되는 operator 를 의미합니다. 예를 들어, 1+2= 에서 lowest precedence level 에 있는 operator 는 = 입니다. 
-[^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다. ↩
+[^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
+[^ShortCircuitEvaluation]: 단락 평가. 논리 연산의 결과가 이미 결정되면, 뒤에 있는 expression 을 더 이상 evaluate 하지 않고 중단하는 것을 말합니다.↩
