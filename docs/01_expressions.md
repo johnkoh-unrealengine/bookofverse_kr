@@ -909,15 +909,14 @@ if (not Ready[]) then Wait()
 ```
 <!-- #> -->
 
-The precedence ensures that `and` binds tighter than `or`, matching
-mathematical logic conventions, the `logic{}` expression turns success
-or failure into a value:
+우선순위는 `or` 연산보다 `and` 연산이 더 강하게 bind 되도록 보장하고, `logic{}` expression 은 수학적 논리 규칙에 따라 성공 또는 실패 결과를 값으로 변환합니다. 
 
 <!--NoCompile-->
 <!-- 43 -->
 ```verse
-# Evaluates as: (ExpA and ExpB) or (ExpC and ExpD)
-Condition := logic{ExpA and ExpB or ExpC and ExpD}
+# 아래는 다음과 같이 evaluate 됩니다 : (true and true) or (false and false)
+Grouped := logic{true? and true? or false? and false?}
+Grouped = true      # 만약 and 먼저 bind 되지 않고 순서대로 evaluate 되었다면 이는 false 일 것입니다.
 ```
 
 **Important:** Variable bindings do not escape from logical operations.
