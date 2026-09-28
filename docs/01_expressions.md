@@ -916,28 +916,24 @@ if (not Ready[]) then Wait()
 ```verse
 # 아래는 다음과 같이 evaluate 됩니다 : (true and true) or (false and false)
 Grouped := logic{true? and true? or false? and false?}
-Grouped = true      # 만약 and 먼저 bind 되지 않고 순서대로 evaluate 되었다면 이는 false 일 것입니다.
+Grouped = true      # 만약 and 먼저 bind 되지 않고 왼쪽부터 순서대로 evaluate 되었다면 이는 false 일 것입니다.
 ```
 
-**Important:** Variable bindings do not escape from logical operations.
-When you use `:=` inside `and`, `or`, or `not` expressions, those
-bindings are only evaluated for short-circuit control flow and are **not**
-accessible afterward:
+변수 binding 은 논리 operation 에서 벗어날 수 없습니다. `and`, `or`, 또는 `not` expressions 내부에 `:=` 를 쓰면, 그 binding 은 short-circuit control flow 에서만 evaluate 되고, 그 이외에는 **접근할 수 없습니다.** 이와 달리, `if` 문에 의해 직접 형성된 binding 은 그 `if` 의 본문에서는 시각적으로 확인하고, 사용할 수 있습니다 :
 
 <!--NoCompile-->
 <!-- 998 -->
 ```verse
-Arr:[]int = array{10, 20}
+Pair:[]int = array{10, 20}
 
-# ERROR: Bindings in logical operations are NOT accessible
-if ((X := Arr[0]) and (Y := Arr[1])):
-    # X and Y are not bound here - this will cause a compilation error!
-    Z := X + Y
+# 오류 : X 와 Y 는 if 문의 본문에 위치한, 확인되지 않는 identifiers 입니다
+# if ((X := Pair[0]) and (Y := Pair[1])):
+#     Z := X + Y
 
-# Simple if binding DOES work
-if (X := Arr[0]):
-    # OK: X is accessible here
-    Y := X + 1
+# 정상 : 단순한 if binding 은 접근 가능합니다 
+OK: a simple if binding is accessible
+if (First := Pair[0]):
+    First = 10
 ```
 
 ### Comparison Operations
