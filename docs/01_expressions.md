@@ -936,10 +936,9 @@ if (First := Pair[0]):
     First = 10
 ```
 
-### Comparison Operations
+### 비교 Operations
 
-Comparison operators also either succeed or fail and can be chained
-for range checking:
+비교 operators 도 성공하거나 실패할 수 있고, 범위 검사를 위해 연쇄적으로 비교할 수 있습니다 :
 
 <!--versetest
 InRange():void={}
@@ -954,14 +953,12 @@ B:int = 10
 ```verse
 if (0 <= Value <= 100) then InRange()
 IsValid := logic{X > Minimum and X < Maximum}
-Same := logic{A = B}
+IsValid = true
 Different := logic{A <> B}
+Different = true
 ```
 
-All comparison operators have the same precedence and evaluate
-**left-to-right**. Crucially, *comparison operators return their left
-operand* when the comparison succeeds, and *comparison chains have special
-syntax* that checks all adjacent pairs.
+모든 비교 operators 는 같은 우선순위를 갖고, 왼쪽부터 오른쪽 순서대로 evaluate 됩니다. 결정적으로, 비교가 성공했을 때 비교 operators 는 그들의 왼쪽 operand 를 return 합니다. 그리고 연쇄 비교는 모든 인접한 쌍을 확인하는 특별한 구문을 가지고 있습니다.
 
 <!--versetest
 assert:
@@ -979,21 +976,16 @@ assert:
 -->
 <!-- 999 -->
 ```verse
-X := 0 < 10
-# X equals 0 (the left operand)
+Left := 0 < 10
+Left = 0                  # 비교 결과 왼쪽 operand 를 return 합니다
 
-0 <= Value <= 100
-# Special chain syntax that checks BOTH:
-#   - 0 <= Value (lower bound)
-#   - Value <= 100 (upper bound)
-# Returns 0 (leftmost operand) if both succeed
+Value := 50
+0 <= Value <= 100         # 연쇄 비교는 0 <= Value 와 Value <= 100 을 모두 확인합니다
+not (10 <= Value <= 40)   # 그리고 연쇄 비교는 한쪽 절반만 fail 로 되더라도 전체가 fail 됩니다
 ```
 <!-- #> -->
 
-Verse does **not** evaluate the comparison chain `A <= B <= C` as `(A <= B) <= C`.
-Instead, it is special syntax that checks both `A <= B` **and** `B <= C`, while
-returning the leftmost operand (`A`) on success. This enables natural
-mathematical notation for ranges without requiring `and` operators.
+Verse 는 `A <= B <= C` 과 같은 연쇄 비교를 `(A <= B) <= C` 처럼 evaluate 하지 **않습니다.** 그 대신, `A <= B`와 `B <= C`를 **and** 로 모두 확인하는 특수 구문을 사용하며, 성공 시 가장 왼쪽 operand (`A`) 를 반환합니다. 이를 통해 `and` operator 를 직접 사용하지 않고도 범위에 대한 자연스러운 수학적 표기법을 사용할 수 있습니다.
 
 ### Arithmetic Operations
 
