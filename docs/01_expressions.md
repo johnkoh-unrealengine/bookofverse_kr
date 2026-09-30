@@ -987,11 +987,9 @@ not (10 <= Value <= 40)   # 그리고 연쇄 비교는 한쪽 절반만 fail 로
 
 Verse 는 `A <= B <= C` 과 같은 연쇄 비교를 `(A <= B) <= C` 처럼 evaluate 하지 **않습니다.** 그 대신, `A <= B`와 `B <= C`를 **and** 로 모두 확인하는 특수 구문을 사용하며, 성공 시 가장 왼쪽 operand (`A`) 를 반환합니다. 이를 통해 `and` operator 를 직접 사용하지 않고도 범위에 대한 자연스러운 수학적 표기법을 사용할 수 있습니다.
 
-### Arithmetic Operations
+### 산술 Operations
 
-Arithmetic operations follow standard mathematical precedence, with
-multiplication and division binding tighter than addition and
-subtraction:
+산술 operations 은 표준 수학 우선순위를 따르므로, 덧셈과 뺄셈보다 곱셉과 나눗셈이 우선순위가 높습니다.
 
 <!--versetest
 A:int = 1
@@ -1000,13 +998,13 @@ C:int = 3
 -->
 <!-- 45 -->
 ```verse
-Result := A + B * C      # Multiplication first
-Average := (A + B) / 2   # Parentheses override precedence
+Result := A + B * C          # 곱셈 우선
+Result = 7
+Average := (A + B + C) / 2   # 괄호는 우선순위를 재정의 합니다
+Average = 3
 ```
 
-Integer division by zero fails and has the `<decides>` effect.
-When dividing integers, `X / Y` can fail if `Y` is `0`, allowing you to handle
-this case safely:
+0으로 나누는 Integer 나눗셈은 fail 되고, `<decides>` effect 가 나타납니다. integer 를 나눌 때, 만약 `Y` 가 `0` 라면, `X / Y` 과 같은 식이 fail 될 수 있어서, 이 사안을 안전하게 처리할 수 있게 해줍니다. 두 integer 를 나누면 `int` 가 아닌 `rational`[^Rational] 이 나올 수 있으므로, 몫을 `int` variable 에 assign 할 수 없다는 점에 유의 하세요 :
 
 <!--versetest
 X:int = 10
@@ -1017,15 +1015,14 @@ assert:
 <!-- 997 -->
 ```verse
 if (Result := X / Y):
-    Print("Division succeeded")
+    Print("나눈셈 성공")
 else:
-    Print("Cannot divide by zero")
+    Print("0 으로 나눌 수 없습니다")
 ```
 
-Float division by zero does not fail; it returns infinity according to
-IEEE 754 floating-point semantics.
+Float 를 0 으로 나누는 경우에는 fail 되지 않습니다. 이 경우에는 IEEE 754 floating-point semantics 를 반영하여 무한대를 return 합니다.
 
-Unary operators have the highest precedence among arithmetic operations:
+Unary operators 는 산술 operations 중에서 가장 높은 우선순위를 갖습니다 :
 
 <!--versetest
 Flag:logic = true
@@ -1036,8 +1033,9 @@ Y:int = 2
 <!-- 46 -->
 ```verse
 Negative := -Value
-Inverted := logic{not Flag=true}
-Result := -X * Y    # Unary minus applies to x only
+Inverted := logic{not Flag?}
+Result := -X * Y    # Unary operator 인 minus (-) 는 X 에만 적용됩니다
+Result = -2
 ```
 
 ## Set Expressions
@@ -1445,3 +1443,4 @@ Colors := array:
 [^PrecedenceLevel]: 우선순위. Operator 들이 처리되는 순서를 말합니다. precedence level 이 가장 낮은(lowest) operator 라고 하면, 가장 '나중에' 연산되는 operator 를 의미합니다. 예를 들어, 1+2= 에서 lowest precedence level 에 있는 operator 는 = 입니다. 
 [^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
 [^ShortCircuitEvaluation]: 단락 평가. 논리 연산의 결과가 이미 결정되면, 뒤에 있는 expression 을 더 이상 evaluate 하지 않고 중단하는 것을 말합니다.↩
+[^Rational]: 유리수. 
