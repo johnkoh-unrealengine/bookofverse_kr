@@ -1015,7 +1015,7 @@ assert:
 <!-- 997 -->
 ```verse
 if (Result := X / Y):
-    Print("나눈셈 성공")
+    Print("나눗셈 성공")
 else:
     Print("0 으로 나눌 수 없습니다")
 ```
