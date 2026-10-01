@@ -465,7 +465,7 @@ tuple(int,string,logic)
 ```
 <!-- #> -->
 
-Compiler 는 `tuple(int)` 와 같이 element 가 한 개인 tuple 자료형을 허용하지만, 현재로서는 element 가 한 개인 tuple 값을 construct[^Construct] 할 구문이 제공되지 않습니다. - 역자 주 : 예를 들어, tuple(int) 과 같이 element 가 한 개인 tuple 은 construct 하려면 (120) 과 같이 표기해야 하는데, 이와 같은 표기는 단순히 int 값으로 읽히는데 그치고, tuple(int) 를 construct 하는 구문으로서 읽히지 않는다는 것입니다.
+Compiler 는 `tuple(int)` 와 같이 element 가 한 개인 tuple 자료형을 허용하지만, 현재로서는 element[^Element] 가 한 개인 tuple 값을 construct[^Construct] 할 구문이 제공되지 않습니다. - 역자 주 : 예를 들어, tuple(int) 과 같이 element 가 한 개인 tuple 은 construct 하려면 (120) 과 같이 표기해야 하는데, 이와 같은 표기는 단순히 int 값으로 읽히는데 그치고, tuple(int) 를 construct 하는 구문으로서 읽히지 않는다는 것입니다.
 
 
 ## Postfix 연산
@@ -685,7 +685,7 @@ else:
 
 ### For 문
 
-For expressions 는 collections[^Collections] 를 순회하며 값을 생성합니다. 기본형은 매 element[^Element] 마다 반복됩니다 :
+For expressions 는 collections[^Collections] 를 순회하며 값을 생성합니다. 기본형은 매 element 마다 반복됩니다 :
 
 <!--versetest
 Process(Item:int):void={}
@@ -1040,9 +1040,7 @@ Result = -2
 
 ## Set Expressions
 
-While Verse emphasizes immutability, practical programming sometimes
-requires mutation. Set expressions provide mutation of variables and
-fields:
+Verse 는 불변성을 강조하지만, 현실적인 프로그래밍에서는 종종 변경이 필요한 경우가 있습니다. Set expressions 을 쓰면 variables 와 fields 를 변경할 수 있습니다 :
 
 <!--versetest
 c := class { var Field:int = 0 }
@@ -1068,26 +1066,38 @@ assert:
 -->
 <!-- 47 -->
 ```verse
-set X = 10                    # Variable assignment
-set Obj.Field = Value         # Field assignment
-set Arr[Index] = Element      # Array element assignment
-set Map[Key] = MappedValue    # Map entry assignment
+var Health:int = 0
+var Slots:[]int = array{0, 0}
+var Scores:[string]int = map{"Ana" => 0}
+Hero := counter{}
+
+set Health = 10         # Variable assignment
+set Hero.Count = 5      # Field assignment
+set Slots[0] = 99       # Array element assignment
+set Scores["Ana"] = 3   # Map entry assignment
+Health = 10
+Hero.Count = 5
+Slots[0] = 99
+Scores["Ana"] = 3
+
+<#>
+    Map entry :
+    Map 안에 저장되어 있는 하나의 '키-값 쌍' 을 말합니다.
 ```
 <!-- #> -->
 
-Set expressions are themselves expressions that **return the value being
-assigned** (the right-hand side). For example, `set Obj.Field = Value`
-returns `Value`, not `Obj`. This allows chaining assignments:
+Set expressions 는 그들 자체로 **assign 되고 있는 값(우변)을 return 하는** expresions 입니다. 예를 들어, `set Obj.Field = Value` 라고 적으면 `Obj` 가 아니라 `Value` 가 return 됩니다. 이를 이용해서 연쇄 assignment 를 할 수 있습니다 :
 
 ```verse
-set Y = set X = 5  # Both X and Y become 5
+var X:int = 0
+var Y:int = 0
+
+set Y = set X = 5  # X 와 Y 모두가 5 가 됩니다
 ```
 
-Though set expressions have a value, they are typically used for their side
-effects. The left-hand side must be a valid LValue—something that can be
-assigned to.
+Set expressions 가 그들 자체로 값을 갖기는 하지만, 일반적으로는 그들의 side effects 를 활용하는데 쓰입니다. 좌변은 반드시 유효한 LValue[^LValue] 여야 합니다. 즉, 값을 assign 할 수 있는 대상이어야 합니다.
 
-Verse supports complex LValues, allowing updates deep within data structures:
+Verse 는 복잡한 LValue 들을 지원하므로, 구조상 깊은 곳에 위치한 데이터도 업데이트 할 수 있습니다.
 
 <!--versetest
 item := class{Name:string = "Item"}
@@ -1104,7 +1114,9 @@ M()<transacts><decides>:void =
 -->
 <!-- 48 -->
 ```verse
-set Game.Players[CurrentPlayer].Inventory.Items[Slot] = NewItem
+Game := game{}
+set Game.Players[0].Inventory.Items[0] = item{Name := "Axe"}
+Game.Players[0].Inventory.Items[0].Name = "Axe"
 ```
 <!-- #> -->
 
@@ -1427,7 +1439,8 @@ Colors := array:
 [^PathSegments]: 경로 분절. 예를 들어 경로가 /Fortnite.com/Characters/PlayerController 인 경우, 'Fortnite.com', 'Characters', 'PlayerController' 각각을 하나의 path segment 라고 말합니다. 원문에는 Path segments 가 아닌 'Identifiers' 라고 표현되어 있는데, 맥락상의 명확성을 감안하여 Path segments 로 수정했습니다.
 [^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
 [^Evaluation]: 평가. expression 을 실제로 계산하여 그 결과값(value)을 얻는 것을 말합니다.
-[^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.↩
+[^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.
+[^Element]: 어떤 Collection 내부의 개별 값들을 말합니다.↩
 [^Construct]: 생성. 설정된 특정 타입에 해당하는 실제 값이나 객체를 만들어내는 것을 말합니다.
 [^Operand]: 피연산자. Operator(연산자) 가 연산을 수행하는 대상이 되는 값이나 표현식을 말합니다.
 [^Member]: 멤버. 어떤 Structure, Object 또는 자료형에 소속된 구성 요소를 말합니다.
@@ -1436,11 +1449,11 @@ Colors := array:
 [^Maps]: Key 와 Value 를 1:1 로 매칭시킨 목록을 갖는 자료형을 말합니다.
 [^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
 [^Collections]: 여러 값을 묶어 놓은 자료형을 말합니다.
-[^Element]: 어떤 Collection 내부의 개별 값들을 말합니다.
 [^Body]: 본문. 각 회차에서 반복적으로 evaluate 되는 부분을 말합니다. 위 문장에서는 Print("Item at {Index} is {Item}") 부분이 Body 입니다.
 [^Assignment]: 할당. 어떤 값을 특정한 variables 나 identifiers 에 입력하여, 그 이름으로 해당 값을 참조할 수 있도록 하는 것을 말합니다.
 [^Binding]: 어떤 값이 특정한 variables, identifiers, functions 등에 대응된 상태를 말합니다.
 [^PrecedenceLevel]: 우선순위. Operator 들이 처리되는 순서를 말합니다. precedence level 이 가장 낮은(lowest) operator 라고 하면, 가장 '나중에' 연산되는 operator 를 의미합니다. 예를 들어, 1+2= 에서 lowest precedence level 에 있는 operator 는 = 입니다. 
 [^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
 [^ShortCircuitEvaluation]: 단락 평가. 논리 연산의 결과가 이미 결정되면, 뒤에 있는 expression 을 더 이상 evaluate 하지 않고 중단하는 것을 말합니다.↩
-[^Rational]: 유리수. 
+[^Rational]: 유리수.
+[^LValue]: Left-hand Value. Assignment operator 왼쪽에 놓여 새로운 값을 저장할 수 있는 대상을 말합니다.
