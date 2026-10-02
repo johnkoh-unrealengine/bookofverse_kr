@@ -1120,14 +1120,11 @@ Game.Players[0].Inventory.Items[0].Name = "Axe"
 ```
 <!-- #> -->
 
-## Semicolons vs Commas
+## 세미콜론 vs 쉼표
 
-Verse uses semicolons and commas as separators in various contexts,
-but they have fundamentally different semantics in most
-situations. Understanding when each is appropriate is essential for
-writing correct Verse code.
+Verse 는 다양한 문맥에서 세미콜론과 쉼표를 구분 기호로 사용합니다. 하지만 대부분의 경우 그 둘은 근복적으로 다른 semantics 를 갖습니다. 언제 어떤 것을 쓰는게 더 적절한지 이해하는 것은 올바른 Verse 코드 작성에 필수적 입니다.
 
-**Semicolons** (within parentheses) create *sequences* - they evaluate expressions in order and return the value of the last expression:
+괄호 안의 세미콜론은 *sequences* 를 만듭니다 : 즉, expressions 를 순서대로 evaluate 하고, 마지막 expression 의 값을 return 합니다.
 
 <!--versetest
 assert:
@@ -1136,20 +1133,19 @@ assert:
 -->
 <!-- 49 -->
 ```verse
-Result := (1; 2; 3)     # Evaluates 1, then 2, then 3; returns 3
-# Note: Parentheses are required
-# Result := 1; 2         # ERROR: Not valid without parentheses
+Sequence := (1; 2; 3)     # 1, 2, 3 을 순서대로 평가합니다
+Sequence = 3              # 그 다음 마지막 것을 return 합니다
+# Sequence := 1; 2        # 오류 : 괄호가 필요합니다
 ```
 
-**Commas** (within parentheses) create *tuples* - they group multiple values into a single composite value:
+괄호 안의 쉼표는 *tuples* 를 만듭니다 : 즉, 여러 값을 하나의 복합 값으로 묶습니다 :
 
 <!--versetest-->
 <!-- 50 -->
 ```verse
-Result := (1, 2, 3)     # Creates a tuple of three elements
-# Result = (1, 2, 3) (type: tuple(int, int, int))
-# Note: Parentheses are required
-# Result := 1, 2         # ERROR: Not valid without parentheses
+Tuple := (1, 2, 3)        # 세 element 로 하나의 tuple 을 만듭니다
+Tuple = (1, 2, 3)         # 자료형은 tuple(int, int, int) 입니다
+# Tuple := 1, 2           # 오류 : 괄호가 필요합니다
 ```
 
 ### Context-Specific Behavior
