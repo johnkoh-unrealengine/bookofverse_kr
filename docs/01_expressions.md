@@ -1,24 +1,14 @@
-# Expressions
+# Expressions[^Expressions]
 
-Everything in Verse is an expression: every piece of code produces a
-value, including constructs that in other languages would be
-statements. An `if`, a loop, a variable declaration, and a block all
-evaluate to something. Because there is no statement/expression
-divide, any of them can appear wherever a value is expected.
+모든 것이 expressions 입니다. 이 설계 원칙이 Verse 가 다른 많은 프로그래밍 언어들과 구분되는 차별점이 됩니다. 다른 프로그래밍 언어들은 statements[^Statements] 와 expressions 가 서로 구분되기 때문입니다. 당신이 작성하신 모든 코드 조각들은 값을 생성합니다. 심지어 순전히 side effect[^SideEffect] 만 있을 것이라고 예상하시는 구조에서도 마찬가지 입니다. 이 특징은 Verse 에 의한 프로그래밍 모델이 더 자연스럽고 예측 가능한 방식으로 구성될 수 있도록 도와줍니다.
 
-## Primary Expressions
+## 기본 Expressions
 
-Everything starts with primary expressions—the atomic units from which
-more complex expressions are built. These include literals,
-identifiers, parenthesized expressions, and the tuple construct that
-provides lightweight data aggregation.
+모든것은 기본 expressions 로부터 시작됩니다. 여기서 말하는 기본 expressions 란, 더 복잡한 표현식을 구성하는 가장 기본적인 단위를 말합니다. 이는 literals[^Literals], identifiers[^Identifiers], 괄호로 묶은 expressions, 그리고 여러 데이터를 가볍게 묶을 수 있는 tuple[^Tuple] 구조를 포함합니다.
 
-### Basic Values
+### 기본 값
 
-Literals are source code representations of constant values.
-Verse provides literals for all its primitive types: integers, floats, characters,
-strings, booleans, and functions. Each type has its own literal syntax and rules
-governing valid values and their interpretation at compile time.
+Literals 는 상수 값을 소스 코드로 표현한 것입니다. Verse 는 integers[^Integers], floats[^Floats], characters[^Characters], strings[^Strings], booleans[^Booleans], 그리고 functions[^Functions] 와 같은 기본 자료형에 대한 literals 를 제공합니다. 각각의 자료형은 그것의 고유한 literal 구문을 갖고, 컴파일 시점에 유효한 값과 그 해석을 규정하는 규칙을 갖습니다.
 
 <!--versetest
 point := struct{X:float, Y:float}
@@ -26,143 +16,171 @@ Condition:logic = true
 -->
 <!-- 01 -->
 ```verse
-Result := if (Condition?) then 42 else 3.14  # Integer and float literals
-array{1, 2, 3}                               # Integer literals in array construction
-point{X:=0.0, Y:=1.0}                        # Float literals in object construction
+Result := if (Condition?) then 42 else 3.14  # Integer 와 float 자료형인 literals
+array{1, 2, 3}                               # 배열 구조 내부의 Integer literals
+point{X:=0.0, Y:=1.0}                        # object 구조 내부의 Float literals
 ```
 
 #### Integer Literals
 
-Integer literals represent whole numbers and can be written in two
-formats. Decimal notation uses standard digits, while hexadecimal
-notation uses the `0x` prefix followed by hex digits (0-9, a-f, A-F):
+Integer literals 는 정수를 나타내고, 두 가지 형식으로 쓰일 수 있습니다 :
+
+*소수점 표기법*은 표준 숫자를 사용합니다 :
 
 <!--versetest-->
 <!-- 02 -->
 ```verse
-Count := 42                          # Decimal
+Count := 42
 Negative := -17
-Large := 9223372036854775807         # Maximum 64-bit signed integer literal
-Byte := 0xFF                         # Hexadecimal
-Byte = 255
-LowercaseHex := 0xabcdef             # Either case of hex digit works
-LowercaseHex = 0xABCDEF
+Zero := 0
+Large := 9223372036854775807                # 최대 64-bit 의 부호 있는 integer literals 를 표현할 수 있습니다
 ```
 
-Integer literals must fit within a 64-bit signed integer range
-(`-9223372036854775808` to `9223372036854775807`). This is a compile-time
-restriction on what values you can write directly in your code.
-
-At runtime, integer values use arbitrary precision arithmetic and can grow
-beyond 64-bit limits through computation. However, integers exceeding 64-bit
-range have limited support (e.g., cannot be used in string interpolation
-or persisted).
-
-#### Float Literals
-
-Floating-point literals represent decimal numbers, they must include a
-decimal point and in some cases the `f64` suffix. Scientific notation
-expresses very large or small numbers using exponents:
+*16진수 표기법*은 `0x` 접두사 뒤에 (0-9, a-f, A-F) 로 이뤄진 16진수 숫자를 사용합니다 :
 
 <!--versetest-->
 <!-- 03 -->
 ```verse
-Pi := 3.14159
-Explicit := 12.34f64    # Explicit bit-depth suffix
-Large := 1.0e10         # 10,000,000,000 (sign optional)
-Small := 1.0e-5         # 0.00001
-WithSign := 2.5e+3      # 2,500 (explicit + sign)
-WithSign = 2500.0
+Byte := 0xFF
+Address := 0x1F4A
+LowercaseHex := 0xabcdef
+UppercaseHex := 0xABCDEF
 ```
 
-Float literals must include a decimal point (`1.0` is valid, but `1` is an integer). A final decimal point without digits is invalid (`1.` is a syntax error). All floats are 64-bit (IEEE 754 double precision); the `f64` suffix is optional. Unary operators work as with integers: `-1.0`, `+1.0`.
+**Literal 자료형에 대한 제한과 런타임 중의 작동 방식 :**
 
-Float literals outside the IEEE 754 double-precision range produce
-compile-time errors:
+Integer literals 는 64-bit 의 부호 있는 정수 값 범위(`-9223372036854775808` to `9223372036854775807`) 내에 있어야 합니다. 이는 코드에 직접 입력할 수 있는 값에 대한 제한으로, 컴파일 시점에 적용 됩니다.
 
-<!--versetest
-assert_semantic_error(3554):
-    TooBig := 1.7976931348623159e+308
--->
+런타임 중에, integer 값은 arbitrary precision arithmetic[^ArbitraryPrecisionArithmetic] 방식을 사용하며, 연산 과정에서 64-bit 제한을 넘을 수 있습니다. 하지만, 64-bit 를 넘은 integers 는 제한된 지원만 받을 수 있습니다. (예를 들어, string interpolation[^StringInterpolation] 을 쓸 수 없거나 persisted[^Persisted] 가 될 수 없습니다.)
+
+#### 자료형이 Float 인 Literals
+
+소수점을 사용한 literals 는 십진법 숫자로 읽히므로, 올바른 소수점을 포함해야 합니다. 또, 경우에 따라서는 `f64`[^f64] 라는 접미사를 포함해야 합니다.
+
+<!--versetest-->
 <!-- 04 -->
 ```verse
-Maximum := 1.7976931348623158e+308    # OK: maximum finite float
-# TooBig := 1.7976931348623159e+308   # Error: literal overflow
+Pi := 3.14159
+Half := 0.5
+Explicit := 12.34f64    # 명시적으로 bit 심도를 표현하는 접미사
 ```
 
-Runtime float arithmetic, however, follows standard IEEE 754 semantics:
+과학적 표기법은 지수를 이용해서 아주 크거나 아주 작은 수를 표현합니다 :
 
 <!--versetest-->
 <!-- 05 -->
 ```verse
-PosInf := 1.0 / 0.0             # Division by zero produces infinity
-NegInf := -1.0 / 0.0
-NegInf < -1.0e308
-Overflow := 1.0e308 * 10.0      # So does overflow
-Overflow = PosInf
-Tiny := 1.0e-320 / 1.0e10       # Underflow gives denormals, then zero
-Tiny = 0.0
+Large := 1.0e10         # 10,000,000,000 (양의 부호는 생략할 수 있습니다)
+Small := 1.0e-5         # 0.00001
+WithSign := 2.5e+3      # 2,500 (양의 부호를 명시적으로 적을 수도 있습니다)
+Compact := 1.5e2        # 150 (부호가 없으면 양의 부호로 간주됩니다)
 ```
 
-Float operations follow IEEE 754 semantics. Operations that would
-produce NaN (like `0.0 / 0.0`, `Inf - Inf`, or `Sqrt(-1.0)`) return
-NaN values rather than failing. NaN propagates through arithmetic
-operations. Equality is one place where Verse parts company with IEEE
-754: a NaN compares equal to itself rather than to nothing at all.
+Float literals 는 소수점이 꼭 포함되어야 합니다 (`1.0` 은 float literals 로서 유효하지만, `1` 은 integer 로 읽힙니다). 뒤에 숫자가 없이 소수점으로 끝나는 표현은 유효하지 않습니다 (`1.` 은 구문 오류 입니다). 모든 floats 자료형은 64-bit (IEEE 754[^IEEE754] double precision[^DoublePrecision]) 이고, `f64` 접미사는 생략할 수 있습니다. `-1.0`, `+1.0` 등과 같이, floats 에 대한 Unary operators[^UnaryOperators] 는 integers 에 대한 Unary operators 와 같은 방식으로 작동합니다.
 
-That departure looks less arbitrary once you remember what equality is
-for in Verse. `float` is a comparable type, so it may be used as a map
-key, and a key that could not be compared equal to itself would be a key
-you could never look up again. Reflexive equality is the price of
-letting every comparable type serve as a key, and NaN is not exempted
-from it.
+**Overflow[^Overflow] 및 Underflow[^Underflow] 발생 시의 작동 방식 :**
+
+IEEE 754 double-precision 범위를 벗어난 float literals 는 **compile-time errors**[^CompileTimeErrors] 를 발생시킵니다 :
 
 <!--versetest-->
 <!-- 06 -->
 ```verse
-Nan := 0.0 / 0.0        # A value, not a failure
-not (Nan < 1.0)         # NaN is unordered: neither less nor greater
-Nan + 1.0 = Nan         # NaN propagates through arithmetic
-Nan = Nan               # But equality succeeds, unlike IEEE 754
+#TooBig := 1.7976931348623159e+308    # 입력된 literal 이 overflow 를 유발하므로 Compile error 가 발생합니다
+Maximum := 1.7976931348623158e+308    # 유한 float 값 중 최대치이긴 하지만, 어쨌든 입력 가능합니다
 ```
 
-#### Character Literals
+하지만, **runtime**[^Runtime] 중의 float 연산은 표준 IEEE 754 semantics[^Semantics] 를 따릅니다 :
 
-Character literals represent individual text units. Verse has two character types with different literal syntax:
+<!--versetest-->
+<!-- 666 -->
+```verse
+# runtime 중에 발생한 overflow 는 무한대로 처리됩니다
+Large := 1.0e308
+Overflow := Large * 10.0    # Overflow 가 무한대로 처리됩니다
 
-`char` literals represent UTF-8 code units (single bytes, 0-255):
+# 0 으로 나눈 값은 무한대로 처리됩니다
+PosInf := 1.0 / 0.0
+NegInf := -1.0 / 0.0
+
+# Underflow 는 denormalized numbers 또는 0 으로 처리됩니다
+<#>
+    Denormalized numbers(=Subnormal numbers):
+    비정규 수. 점진적으로 더 작은 수를 표현하다보면 어느 순간 Normal numbers(정규수) 로는 표현할 수 있는 범위를 넘어가게 되는데,
+    아주 작으면서도 동시에 0 보다는 큰 수이기 때문에, 단순히 0 으로 읽히지 않아야 하는 경우가 있습니다.
+    이런 숫자를 표현하기 위해서 0 근처에 특별히 마련된 float 영역을 만들어 두는데, 이를 Denormalized numbers 라고 말합니다.
+    
+Small := 1.0e-320
+Smaller := Small / 1.0e10   # Underflows 가 발생하더라도 적절하게 처리됩니다
+```
+
+Float 연산은 IEEE 754 semantics 를 따릅니다. NaN(`0.0 / 0.0`, `Inf - Inf`, 또는 `Sqrt(-1.0)` 등) 을 생성하는 연산은 failing 처리되지 않고 NaN 값을 반환합니다. NaN 은 산술 연산을 통해 전파됩니다.
+
+#### 자료형이 Character 인 Literals
+
+자료형이 Character 인 literals 는 낱개의 글자를 표현합니다. Verse 에는 literals 구문이 서로 다른 두 가지 character 유형이 있습니다 :
+
+자료형이 `char` 인 literals 는 UTF-8 코드 단위(단일 bytes, 0 에서 255 까지)를 표현합니다 :
 
 <!--versetest-->
 <!-- 07 -->
 ```verse
-LetterA := 'a'          # Printable ASCII character
+LetterA := 'a'          # 인쇄 가능한 ASCII character
+
+<#>
+    ASCII (American Standard Code for Information Interchange):
+    아스키. 컴퓨터에서 문자(character)를 숫자로 표현하기 위해 만든 문자 인코딩 표준입니다.
+
+Space := ' '
 Tab := '\t'             # Escape sequence
-LetterA = 0o61          # 0oXX is hexadecimal notation (0x61 = 97 = 'a')
+
+<#>
+    Escape sequence:
+    Strings 또는 Characters 자료형 안에서
+    '일반적인 문자 표기만으로 표현하기 어려운 문자'나
+    '특수한 의미를 가진 문자'를 표현하기 위해 사용하는 특별한 문자 조합을 말합니다.
+    예를 들어 줄바꿈을 \n 으로 표현하는 식입니다.
+    이때 \ 자체는 escape character 라고 하고, \n 를 escape sequence 라고 말합니다.
+
+LetterA := 0x61         # 16진수 표기법 : 0xXX (10진수로는 97 이 'a' 에 해당합니다)
+
+<#>
+    역자 주:
+    원문에는 LetterA := 0o61 라고 적혀있지만, 0o61 의 ASCII 값은 'a' 가 아닌 '1' 입니다.
+    0oXX 과 같이 0o 을 접두사로 갖는 형식은 8진수 표기법이기 때문입니다.
+    또한, 16진수 표기법은 0xXX 처럼 뒷 자리가 두 자리로 고정되어 있지 않습니다.
+    0x 를 접두사로 갖는다는 특징이 있을 뿐입니다. 
+    예를 들어, 0x3131 은 한국어 완성형 인코딩 방식을 사용하면 한글 자음 'ㄱ' 을 나타냅니다.
+    
 ```
 
-`char32` literals represent Unicode code points:
+자료형이 `char32` 인 literals 는 Unicode code points[^UnicodeCodePoints] 를 표현합니다 :
 
 <!--versetest-->
 <!-- 08 -->
 ```verse
-Emoji := '😀'           # Non-ASCII automatically char32
+Emoji := '😀'           # 자료형이 character 인 literals 가 ASCII로 표현될 수 없는 경우, 자동으로 char32로 취급됩니다
 Accented := 'é'
-Emoji = 0u1f600         # 0uXXXXXX is hexadecimal notation
+ChineseChar := '好'
+HexUnicode := 0u1f600   # 16진수 표기법: 0uXXXXX (😀)
+
+<#>
+    일반적인 16진수 표기법은 0x 접두사를 씁니다.
+    0u 접두사는 Verse 가 Unicode code point literals 를 표현하기 위해 정의한 접두사 입니다.
 ```
 
-Type inference from literals:
+literals 로부터의 자료형 추론 :
 
-- ASCII characters (`U+0000` to `U+007F`): `'a'` has type `char`
-- Non-ASCII characters: `'😀'` has type `char32`
-- No implicit conversion between `char` and `char32`
+- ASCII 범위 내의 characters (`U+0000` 부터 `U+007F`): `'a'` 가 `char` 자료형으로 추론 됩니다.
+- ASCII 범위 외의 characters: `'😀'` 가 `char32` 자료형으로 추론 됩니다.
+- `char` 와 `char32` 는 상호간 implicit conversion[^ImplicitConversion] 되지 않습니다.
 
-Escape sequences work in both `char` and strings:
+Escape sequences 는 `char` 자료형과 strings 자료형에서 모두 작동합니다 :
 
 | Escape | Meaning | Codepoint |
 |--------|---------|-----------|
 | `\t`   | Tab     | U+0009 |
 | `\n`   | Newline | U+000A |
-| `\r`   | Carriage return | U+000D |
+| `\r`   | Carriage return (현재 글줄의 시작으로 이동) | U+000D |
 | `\"`   | Double quote | U+0022 |
 | `\'`   | Single quote | U+0027 |
 | `\\`   | Backslash | U+005C |
@@ -174,16 +192,16 @@ Escape sequences work in both `char` and strings:
 | `\#`   | Hash      | U+0023 |
 | `\~`   | Tilde     | U+007E |
 
-Numeric character notation works as follows:
+숫자 character 표기법은 다음과 같습니다 :
 
-- `0oXX` for `char` (hexadecimal notation, `0o00` to `0oFF` for values 0-255)
-- `0uXXXXXX` for `char32` (hexadecimal notation, `0u000000` to `0u10ffff`)
+- `char` 자료형에는 `0xXX` 를 씁니다. (16진수 표기법, 0 부터 255 를 표현하는 `0x00` 부터 `0xFF`)
+- `char32` 자료형에는 `0uXXXXXX` 를 씁니다. (16진수 표기법, `0u000000` 부터 `0u10ffff`)
 
-Character literals cannot be empty or contain multiple characters.
+Character literals 는 비어있을 수 없고, 하나의 Character literal 에 다수의 문자를 담을 수 없습니다.
 
-#### String Literals
+#### 자료형이 String 인 Literals
 
-String literals represent text sequences and support interpolation for embedding expressions. Basic strings use double quotes:
+자료형이 String 인 literals 는 연속된 문자를 표현하고, 사이에 expressions 를 끼워 넣을 수 있도록 interpolation 기능을 지원합니다. 기본 strings 자료형은 쌍따옴표 사이에 표현합니다.
 
 <!--versetest-->
 <!-- 09 -->
@@ -193,83 +211,106 @@ Empty := ""
 WithEscapes := "Line 1\nLine 2\tTabbed"
 ```
 
-String interpolation embeds expressions using curly braces:
+String interpolation 은 중괄호를 이용해서 expressions 를 끼워 넣습니다.
 
 <!--versetest
-Format(D:float, ?Decimals:int)<computes>:string=""
+Format(D:float, ?Decimals:int):string=""
 -->
 <!-- 10 -->
 ```verse
 Name := "Alice"
-Message := "Hello, {Name}!"
-Message = "Hello, Alice!"
-
 Age := 30
-Info := "Age next year: {Age + 1}"                      # Any expression
-Info = "Age next year: 31"
 
-Formatted := "Distance: {Format(5.5, ?Decimals := 2)}"  # Call with named argument
+# 단순한 interpolation
+Message := "Hello, {Name}!"                      # "Hello, Alice!" 라고 표현됩니다
+
+# Expression 이 들어가는 interpolation
+Info := "Age next year: {Age + 1}"               # "Age next year: 31" 라고 표현됩니다
+
+# 함수를 호출하는 interpolation
+Score := 100
+Text := "Score: {ToString(Score)}"               # "Score: 100" 라고 표현됩니다
+
+# Named arguments 를 사용한 함수를 호출하는 interpolation
+Distance := 5.5
+Formatted := "Distance: {Format(Distance, ?Decimals:=2)}"
+
+<#>
+    Named arguments (명명된 인수) :
+    위 예에서 Format 이라는 함수는 Format(Value, ?Decimals) 의 형식으로 정의되어 있습니다.
+    함수를 호출하는 경우, 매개변수의 순서에 따라 값을 넣으면 되므로, 보통은 Format(Distance, 2) 정도로 호출할 수 있습니다.
+    그런데 CreateCharacter(Name, Health, Speed, IsEnemy) 처럼 함수의 매개변수가 많아지면, 인수만 넣어서는 순서가 헷갈리는 경우가 있습니다.
+    이런 함수에 대해서, CreateCharacter("Goblin", ?Health:=100, ?Speed:=3.5, ?IsEnemy:=true) 와 같이
+    인수가 들어갈 매개변수를 명시적으로 함께 적어줄 수 있는데,
+    이렇게 입력된 인수를 Named arguments 라고 말합니다.
 ```
 
-Multi-line strings can span multiple lines using interpolation braces
-for continuation. Whatever follows the closing brace, leading spaces
-included, is kept verbatim:
+여러 줄로 된 strings 는 중괄호를 사용하여 여러 줄에 걸쳐 이어 쓸 수 있습니다 :
 
 <!--versetest-->
 <!-- 11 -->
 ```verse
-LongMessage := "This is a multi-line {
-}string that continues across {
-}multiple lines."
-LongMessage = "This is a multi-line string that continues across multiple lines."
+LongMessage := "이 문장은 {
+}여러 줄에 걸쳐서 쓰인 {
+}multi-line string 입니다."
+# 결과 : "이 문장은 여러 줄에 걸쳐서 쓰인 multi-line string 입니다."
+
+OtherMessage := "중간에{
+}    빈 공간이 있는{
+}    또 다른 문장."
+# 결과 : "중간에    빈 공간이 있는    또 다른 문장."
 ```
 
-The compiler ignores empty interpolants:
+컴파일러는 중괄호 사이의 빈 공간을 무시합니다 :
 
 <!--versetest-->
 <!-- 12 -->
 ```verse
-Text1 := "ab{}cd"
-Text1 = "abcd"
+Text1 := "ab{}cd"      # "abcd" 로 표현됩니다
 Text2 := "ab{
-}cd"                    # A newline inside an interpolant disappears too
-Text2 = "abcd"
+}cd"                   # "abcd" 로 표현됩니다 (즉, 새 코드 줄에 쓰인 것을 무시합니다)
 ```
 
-Curly braces must be escaped (`"\{ \}"`) to appear as literal characters in strings. The `string` type is an alias for `[]char` (array of UTF-8 code units). Since UTF-8 code units are single bytes, strings are byte sequences rather than Unicode character sequences. For example, `"José".Length` returns `5` (5 code units/bytes, not 4 characters, since é takes 2 code units).
+Strings 내부에 literal characters 를 써 넣으려면, 중괄호가 (`"\{ \}"`) 의 방식으로 escape 되어야 합니다. `string` 자료형은 `[]char` (UTF-8 코드 유닛들의 array 자료형으로서의 표현) 의 또 다른 이름입니다. UTF-8 코드 유닛들이 각각 1 byte 로 이뤄져 있기 때문에, strings 는 Unicode 글자의 연속이라기 보다는 byte 의 연속입니다. 예를 들어, `"José".Length` 는 `5` 를 반환합니다. (글자로서 읽힌다면 4 를 반환하겠지만, 코드 유닛/bytes 로서 읽히므로 5를 반환하는 것입니다. é 가 2개의 코드 유닛을 차지하기 때문입니다)
 
-String-array equivalence:
+String 자료형과 array 자료형의 동등성 :
 
 <!--versetest-->
 <!-- 13 -->
 ```verse
-"abc" = array{'a', 'b', 'c'}
-"" = array{}
+Test1 := logic{"abc" = array{'a', 'b', 'c'}}    # True. 좌변(String) 과 우변(Array) 값은 논리적으로 동등합니다
+Test2 := logic{"" = array{}}                    # True. 좌변(빈 String) 과 우변(빈 Array) 값은 논리적으로 동등합니다
 ```
 
-The compiler removes comments from strings:
+컴파일러는 Strings 에서 주석 부분을 무시합니다 :
 
 <!--versetest-->
 <!-- 14 -->
 ```verse
-Text := "abc<#comment#>def"
-Text = "abcdef"
+Text1 := "abc<#comment#>def"     # "abcdef" 로 표현됩니다
 ```
 
-#### Boolean Literals
+#### 자료형이 Boolean 인 Literals
 
-The `logic` type has two literal values. Use boolean values with the
-query operator `?` or in comparisons:
+`logic` 자료형은 두 종류의 literal 값(true 아니면 false)을 갖습니다 :
 
-<!--versetest
-StartGame():void = {}
-ShowResults():void = {}
--->
+<!--versetest-->
 <!-- 15 -->
 ```verse
 IsReady := true
 IsComplete := false
+```
 
+Query operator[^QueryOperator] 인 `?` 또는 comparisons[^Comparisons] 에서 boolean 값을 사용합니다 :
+
+<!--versetest
+StartGame():void = {}
+ShowResults():void = {}
+IsReady:logic = true
+IsComplete:logic = false
+-->
+<!-- 16 -->
+```verse
 if (IsReady?):
     StartGame()
 
@@ -277,7 +318,7 @@ if (IsComplete = true):
     ShowResults()
 ```
 
-The `logic{}` expression creates boolean values from failable expressions (see [Failure](08_failure.md) for details on failable expressions):
+`logic{}` expressions 는 fail 될 수 있는 expressions 에서 boolean 값을 생성합니다 (fail 될 수 있는 expressions 에 대한 자세한 내용은 [Failure](08_failure.md) 를 확인하세요) :
 
 <!--versetest
 Operation()<computes><decides>:void = {}
@@ -285,102 +326,91 @@ Optional:?int = option{1}
 X:int = 1
 Y:int = 1
 -->
-<!-- 16 -->
-```verse
-Success := logic{Operation[]}        # True if succeeds, false if fails
-HasValue := logic{Optional?}         # True if optional has value
-IsEqual := logic{X = Y}              # True if equal, false otherwise
-Success = true
-IsEqual = true
-```
-
-The `logic{}` expression requires at least a superficial possibility of failure. Pure expressions without `<decides>` effect cause errors:
-
-<!--versetest
-assert_semantic_error(3513, 3547):
-    Bad18a := logic{0}
-assert_semantic_error(3660):
-    Bad18b := logic{}
--->
 <!-- 17 -->
 ```verse
-# ERROR: logic{0} has no decides effect
-# ERROR: logic{} is empty
-Valid := logic{false?}               # OK: false? can fail
+# Converts <decides> expression to logic value
+Success := logic{Operation[]}        # 성공하면 true 를, 실패하면 false 를 생성합니다
+HasValue := logic{Optional?}         # Optional 자료형이 값을 가지고 있으면 true 를 생성합니다
+IsEqual := logic{X = Y}              # 동등하면 true 를, 그렇지 않으면 false 를 생성합니다
 ```
 
-Multiple expressions inside `logic{}` can be separated by semicolons or commas (see [Semicolons vs Commas](#semicolons-vs-commas) for details).
+`logic{}` expression 는 최소한 하나의 형식상 실패 가능성이 있어야 합니다. `<decides>` effect 없는 pure expressions 는 오류를 유발합니다 :
 
-#### Path Literals
-
-Path literals identify modules and packages using a hierarchical naming scheme:
-
-<!--NoCompile-->
+<!--versetest-->
 <!-- 18 -->
 ```verse
-/Verse.org/Verse                    # Standard library path
-/YourGame/Player/Inventory          # Custom module path
-/user@example.com/MyModule          # Personal namespace
+# logic{0} 와 같은 표현은 decides effect 가 없어서 오류를 유발합니다
+# logic{}  와 같은 표현은 비어있어서 오류를 유발합니다
+Valid := logic{false?}               # 사용 가능합니다. false? 에 실패 가능성이 있기 때문입니다
 ```
 
-Path syntax follows specific rules:
+`logic{}` 내부에 입력되는 복수의 expressions 는 세미콜론(;)이나 콤마(,)로 구분됩니다 (자세한 내용은 [Semicolons vs Commas](#semicolons-vs-commas) 를 확인하세요) :
 
-- Starts with `/`
-- Contains label (alphanumeric, `.`, `-`)
-- Identifiers must start with letter or `_`
-
-The Modules chapter covers path literals in detail.
-
-### Identifiers and References
-
-Identifiers serve as references to values, whether they are constants,
-variables, functions, or types. An identifier begins with a letter
-(A-Z, a-z) or an underscore (`_`), and its subsequent characters are
-letters, digits (0-9), or underscores. The single underscore `_` is
-reserved and cannot be used as an identifier.
-
-Identifiers are case-sensitive and use only ASCII characters—Unicode
-characters are not supported in identifiers.
-
-<!--versetest
-GetValue()<computes>:int = 1
-Counter:int = 2
-my_class := class{}
-_private:int = 3
-variable123:int = 4
-assert_semantic_error(3549):
-    HyphenName()<computes>:void =
-        my-variable := 3
-assert_semantic_error(3514):
-    UnderscoreName()<computes>:void =
-        _ := 3
--->
+<!--versetest-->
 <!-- 19 -->
 ```verse
-int               # Reference to the int type
-GetValue          # Reference to a function
-Counter           # Reference to a variable
-my_class          # Reference to a class
-_private          # Leading underscore allowed
-variable123       # Digits allowed after first character
-
-# Invalid identifiers:
-# 123invalid      # Error: cannot start with a digit
-# my-variable     # Error: a hyphen reads as subtraction
-# café            # Error: Unicode not supported
-# _               # Error: single underscore is reserved
+Result1 := logic{true?; true?}       # 세미콜론으로 구분된 예시
+Result2 := logic{true?, true?}       # 콤마로 구분된 예시
 ```
 
-The language does not syntactically distinguish between different kinds
-of identifiers (types, functions, variables)—the context determines how
-each identifier is used.
+#### 경로 Literals
 
-### Parentheses and Grouping
+경로 literals 는 계층적 명명 체계를 통해 modules[^Modules] 과 packages[^Packages] 를 식별합니다 :
 
-Parentheses serve dual purposes: they group expressions to control
-evaluation order, and they create tuple expressions. A parenthesized
-expression simply evaluates to the value of its contents, allowing you
-to override the default operator precedence or improve readability:
+<!--NoCompile-->
+<!-- 21 -->
+```verse
+/Verse.org/Verse                    # 표준 라이브러리 경로
+/YourGame/Player/Inventory          # 커스텀 module 경로
+/user@example.com/MyModule          # 개인용 namespace
+
+<#>
+    namespace (이름 공간) :
+    변수, 함수, 클래스 등의 이름이 중복되는 것을 막고,
+    코드를 논리적으로 그룹화하기 위해 사용하는 이름의 범위(영역)를 말합니다.
+    같은 이름의 에셋도 다른 namespace 에 위치하면 중복 처리 되지 않습니다.
+```
+
+경로 구문은 특정한 규칙을 따릅니다 :
+
+- `/` 로 시작합니다
+- Alphanumeric[^Alphanumeric], `.`, `-` 과 같은 레이블을 포함합니다
+- Path segments[^PathSegments] 는 반드시 글자 또는 `_` 로 시작해야 합니다
+
+Modules 챕터에서 경로 literals 에 대해 더 자세하게 다룹니다.
+
+### Identifiers[^Identifiers] 와 참조
+
+주어진 값이 constants 이든, variables 이든, functions 이든, 자료형이든, Identifiers 는 그 값을 참조하기 위해 사용됩니다. 하나의 identifier 는 다음 요소로 구성되어 있습니다 :
+
+- **첫번째 글자:** 글자 (A-Z, a-z) or 밑줄 (`_`)
+- **이어지는 글자들:** 글자들, 숫자들 (0-9), 또는 밑줄
+- **사용 제한:** 밑줄 한 개 (`_`) 만 입력한 값은 identifier 로써 사용될 수 없습니다
+
+Identifiers 는 대소문자를 구분하며, ASCII 문자만 사용할 수 있습니다. 즉, Unicode 문자는 identifiers 로 사용할 수 없습니다.
+
+<!--NoCompile-->
+<!-- 22 -->
+```verse
+int               # int 자료형을 참조하는 identifier
+GetValue          # Function 을 참조하는 identifier
+Counter           # Variable 을 참조하는 identifier
+my_class          # Class 를 참조하는 identifier
+_private          # 맨 앞이 밑줄인 identifier 는 허용됩니다
+variable123       # 맨 앞을 제외한 곳에 숫자를 사용한 identifier 도 허용됩니다
+
+# 허용되지 않는 identifiers:
+# 123invalid      # 숫자부터 시작할 수는 없습니다
+# my-variable     # Hyphen (-) 은 쓸 수 없습니다
+# café            # Unicode 문자 (여기서는 é)는 사용할 수 없습니다
+# _               # 밑줄 하나 만으로는 identifier 로 사용할 수 없습니다
+```
+
+Verse 에서는 구문 그 자체만으로는 서로 다른 종류의 identifier (자료형, functions, variables 등) 들이 구분되지 않습니다. 각 identifier 가 어떻게 사용될지는 문맥에 따라서 결정됩니다.
+
+### 괄호와 그룹 만들기
+
+괄호는 두 가지 역할을 합니다 : 하나는 evaluation[^Evaluation] 순서를 관리할 수 있도록 expression 들을 그룹으로 만드는 것이고, 다른 하나는 tuple[^Tuple] expressions 를 만드는 것입니다. 괄호로 묶인 expression 은 단순히 그 내용물로써 evaluate 되기 때문에, 기본 operator 의 연산 우선순위가 재정의 됩니다. 그리고 가독성도 좋아집니다 :
 
 <!--versetest
 A:int = 1
@@ -391,153 +421,195 @@ Y:int = 10
 Positive:string = "positive"
 Negative:string = "negative"
 -->
-<!-- 20 -->
+<!-- 23 -->
 ```verse
-(A + B) * C = 9   # Group addition before multiplication: (1+2)*3, not 1+(2*3)
+(A + B) * C       # 곱셈에 앞서 덧셈 부분을 그룹으로 만들었습니다
 if (X > 0 and Y > 0) then Positive else Negative
 ```
 
 ### Tuples
 
-Tuples provide a way to group two or more values with little
-ceremony. The syntax distinguishes between parentheses used for
-grouping and those used for tuple construction through the presence of
-commas. Tuples themselves are accessed using function-call syntax with
-a single integer argument:
-
-<!--versetest-->
-<!-- 21 -->
-```verse
-Point := (10, 20)           # Two-element tuple
-Mixed := (1, "hello", true) # Mixed-type tuple
-Point(0) = 10               # Access first element
-Point(1) = 20               # Access second element
-```
-
-Write tuple types as follows:
-
-<!--versetest-->
-<!-- 22 -->
-```verse
-Pair:tuple(int,int) = (10, 20)
-Record:tuple(int,string,logic) = (42, "hello", true)
-```
-
-While the compiler accepts single-element tuple types like `tuple(int)`,
-there is currently no syntax to construct a single-element tuple value.
-
-## Postfix Operations
-
-Postfix operations are operations that follow their operand and can be
-chained together. This creates a left-to-right reading order that
-feels natural and allows for intuitive composition.
-
-### Member Access
-
-The dot operator provides access to members of objects, modules, and
-other structured values. Member access expressions evaluate to the
-value of the specified member:
+Tuples 는 간단하게 둘 이상의 값을 묶는 방법을 제공합니다. 구문은 쉼표(,)의 유무로 Tuples 구성에 사용되는 괄호와 그룹화(바로 위에 기재된 내용인 evaluation 순서 관리용 그룹)에 사용되는 괄호를 구분합니다 : 
 
 <!--versetest
-shapes := module:
-    Area<public>(Width:int, Height:int)<computes>:int = Width * Height
-point := struct{X:float, Y:float}
-hero := class{Name:string, Position:point}
+X:int = 5
+Y:int = 10
 -->
-<!-- 23 -->
+<!-- 24 -->
 ```verse
-Player := hero{Name := "Ada", Position := point{X := 1.0, Y := 2.0}}
-Player.Name = "Ada"             # Field of a class
-Player.Position.Y = 2.0         # Field of a nested struct
-shapes.Area(3, 4) = 12          # Function of a module
+(X, Y)              # 성분이 두 개인 tuple
+(1, "hello", true)  # 여러 자료형이 섞인 tuple
 ```
 
-Member access can be chained, creating paths through nested structures:
+Tuples 는 단일 integer 자료형 인수를 사용하는 function-call 구문을 통해 접근할 수 있습니다 :
+
+<!--versetest-->
+<!-- 25 -->
+```verse
+point := (10, 20)
+x := point(0)     # 첫번째 element (10) 에 접근합니다
+y := point(1)     # 두번째 element (20) 에 접근합니다
+```
+
+Tuple 자료형은 아래처럼 쓰시면 됩니다 :
+
+<!--versetest
+GetPoint():tuple(int,int) = (10, 20)
+GetData():tuple(int,string,logic) = (42, "hello", true)
+<#
+-->
+<!-- 26 -->
+```verse
+tuple(int,int)
+tuple(int,string,logic)
+```
+<!-- #> -->
+
+Compiler 는 `tuple(int)` 와 같이 element 가 한 개인 tuple 자료형을 허용하지만, 현재로서는 element[^Element] 가 한 개인 tuple 값을 construct[^Construct] 할 구문이 제공되지 않습니다. - 역자 주 : 예를 들어, tuple(int) 과 같이 element 가 한 개인 tuple 은 construct 하려면 (120) 과 같이 표기해야 하는데, 이와 같은 표기는 단순히 int 값으로 읽히는데 그치고, tuple(int) 를 construct 하는 구문으로서 읽히지 않는다는 것입니다.
+
+
+## Postfix 연산
+
+Postfix 연산은 operand[^Operand] 뒤에 따라오는 연산으로, 연쇄적으로 사용할 수 있습니다. 이를 통해 자연스럽게 왼쪽에서 오른쪽으로 읽는 순서가 만들어지므로, 직관적으로 작업할 수 있게 됩니다.
+
+### Member[^Member] 에의 접근
+
+점 operator `.` 는 objects, modules 또는 struct[^Struct] 의 members 에 접근할 수 있게 해줍니다. Member 에 접근하는 expressions 는 그 지정된 member 가 실제로 갖는 값으로 evaluate 됩니다 :
+
+<!--NoCompile-->
+<!-- 27 -->
+```verse
+Player.Health           # field 에 접근
+Config.MaxPlayers       # 하위 값에 접근
+math.Sqrt(16.0)         # module 의 function 에 접근
+Point.X                 # struct field 에 접근
+
+<#>
+    Field (필드) :
+    객체나 구조체가 가지고 있는 member 들 중 '값을 저장하는' member 들을 말합니다.
+    이와 달리, function 이나 method 는 '동작을 수행하는' member 이므로, 이들을 Field 라고 할 수는 없습니다.
+    위의 예시에서는 Health, MaxPlayers, X 가 field 입니다.
+```
+
+Member 에의 접근은 연쇄적으로 이뤄질 수 있고, 그에 따라 하위 구조 통과 경로를 만들 수 있습니다 :
 
 <!--versetest
 item := class{Name:string = "Sword"}
 inventory := class{Items:[]item = array{item{}}}
-player := class{Inventory:inventory = inventory{}}
-game := class{Players:[]player = array{player{}}}
+player_type := class{Inventory:inventory = inventory{}}
+game := class{Players:[]player_type = array{player_type{}}}
+M()<decides>:void =
+    Game:game = game{}
+    Game.Players[0].Inventory.Items[0].Name
+<#
 -->
-<!-- 24 -->
+<!-- 28 -->
 ```verse
-Game := game{}
-Game.Players[0].Inventory.Items[0].Name = "Sword"
+Game.Players[0].Inventory.Items[0].Name
 ```
+<!-- #> -->
 
-### Computed Access
+### Computed Access[^ComputedAccess]
 
-Square brackets provide computed access to elements, whether for
-arrays, maps, or other indexable structures. Verse evaluates the expression within
-brackets to determine which element to access:
+대괄호를 이용하면 arrays, maps[^Maps], 기타 indexable 구조의 구성요소에 Computed Access 할 수 있습니다. Verse 는 어떤 구성요소에 접근할지 판단하기 위해 대괄호 안의 expression 을 evaluate 합니다 :
 
 <!--versetest
-ComputeIndex()<computes>:int = 0
-Values:[]int = array{1, 2, 3}
-Lookup:[string]int = map{"key" => 42}
-Grid:[][]int = array{array{1, 2}, array{3, 4}}
+ComputeIndex():int = 0
+M()<decides>:void =
+    Array:[]int = array{1, 2, 3}
+    Map:[string]int = map{"key" => 42}
+    Matrix:[][]int = array{array{1, 2}, array{3, 4}}
+    Row:int = 0
+    Col:int = 1
+    Data:[]int = array{10, 20, 30}
+    Array[0]
+    Map["key"]
+    Matrix[Row][Col]
+    Data[ComputeIndex()]
+<#
 -->
-<!-- 25 -->
+<!-- 29 -->
 ```verse
-Values[0] = 1               # Array indexing
-Lookup["key"] = 42          # Map lookup
-Grid[1][0] = 3              # Nested indexing
-Values[ComputeIndex()] = 1  # Dynamic index computation
+Array[0]                # Array indexing
+Map["key"]              # Map lookup
+Matrix[Row][Col]        # Nested indexing - 먼저 [Row] 에 접근한 뒤 [Col] 에 접근합니다
+Data[ComputeIndex()]    # 동적 index 연산 - 먼저 내부의 ComputeIndex() 를 연산한 뒤 접근합니다
+
+<#>
+    Indexing 과 LookUp 의 차이
+    - Indexing : 이미 지정되어 있는 0, 1, 2 등의 순서를 기반으로 검색합니다.
+    - LookUp : 사용자가 지정한 key 들을 기반으로 검색합니다.
+
 ```
+<!-- #> -->
 
-The square bracket syntax `Func[]` is **required** for calling
-functions that may fail (those with the `<decides>` effect). Use regular
-parentheses `Func()` for functions that always succeed. Array
-indexing also uses `[]` because it can fail when the index is out of bounds.
+대괄호 구문 `Func[]` 는 fail 될 수 있는 functions(`<decides>` 효과가 있는 functions)를 호출할 때 **필수** 입니다. 항상 성공하는 functions 에는 반드시 괄호 구문 `Func()` 를 사용하셔야 합니다. Array indexing 도 index 가 범위를 벗어나면 fail 될 수 있기 때문에 `[]` 를 사용하셔야 합니다.
 
-<!-- 26 -->
+<!--
+GetValue()<decides>:int = ...
+GetData():int = ...
+
+# fail 될 수 있는 functions 에는 반드시 [] 를 쓰셔야 합니다
+if (X := GetValue[]):
+    Print("Got: {X}")
+
+# 항상 성공하는 functions 에는 반드시 () 를 쓰셔야 합니다
+Y := GetData()
+
+# fail 될 수 있는 functions 에는 () 를 쓸 수 없으므로, 아래의 예는 에러가 납니다
+# Z := GetValue()  # Compile 에러 발생!
+-->
 ```verse
 GetValue()<transacts><decides>:int = 42
 GetData():int = 7
 
-# [] is required: GetValue can fail
+# GetValue 가 fail 될 수 있기 때문에 [] 가 쓰여야 합니다
 if (X := GetValue[]):
     Print("Got: {X}")
 
-# () is required: GetData always succeeds
+# GetData 가 항상 성공하므로, () 가 쓰여야 합니다
 Y := GetData()
 ```
 
-### Function Calls
+### Function 호출
 
-Function calls use parentheses with comma-separated arguments. The
-language treats function calls as expressions that evaluate to the
-function's return value:
+Function 을 호출하려면 괄호와 콤마(,) 로 나뉘는 인수를 사용합니다. Verse 는 function 호출을 그 function 의 반환 값으로 평가되는 expression 으로 취급합니다.
 
 <!--versetest
-Root(X:int)<computes>:int = X
-Larger(A:int, B:int)<computes>:int = if (A > B) then A else B
-Initialize()<computes>:void = {}
-GetData()<computes>:int = 42
-Transform()<computes>:int = 10
-Combine(X:int, Y:int)<computes><decides>:int = X + Y
+Sqrt(X:int):float = 4.0
+MaxOf(A:int, B:int):int = if (A > B) then A else B
+Initialize():void = {}
+GetData():int = 42
+Transform():int = 10
+Process(X:int, Y:int)<decides>:void = {}
+M()<decides>:void =
+    A:int = 5
+    B:int = 10
+    Sqrt(16)
+    MaxOf(A, B)
+    Initialize()
+    Process[GetData(), Transform()]
+<#
 -->
-<!-- 27 -->
+<!-- 30 -->
 ```verse
-Root(16) = 16                       # Single argument
-Larger(5, 10) = 10                  # Multiple arguments
-Initialize()                        # No arguments
-Combine[GetData(), Transform()] = 52 # Nested calls, outer call may fail
+Sqrt(16)                        # 인수가 한 개인 function 의 호출
+MaxOf(A, B)                     # 인수가 여러 개인 function 의 호출 
+Initialize()                    # 인수가 없는 function 의 호출
+Process[GetData(), Transform()] # Nested 호출 - 외부 호출은 fail 될 수 있습니다
 ```
+<!-- #> -->
 
-## Object Construction
+## Object 구성
 
-Object construction uses a distinctive brace syntax to indicates the
-creation of a new instance. The syntax requires explicit field
-initialization using the `:=` operator:
+Object 를 구성할 때에는 새 instance 생성을 나타내기 위해 독특한 중괄호 구문을 사용합니다. 이 구문에는 `:=` operator 를 이용한 명시적인 field 초기화가 필요합니다.
 
 <!--versetest
 point := struct{ X:int, Y:int }
 player := struct{Name:string, Level:int, Health:int}
 config := struct { MaxPlayers:int, Difficulty:string, EnablePvP:logic }
 -->
-<!-- 28 -->
+<!-- 31 -->
 ```verse
 point{X:=10, Y:=20}
 player{Name:="Hero", Level:=1, Health:=100}
@@ -548,10 +620,7 @@ config{
 }
 ```
 
-The use of `:=` for field initialization reinforces that these are
-binding operations—you're binding values to fields at construction
-time. Object constructors can be nested, creating complex
-initialization expressions:
+field 초기화를 위해 사용되는 `:=` 는 이러한 작업이 binding 작업임을 강조합니다. 즉, 이 작업을 통해 우리는 Object 가 구성되는 시점에 맞추어 필드에 값을 Binding 하는 것입니다. Object 구성은 nested 될 수 있고, 복잡한 초기화 expressions 를 생성합니다.
 
 <!--versetest
 point:=struct{ X:int, Y:int}
@@ -560,7 +629,7 @@ player:=struct{ Position:point, Inventory:inventory}
 config:=struct{Difficulty:string}
 game_state:=struct{Player:player, Settings:config}
 -->
-<!-- 29 -->
+<!-- 32 -->
 ```verse
 Game := game_state{
     Player := player{
@@ -572,47 +641,40 @@ Game := game_state{
 Game.Player.Inventory.Capacity = 20
 ```
 
-## Control Flow as Expressions
+## Expressions 으로서의 Control Flow[^ControlFlow]
 
-One of Verse's distinctive features is that control flow constructs
-are expressions, not statements. This means that if-expressions,
-loops, and case expressions all produce values that can be used in
-larger expressions.
+Verse 의 독특한 특징 중 하나는 control flow 구조가 statements 가 아니라 expressions 라는 점입니다. 이것은 'if', 'loop', 'case' expressions 가 모두 더 큰 expressions 에 쓰이는 값들을 생성한다는 것을 의미합니다.
 
-### Conditional
+### 조건문
 
-The if-then-else construct is an expression that evaluates to one of
-two values based on a condition:
+if-then-else 구조는 조건에 따라 두 값 중 하나로 평가되는 expression 입니다 : 
 
 <!--versetest
-ComputeA()<computes>:int=1
-ComputeB()<computes>:int=1
+ComputeA():int=1
+ComputeB():int=1
 X:int = 5
 Condition:logic = true
 -->
-<!-- 30 -->
+<!-- 33 -->
 ```verse
 Result := if (X > 0) then "positive" else "negative"
 Result = "positive"
 Value := if (Condition?) then ComputeA() else ComputeB()
 ```
 
-The else clause can be omitted, though this affects the type of the
-expression. Verse supports multiple syntactic forms for
-if-expressions, including parenthesized conditions and indented
-bodies:
+else 문은 생략될 수 있지만, expression 의 자료형에 영향을 미칩니다. Verse 는 if expressions 을 위한 여러 종류의 구문 양식들을 제공합니다. '괄호로 묶인 조건문'과 '들여쓰기 된 본문' 등이 이 양식들에 해당합니다 :
 
 <!--versetest
 Condition:logic = true
 Value1:int = 42
 Value2:int = 100
 -->
-<!-- 31 -->
+<!-- 34 -->
 ```verse
-# Standard form
+# 표준 양식
 if (Condition?) then Value1 else Value2
 
-# Indented form
+# 들여쓰기 양식
 if:
     Condition?
 then:
@@ -621,52 +683,53 @@ else:
     Value2
 ```
 
-### For
+### For 문
 
-For expressions iterate over collections and produce values. The basic
-form iterates over elements:
+For expressions 는 collections[^Collections] 를 순회하며 값을 생성합니다. 기본형은 매 element 마다 반복됩니다 :
 
 <!--versetest
-Process(Item:int)<computes>:void={}
+Process(Item:int):void={}
 Collection:[]int = array{1, 2, 3}
 -->
-<!-- 32 -->
+<!-- 35 -->
 ```verse
 for (Item : Collection) { Process(Item) }
 
 Doubled := for (Item : Collection) { Item * 2 }
-Doubled = array{2, 4, 6}      # A for expression evaluates to an array
+Doubled = array{2, 4, 6}      # array 로 평가되는 for expression
 ```
 
-An extended form provides access to both index and item--in the case
-of a `Map`, indices are not limited to integers:
+확장형은 index 와 item 모두에 접근할 수 있습니다. `Map` 의 경우 index 들은 integers 로 제한되지 않습니다 :
 
 <!--versetest
 Collection:[]int = array{1, 2, 3}
 -->
-<!-- 33 -->
+<!-- 36 -->
 ```verse
 for (Index -> Item : Collection) {
     Print("Item at {Index} is {Item}")
 }
 ```
 
-Since for expressions are themselves expressions, they produce array
-values and compose with other expressions. Verse evaluates the body of a for
-expression for each successful iteration, and these evaluations determine
-the value of the expression as a whole.
+for expressions 들은 그 자체로 expressions 이기 때문에, array 값들을 생성하고, 다른 expressions 와 결합됩니다. Verse 는 for 문이 성공적으로 순회할 때마다 body[^Body] 부분을 evaluate 하고, 그 evaluation 이 expressions 의 전체적인 결과값을 결정합니다.
 
-### Loop
+### Loop 문
 
-Loop expressions provide indefinite iteration, continuing until
-explicitly terminated through failure or other control flow:
+Loop expressions 는 기한이 없는 순환 기능을 제공하고, failure 나 다른 control flow 에 의해 명시적으로 종료될 때까지 계속됩니다.
 
 <!--versetest
-GetNext()<computes>:int=1
+GetNext():int=1
 Done(Value:int)<computes><decides>:void={}
-Process(Value:int)<computes>:void={}
+Process(Value:int):void={}
+M():void=
+    loop {
+        Value := GetNext()
+        if (Done[Value]) then break
+        Process(Value)
+    }
+<#
 -->
-<!-- 34 -->
+<!-- 37 -->
 ```verse
 loop {
     Value := GetNext()
@@ -674,26 +737,25 @@ loop {
     Process(Value)
 }
 ```
+<!-- #> -->
 
-The loop construct can use indented syntax for clarity.
+Loop 구조는 가독성을 위해 들여쓰기 구문을 사용할 수 있습니다.
 
-A loop expression produces a value of type `true`, regardless of what
-expressions appear in its body. This value has no practical use—loops are typically used for their side effects rather than their return value.
+Loop expressions 는 그 body 부분에 어떤 expressions 가 있는지와 무관하게 `true` 자료형의 값들을 생성합니다. 단, 이 값들 자체가 실질적으로 사용되는 것은 아닙니다. (일반적으로 loop 문은 return 값 자체보다는 side effect 를 활용하기 위해 사용됩니다.)
 
-<!-- 35 -->
 ```verse
 var Count:int = 0
 
-Result := loop:          # Result has type 'true'
+Result := loop:          # Result 가 'true' 자료형을 갖습니다
     set Count += 1
     if (Count >= 3):
         break
 Count = 3
 ```
 
-### Case
+### Case 문
 
-Case expressions provide multi-way branching based on value matching:
+Case expressions 는 값 대조에 기반해서 연산에 다중 분기 기능을 제공합니다 : 
 
 <!--versetest
 color := enum:
@@ -703,7 +765,7 @@ color := enum:
     Other
 Color:color = color.Red
 -->
-<!-- 36 -->
+<!-- 38 -->
 ```verse
 Description := case(Color) {
     color.Red => "Danger",
@@ -714,162 +776,172 @@ Description := case(Color) {
 Description = "Danger"
 ```
 
-The `_` pattern serves as a catch-all, ensuring the case expression is
-exhaustive. Case expressions evaluate to the value of the matched
-branch, making them useful for value computation as well as control
-flow.
+`_` 패턴은 지정한 Case 들을 벗어나는 포괄적 사항 전부를 처리하는 기능으로써 제공되고, case expression 이 모든 경우에 대해 완전히 대응한 상태에 놓일 수 있도록 해줍니다. Case expressions 는 값 대조 결과가 일치하는 분기의 값으로 evaluate 되므로, control flow 로 유용할 뿐 아니라 값 연산에도 유용하게 사용됩니다.
 
-## Binary Operations
+## 이진법 연산
 
-Binary expressions follow a carefully designed precedence hierarchy
-that balances mathematical conventions with programming practicality.
+이진법 expressions 는 수학적 관례와 프로그래밍 실용성 사이의 균형을 맞추도록 신중하게 설계된 우선순위 계층구조를 따릅니다.  
 
-### Assignment and Binding
+### Assignment[^Assignment] 와 Binding[^Binding]
 
-At the lowest precedence level, assignment operators bind values to
-identifiers. The `:=` operator creates immutable bindings, while `set
-=` performs mutable assignment:
+가장 낮은 precedence level[^PrecedenceLevel] 에서, assignment operators 는 identifier 에 값을 bind 합니다. `:=` operator 는 변경 불가한 binding 을 생성하는 반면, `set=` operator 는 변경 가능한 assignment 를 수행합니다 :
 
 <!--versetest-->
-<!-- 37 -->
+<!-- 39 -->
 ```verse
-X := 42           # Immutable binding
-Y := X * 2        # Binding to computed value
+X := 42           # 변경 불가한 binding
+Y := X * 2        # computed value 에의 binding
 Y = 84
+
 Z := W := 10      # Right-associative chaining
 Z = W
+
+<#>
+    Right-associative chaining :
+    precedence level 이 같은 연산자를 여러 번 연속해서 사용할 때,
+    오른쪽부터 묶어서 해석하도록 하는 규칙을 말합니다.
 ```
 
-Assignment operators are right-associative, meaning that `a := b := c`
-groups as `a := (b := c)`. This allows for natural chaining of
-assignments while maintaining clarity about evaluation order.
+Assignment operators 는 right-associative 연산을 합니다. 이는 `a := b := c` 와 같은 그룹을 `a := (b := c)` 로 보고 연산한다는 것을 의미합니다. 이로 인해 evaluation 순서에 대한 명확성을 유지하면서도 여러 assignment 를 자연스럽게 연계할 수 있습니다.
 
-Compound assignments provide shorthand for common update patterns:
+Compound assignments 는 일반적인 업데이트 패턴들을 간략하게 표현하는 표기법 입니다 :
 
-<!--versetest-->
-<!-- 38 -->
+<!--versetest
+F()<transacts>:void=
+    var Counter :int = 0
+    var Total :int = 0
+    Factor:=2
+    set Counter += 1
+    set Total *= Factor
+<#
+-->
+<!-- 40 -->
 ```verse
 var Total:int = 3
-set Total += 1        # Equivalent to: set Total = Total + 1
-set Total *= 2        # Equivalent to: set Total = Total * 2
+set Total += 1        # 다음과 같은 표현입니다 : set Total = Total + 1
+set Total *= 2        # 다음과 같은 표현입니다 : set Total = Total * 2
 Total = 8
 ```
+<!-- #> -->
 
-Compound assignment operators evaluate the left-hand side expression only once, which is observable when the expression has side effects:
+Compound assignment operators 는 좌변에 놓인 expression 을 한 번만 evaluate 합니다. 그리고 이것은 해당 expression 이 side effects 를 발생시킬 때 볼 수 있습니다 :
 
-<!-- 39 -->
+<!--versetest
+assert:
+    var TestArray:[]int = array{10, 20, 30, 40, 50}
+    var Index:int = 0
+    Inc():int =
+        set Index += 1
+        Index
+
+    # Compound assignment: Inc() called ONCE
+    set TestArray[Inc()] += 1
+
+    # Verify: Index = 1 (Inc called once)
+    Index = 1
+    # TestArray[1] = 20 + 1 = 21
+    TestArray[1] = 21
+-->
 ```verse
 var Values:[]int = array{10, 20, 30}
 var Index:int = 0
 
-# Each call returns one more than the last
+# 매번 call 될 때마다 직전 회차보다 1 더 큰 수를 반환합니다
 Inc():int =
     set Index += 1
     Index
 
-# Inc() runs once, so this reads and writes Values[1]
+# Inc() 가 한 번 실행되므로, Value[1] 을 읽고 씁니다
 set Values[Inc()] += 1
 ```
+
+`set Values[Inc()] += 1` 라는 compound assignment 에서, Verse 는 index 를 결정하기 위해 Inc() 라는 function 을 한 번 call 합니다. 그 다음 location 을 읽고, location 을 하나 늘린 다음, 결과를 원래 location 에 저장합니다. 만약 `set Values[Inc()] = Values[Inc()] + 1`로 확장된다면, 두 call 은 서로 다른 element 를 가리킬 것입니다.
+
+### 범위 Expressions
+
+범위 operator (`..`) 는 `for` 내부의 반복에 사용되는 integer 범위를 생성합니다. 범위는 **양 끝을 모두 포함하고** for 반복문에서만 직접적으로 나타납니다. 또, : 이 아니라 := 으로 bind 해야 합니다. bind 그 자체는 임의의 integer expression 이 될 수 있습니다 :
+
 <!--versetest
-Index = 1
-Values[1] = 21
+End()<computes>:int=10
+Count:int=10
+Start:int=1
+Process(I:int):void={}
+F():void=
+    for (I := 1..10):
+        for (J := I..(I+10)):
+            for (K:= J..End()) {}
+<#
 -->
-
-In the compound assignment `set Values[Inc()] += 1`, Verse calls the function `Inc()`
-once to determine the index, then reads that location,
-increments it, and stores the result back. Had it expanded to
-`set Values[Inc()] = Values[Inc()] + 1`, the two calls would have named
-different elements.
-
-### Range Expressions
-
-The range operator (`..`) creates integer ranges for iteration in
-`for` loops. Ranges are **inclusive on both ends** and can only appear
-directly in for loop iteration clauses, where they must be bound with
-`:=` rather than `:`. The bounds themselves can be any integer
-expressions:
-
-<!--versetest-->
-<!-- 40 -->
+<!-- 41 -->
 ```verse
 Count := 4
 Squares := for (I := 1..Count - 1) { I * I }
 Squares = array{1, 4, 9}
 ```
+<!-- #> -->
 
-Ranges are not first-class values. They cannot be stored in variables
-or used outside of `for` loop iteration clauses. See the [Range
-Operator Restrictions](07_control.md#for-expressions)
-section for details.
+Ranges 는 first-class value[^FirstClassValue] 가 될 수 없습니다. Ranges 는 variables 에 저장할 수 없고, `for` 반복문 외부에서 사용할 수도 없습니다. 자세한 내용은 [Range
+Operator Restrictions](07_control.md#for-expressions) 를 참조하세요.
 
-### Logical Operations
+### 논리 Operations
 
-Logical operators combine boolean values with short-circuit
-evaluation. Their result is either success or failure. Verse uses
-keyword operators (`and`, `or`, `not`) rather than symbols, improving
-readability:
+논리 operators 는 boolean 값들을 short-circuit evaluation[^ShortCircuitEvaluation] 와 합성합니다. 그 결과는 성공 또는 실패 입니다. Verse 는 기호 대신 `and`, `or`, `not` 와 같은 키워드 operator 들을 이용하여 가독성을 높입니다.
 
 <!--versetest
-Quadrant()<computes>:void = {}
-Validated:logic = true
+ProcessQuadrant()<computes>:void = {}
+Validated:logic= true
 UseDefault()<computes><decides>:void = {}
-Ready()<computes><decides>:void = {}
+IsReady()<computes><decides>:void = {}
 Wait()<computes>:void = {}
-X:int = 5
-Y:int = 10
+M()<transacts>:void =
+    X:int = 5
+    Y:int = 10
+    if (X > 0 and Y > 0) then ProcessQuadrant()
+    Result := logic{Validated? or UseDefault[]}
+    if (not IsReady[]) then Wait()
+<#
 -->
-<!-- 41 -->
+<!-- 42 -->
 ```verse
 if (X > 0 and Y > 0) then Quadrant()
 Chosen := logic{Validated? or UseDefault[]}
 if (not Ready[]) then Wait()
 ```
+<!-- #> -->
 
-The precedence ensures that `and` binds tighter than `or`, matching
-mathematical logic conventions, the `logic{}` expression turns success
-or failure into a value:
+우선순위는 `or` 연산보다 `and` 연산이 더 강하게 bind 되도록 보장하고, `logic{}` expression 은 수학적 논리 규칙에 따라 성공 또는 실패 결과를 값으로 변환합니다. 
 
-<!--versetest-->
-<!-- 42 -->
+<!--NoCompile-->
+<!-- 43 -->
 ```verse
-# Evaluates as: (true and true) or (false and false)
+# 아래는 다음과 같이 evaluate 됩니다 : (true and true) or (false and false)
 Grouped := logic{true? and true? or false? and false?}
-Grouped = true      # Would be false if the operators grouped left to right
+Grouped = true      # 만약 and 먼저 bind 되지 않고 왼쪽부터 순서대로 evaluate 되었다면 이는 false 일 것입니다.
 ```
 
-Variable bindings do not escape from logical operations.
-When you use `:=` inside `and`, `or`, or `not` expressions, those
-bindings are only evaluated for short-circuit control flow and are **not**
-accessible afterward. A binding made directly by an `if`, on the other
-hand, is visible in the body of that `if`:
+변수 binding 은 논리 operation 에서 벗어날 수 없습니다. `and`, `or`, 또는 `not` expressions 내부에 `:=` 를 쓰면, 그 binding 은 short-circuit control flow 에서만 evaluate 되고, 그 이외에는 **접근할 수 없습니다.** 이와 달리, `if` 문에 의해 직접 형성된 binding 은 그 `if` 의 본문에서는 시각적으로 확인하고, 사용할 수 있습니다 :
 
-<!--versetest
-assert_semantic_error(3506, 3506):
-    EscapingBind()<computes><decides>:void =
-        Pair:[]int = array{10, 20}
-        if ((X := Pair[0]) and (Y := Pair[1])):
-            Z := X + Y
--->
-<!-- 43 -->
+<!--NoCompile-->
+<!-- 998 -->
 ```verse
 Pair:[]int = array{10, 20}
 
-# ERROR: X and Y are unknown identifiers in the body
+# 오류 : X 와 Y 는 if 문의 본문에 위치한, 확인되지 않는 identifiers 입니다
 # if ((X := Pair[0]) and (Y := Pair[1])):
 #     Z := X + Y
 
-# OK: a simple if binding is accessible
+# 정상 : 단순한 if binding 은 접근 가능합니다 
+OK: a simple if binding is accessible
 if (First := Pair[0]):
     First = 10
 ```
 
-### Comparison Operations
+### 비교 Operations
 
-Comparison operators also either succeed or fail and can be chained
-for range checking:
+비교 operators 도 성공하거나 실패할 수 있고, 범위 검사를 위해 연쇄적으로 비교할 수 있습니다 :
 
 <!--versetest
-InRange()<computes>:void={}
+InRange():void={}
 Value:int = 50
 X:int = 75
 Minimum:int = 0
@@ -886,50 +958,53 @@ Different := logic{A <> B}
 Different = true
 ```
 
-All comparison operators have the same precedence and evaluate
-left-to-right. Crucially, comparison operators return their left
-operand when the comparison succeeds, and comparison chains have special
-syntax that checks all adjacent pairs.
+모든 비교 operators 는 같은 우선순위를 갖고, 왼쪽부터 오른쪽 순서대로 evaluate 됩니다. 결정적으로, 비교가 성공했을 때 비교 operators 는 그들의 왼쪽 operand 를 return 합니다. 그리고 연쇄 비교는 모든 인접한 쌍을 확인하는 특별한 구문을 가지고 있습니다.
 
-<!--versetest-->
-<!-- 45 -->
+<!--versetest
+assert:
+    X := 0 < 10
+    X = 0  # Returns left operand (0)
+
+    Value:int = 50
+    Result := 0 <= Value <= 100
+    Result = 0  # Chain returns leftmost operand (0)
+
+    # Chain checks BOTH comparisons
+    Value2:int = 75
+    not(10 <= Value2 <= 50)  # Fails because 75 > 50
+<#
+-->
+<!-- 999 -->
 ```verse
 Left := 0 < 10
-Left = 0                  # A comparison returns its left operand
+Left = 0                  # 비교 결과 왼쪽 operand 를 return 합니다
 
 Value := 50
-0 <= Value <= 100         # Chain checks BOTH 0 <= Value and Value <= 100
-not (10 <= Value <= 40)   # And fails when either half fails
+0 <= Value <= 100         # 연쇄 비교는 0 <= Value 와 Value <= 100 을 모두 확인합니다
+not (10 <= Value <= 40)   # 그리고 연쇄 비교는 한쪽 절반만 fail 로 되더라도 전체가 fail 됩니다
 ```
+<!-- #> -->
 
-Verse does **not** evaluate the comparison chain `A <= B <= C` as `(A <= B) <= C`.
-Instead, it is special syntax that checks both `A <= B` **and** `B <= C`, while
-returning the leftmost operand (`A`) on success. This enables natural
-mathematical notation for ranges without requiring `and` operators.
+Verse 는 `A <= B <= C` 과 같은 연쇄 비교를 `(A <= B) <= C` 처럼 evaluate 하지 **않습니다.** 그 대신, `A <= B`와 `B <= C`를 **and** 로 모두 확인하는 특수 구문을 사용하며, 성공 시 가장 왼쪽 operand (`A`) 를 반환합니다. 이를 통해 `and` operator 를 직접 사용하지 않고도 범위에 대한 자연스러운 수학적 표기법을 사용할 수 있습니다.
 
-### Arithmetic Operations
+### 산술 Operations
 
-Arithmetic operations follow standard mathematical precedence, with
-multiplication and division binding tighter than addition and
-subtraction:
+산술 operations 은 표준 수학 우선순위를 따르므로, 덧셈과 뺄셈보다 곱셉과 나눗셈이 우선순위가 높습니다.
 
 <!--versetest
 A:int = 1
 B:int = 2
 C:int = 3
 -->
-<!-- 46 -->
+<!-- 45 -->
 ```verse
-Result := A + B * C          # Multiplication first
+Result := A + B * C          # 곱셈 우선
 Result = 7
-Average := (A + B + C) / 2   # Parentheses override precedence
+Average := (A + B + C) / 2   # 괄호는 우선순위를 재정의 합니다
 Average = 3
 ```
 
-Integer division by zero fails and has the `<decides>` effect.
-When dividing integers, `X / Y` can fail if `Y` is `0`, allowing you to handle
-this case safely. Note that dividing two integers yields a `rational`,
-not an `int`, so the quotient cannot be assigned to an `int` variable:
+0으로 나누는 Integer 나눗셈은 fail 되고, `<decides>` effect 가 나타납니다. integer 를 나눌 때, 만약 `Y` 가 `0` 라면, `X / Y` 과 같은 식이 fail 될 수 있어서, 이 사안을 안전하게 처리할 수 있게 해줍니다. 두 integer 를 나누면 `int` 가 아닌 `rational`[^Rational] 이 나올 수 있으므로, 몫을 `int` variable 에 assign 할 수 없다는 점에 유의 하세요 :
 
 <!--versetest
 X:int = 10
@@ -937,18 +1012,17 @@ Y:int = 0
 assert:
     not(Result := X / Y)
 -->
-<!-- 47 -->
+<!-- 997 -->
 ```verse
 if (Result := X / Y):
-    Print("Division succeeded")
+    Print("나눗셈 성공")
 else:
-    Print("Cannot divide by zero")
+    Print("0 으로 나눌 수 없습니다")
 ```
 
-Float division by zero does not fail; it returns infinity according to
-IEEE 754 floating-point semantics.
+Float 를 0 으로 나누는 경우에는 fail 되지 않습니다. 이 경우에는 IEEE 754 floating-point semantics 를 반영하여 무한대를 return 합니다.
 
-Unary operators have the highest precedence among arithmetic operations:
+Unary operators 는 산술 operations 중에서 가장 높은 우선순위를 갖습니다 :
 
 <!--versetest
 Flag:logic = true
@@ -956,24 +1030,41 @@ Value:int = 1
 X:int = 1
 Y:int = 2
 -->
-<!-- 48 -->
+<!-- 46 -->
 ```verse
 Negative := -Value
 Inverted := logic{not Flag?}
-Result := -X * Y    # Unary minus applies to X only
+Result := -X * Y    # Unary operator 인 minus (-) 는 X 에만 적용됩니다
 Result = -2
 ```
 
 ## Set Expressions
 
-While Verse emphasizes immutability, practical programming sometimes
-requires mutation. Set expressions provide mutation of variables and
-fields:
+Verse 는 불변성을 강조하지만, 현실적인 프로그래밍에서는 종종 변경이 필요한 경우가 있습니다. Set expressions 을 쓰면 variables 와 fields 를 변경할 수 있습니다 :
 
 <!--versetest
-counter := class { var Count:int = 0 }
+c := class { var Field:int = 0 }
+GetObj()<transacts>:c = c{}
+GetArr()<transacts>:[]int = array{1}
+GetMap()<transacts>:[string]string = map{ "hi" => "hp" }
+Element:int = 5
+Value:int = 100
+Index:int = 0
+Key:string = "key"
+MappedValue:string = "value"
+assert:
+    var X:int = 0
+    var Obj:c = GetObj()
+    var Arr:[]int = GetArr()
+    var Map:[string]string = GetMap()
+
+    set X = 10
+    set Obj.Field = Value
+    set Arr[Index] = Element
+    set Map[Key] = MappedValue
+<#
 -->
-<!-- 49 -->
+<!-- 47 -->
 ```verse
 var Health:int = 0
 var Slots:[]int = array{0, 0}
@@ -988,216 +1079,198 @@ Health = 10
 Hero.Count = 5
 Slots[0] = 99
 Scores["Ana"] = 3
+
+<#>
+    Map entry :
+    Map 안에 저장되어 있는 하나의 '키-값 쌍' 을 말합니다.
 ```
+<!-- #> -->
 
-Set expressions are themselves expressions that **return the value being
-assigned** (the right-hand side). For example, `set Obj.Field = Value`
-returns `Value`, not `Obj`. This allows chaining assignments:
+Set expressions 는 그들 자체로 **assign 되고 있는 값(우변)을 return 하는** expresions 입니다. 예를 들어, `set Obj.Field = Value` 라고 적으면 `Obj` 가 아니라 `Value` 가 return 됩니다. 이를 이용해서 연쇄 assignment 를 할 수 있습니다 :
 
-<!-- 50 -->
 ```verse
 var X:int = 0
 var Y:int = 0
 
-set Y = set X = 5  # Both X and Y become 5
+set Y = set X = 5  # X 와 Y 모두가 5 가 됩니다
 ```
-<!--versetest
-X = 5
-Y = 5
--->
 
-Though set expressions have a value, they are typically used for their side
-effects. The left-hand side must be a valid LValue—something that can be
-assigned to.
+Set expressions 가 그들 자체로 값을 갖기는 하지만, 일반적으로는 그들의 side effects 를 활용하는데 쓰입니다. 좌변은 반드시 유효한 LValue[^LValue] 여야 합니다. 즉, 값을 assign 할 수 있는 대상이어야 합니다.
 
-Verse supports complex LValues, allowing updates deep within data structures:
+Verse 는 복잡한 LValue 들을 지원하므로, 구조상 깊은 곳에 위치한 데이터도 업데이트 할 수 있습니다.
 
 <!--versetest
-item := class{Name:string = "Sword"}
+item := class{Name:string = "Item"}
 inventory := class{var Items:[]item = array{item{}}}
-player := class{Inventory:inventory = inventory{}}
-game := class{Players:[]player = array{player{}}}
+player := class{var Inventory:inventory = inventory{}}
+game := class{var Players:[]player = array{player{}}}
+M()<transacts><decides>:void =
+    Game:game = game{}
+    CurrentPlayer:int = 0
+    Slot:int = 0
+    NewItem:item = item{}
+    set Game.Players[CurrentPlayer].Inventory.Items[Slot] = NewItem
+<#
 -->
-<!-- 51 -->
+<!-- 48 -->
 ```verse
 Game := game{}
 set Game.Players[0].Inventory.Items[0] = item{Name := "Axe"}
 Game.Players[0].Inventory.Items[0].Name = "Axe"
 ```
+<!-- #> -->
 
-## Semicolons vs Commas
+## 세미콜론 vs 쉼표
 
-Verse uses semicolons and commas as separators in various contexts,
-but they have fundamentally different semantics in most
-situations. Understanding when each is appropriate is essential for
-writing correct Verse code.
+Verse 는 다양한 문맥에서 세미콜론과 쉼표를 구분 기호로 사용합니다. 하지만 대부분의 경우 그 둘은 근복적으로 다른 semantics 를 갖습니다. 언제 어떤 것을 쓰는게 더 적절한지 이해하는 것은 올바른 Verse 코드 작성에 필수적 입니다.
 
-Semicolons within parentheses create *sequences*: they evaluate expressions in order and return the value of the last expression.
+괄호 안의 세미콜론은 *sequences* 를 만듭니다 : 즉, expressions 를 순서대로 evaluate 하고, 마지막 expression 의 값을 return 합니다.
 
 <!--versetest
-assert_semantic_error(3560, 3547):
-    Result49 := 1; 2
+assert:
+    Result := (1; 2; 3)
+    Result = 3
 -->
-<!-- 52 -->
+<!-- 49 -->
 ```verse
-Sequence := (1; 2; 3)     # Evaluates 1, then 2, then 3
-Sequence = 3              # And returns the last one
-# Sequence := 1; 2        # ERROR: parentheses are required
+Sequence := (1; 2; 3)     # 1, 2, 3 을 순서대로 평가합니다
+Sequence = 3              # 그 다음 마지막 것을 return 합니다
+# Sequence := 1; 2        # 오류 : 괄호가 필요합니다
 ```
 
-Commas within parentheses create *tuples*: they group multiple values into a single composite value.
-
-<!--versetest
-assert_semantic_error(3560, 3547):
-    Result50 := 1, 2
--->
-<!-- 53 -->
-```verse
-Tuple := (1, 2, 3)        # Creates a tuple of three elements
-Tuple = (1, 2, 3)         # Type is tuple(int, int, int)
-# Tuple := 1, 2           # ERROR: parentheses are required
-```
-
-### Context-Specific Behavior
-
-In expression contexts (like assignments), semicolons and commas require
-parentheses to create sequences and tuples. The distinction is clear when
-comparing parenthesized expressions, and it applies to function return
-values as well:
+괄호 안의 쉼표는 *tuples* 를 만듭니다 : 즉, 여러 값을 하나의 복합 값으로 묶습니다.
 
 <!--versetest-->
-<!-- 54 -->
+<!-- 50 -->
 ```verse
-GetInt():int = (1.0; 2)                    # Sequence: returns 2 (int)
-GetTuple():tuple(float, int) = (1.0, 2)    # Tuple: returns (1.0, 2)
+Tuple := (1, 2, 3)        # 세 element 로 하나의 tuple 을 만듭니다
+Tuple = (1, 2, 3)         # 자료형은 tuple(int, int, int) 입니다
+# Tuple := 1, 2           # 오류 : 괄호가 필요합니다
+```
+
+### 맥락에 따른 작동 방식
+
+Assignments 와 같은 expression 맥락에서, 세미콜론과 쉼표는 sequences 와 tuples 를 만들기 위한 괄호가 필요합니다. 괄호로 묶인 expressions 를 비교해보면 둘 사이의 구분이 명확해지고, 이는 함수의 return 값에도 적용됩니다 :
+
+<!--versetest-->
+<!-- 51 -->
+```verse
+GetInt():int = (1.0; 2)                    # Sequence: 2 (int) 를 return 합니다
+GetTuple():tuple(float, int) = (1.0, 2)    # Tuple: (1.0, 2) 를 return 합니다
 GetInt() = 2
 GetTuple() = (1.0, 2)
 ```
 
-Semicolons in argument position create a *sequence that executes
-before the call*, with only the last value passed as the argument. This
-pattern enables side effects in argument position:
+Argument 가 놓이는 위치에 사용된 세미콜론은 *call 이전에 실행되는 sequence* 를 생성합니다. 그리고 이 sequence 중 마지막 값만이 argument 로서 전달됩니다. 이와 같은 패턴은 argument 위치에서의 side effect 발생도 가능하게 합니다 :
 
 <!--versetest
-Process(X:int)<computes>:void={}
-LogEvent(S:string)<computes>:int=1
-MultiplyByTen(X:int)<computes>:int = X * 10
+Process(X:int):void={}
+LogEvent(S:string):int=1
 -->
-<!-- 55 -->
+<!-- 53 -->
 ```verse
-Process(LogEvent("called"); 42)   # Logs "called", then calls Process(42)
+Process(LogEvent("called"); 42)   # "called" 가 먼저 기록되고, Process(42) 를 call 합니다
 
-Result := MultiplyByTen(2; 3)     # Discards 2, then calls MultiplyByTen(3)
+Result := MultiplyByTen(2; 3)     # 2 버리고, MultiplyByTen(3) 을 call 합니다
 Result = 30
 ```
 
-Commas separate distinct arguments in the standard way:
+쉼표는 표준 방식으로 서로 다른 arguments 들을 구분합니다 : 
 
 <!--versetest
-Add(A:int, B:int)<computes>:int = A + B
+Add(A:int, B:int):int = A + B
 -->
-<!-- 56 -->
+<!-- 55 -->
 ```verse
-Sum := Add(10, 20)                # Two separate arguments
+Sum := Add(10, 20)                # 서로 다른 두 arguments
 Sum = 30
 ```
 
-Semicolons are *not allowed* in parameter lists - you must use commas:
+세미콜론은 파라미터 목록에 *입력할 수 없습니다* - 파라미터 목록에는 반드시 쉼표를 사용해야 합니다 :
 
 <!--versetest
 assert_semantic_error(3540):
     InvalidFunc(A:int; B:int):void = {}
 -->
-<!-- 57 -->
+<!-- 56 -->
 ```verse
-ValidFunc(A:int, B:int):void = {}     # VALID: comma-separated parameters
-# InvalidFunc(A:int; B:int):void = {} # ERROR: semicolon in parameters
+ValidFunc(A:int, B:int):void = {}     # 유효 : 쉽표로 구분된 파라미터들
+# InvalidFunc(A:int; B:int):void = {} # 오류 : 파라미터 목록에 들어간 세미콜론
 ```
 
-### In Specific Scopes
+### 특정 범위에서
 
-Within block expressions (braces), semicolons and commas are interchangeable as separators between definitions:
+중괄호로 감싸진 expressions 에서, 세미콜론과 쉼표는 정의 사이의 구분 기호로서 서로 바꿔 쓸 수 있습니다 :
+
+<!--versetest-->
+<!-- 57 -->
+```verse
+# 중괄호로 감싸진 범위에서, 아래의 세 기호는 구분기호로서 모두 정상 작동합니다 :
+block:
+    X:int = 0; Y:int = 0      # 세미콜론 구분기호
+
+block:
+    X:int = 0, Y:int = 0      # 쉼표 구분기호
+
+block:
+    X:int = 0                 # 새 줄을 구분기호로 쓰는 경우 (가장 흔함)
+    Y:int = 0
+```
+
+`logic{}` constructor 에서 - 세미콜론과 쉼표는 모두 유효하게 작동하지만, construct 의 작동 방식에 따라 semantics 가 다릅니다.
 
 <!--versetest-->
 <!-- 58 -->
 ```verse
-# In block scope, all three separators work:
-block:
-    X:int = 0; Y:int = 0      # Semicolon separator
-
-block:
-    X:int = 0, Y:int = 0      # Comma separator
-
-block:
-    X:int = 0                 # Newline separator (most common)
-    Y:int = 0
+# 아래의 두 수식 모두 모든 expressions 를 evaluate 하고, 논리 값을 return 합니다
+Result1 := logic{true?; true?}    # Queries 의 Sequence
+Result2 := logic{true?, true?}    # 이것도 유효 합니다
+Result1 = Result2
 ```
 
-In `logic{}` constructor - both semicolons and commas work, but with
-different semantics based on the construct's behavior:
+`option{}` constructor 에서 - Verse 에서 쓰이는 일반적인 sequence 와 tuple 구분 규칙을 따릅니다 :
 
 <!--versetest-->
 <!-- 59 -->
 ```verse
-# Both evaluate all expressions and return logic value
-Result1 := logic{true?; true?}    # Sequence of queries
-Result2 := logic{true?, true?}    # Also valid
-Result1 = Result2
+Option1 := option{1; 2}?          # 세미콜론 : sequence 규칙을 따르므로, 마지막 값을 wrap 합니다
+Option1 = 2
+Option2 := option{1, 2}?          # 쉼표 Comma: tuple 규칙을 따르므로, 그 tuple 을 wrap 합니다
+Option2 = (1, 2)
+
+<#>
+    Wrap :
+    기존 값을 다른 타입의 값 안에 넣어 그 타입으로 표현하는 것을 말합니다.
 ```
 
-In `option{}` constructor - follows the standard sequence vs tuple rule:
+`for` expressions 에서 - 일반적으로 세미콜론은 반복 구문과 필터 조건을 구분하는데 사용되고, 쉼표는 다중 조건들을 구분하는데 사용됩니다. 둘은 하나의 구문 목록에서 섞어 쓸 수 없습니다. 세미콜론을 쓰면 리스트가 재그룹화 되고, 그로 인해 generator[^Generator] 의 위치가 범위를 벗어나게 되므로, 둘을 섞어 쓰는 경우 Verse 문법에 따라 적용이 거절됩니다 :
 
 <!--versetest-->
 <!-- 60 -->
 ```verse
-Option1 := option{1; 2}?          # Semicolon: sequence, wraps last value
-Option1 = 2
-Option2 := option{1, 2}?          # Comma: tuple, wraps the tuple
-Option2 = (1, 2)
-```
-
-In `for` expressions - semicolon typically separates the iteration
-clause from filter conditions, while commas separate multiple
-conditions. The two cannot be mixed in one clause list: a semicolon
-regroups the list, which moves the range out of generator position and
-is rejected.
-
-<!--versetest
-assert_semantic_error(3552, 3509, 3509):
-    MixedClauses()<computes>:void =
-        Vals := for (X := 1..3, X <> 2; X <> 3) { X }
--->
-<!-- 61 -->
-```verse
-Odd := for (X := 1..3; X <> 2) { X }    # Semicolon separates iteration from filter
+Odd := for (X := 1..3; X <> 2) { X }    # 세미콜론은 반복 구문과 필터 조건을 구분합니다
 Odd = array{1, 3}
-Same := for (X := 1..3, X <> 2) { X }   # Comma means the same thing here
+Same := for (X := 1..3, X <> 2) { X }   # 여기서 쉼표는 위와 같은 의미를 갖습니다
 Same = Odd
-# for (X := 1..3, X <> 2; X <> 3)       # ERROR: cannot mix separators
+# for (X := 1..3, X <> 2; X <> 3)       # 오류 : 두 구분 기호를 섞어 쓸 수 없습니다
 ```
 
-In `array{}` constructors, you can separate elements with commas **or**
-semicolons (but not mixed):
-
-<!--versetest
-assert_semantic_error(3547):
-    MixedArray61 := array{1, 2; 3}
--->
-<!-- 62 -->
-```verse
-CommaArray := array{1, 2, 3}       # Commas work
-SemiArray := array{1; 2; 3}        # Semicolons also work
-# MixedArray := array{1, 2; 3}     # ERROR: cannot mix separators
-```
-
-### Newlines as Separators
-
-In addition to semicolons and commas, **newlines** can serve as
-separators in compound expressions and blocks. Newlines behave like
-semicolons - they create sequences:
+`array{}` constructors 에서 - 쉼표 **또는** 세미콜론을 써서 (즉, 둘을 같이 쓰지 않고) elements 를 서로 구분할 수 있습니다 :
 
 <!--versetest-->
-<!-- 63 -->
+<!-- 61 -->
+```verse
+CommaArray := array{1, 2, 3}       # 쉼표가 작동합니다
+SemiArray := array{1; 2; 3}        # 세미콜론도 작동합니다
+# MixedArray := array{1, 2; 3}     # 오류 : 섞어 쓸 수 없습니다
+```
+
+### 구분 기호로서의 새 줄
+
+세미콜론과 쉼표 이외에, **새 줄** 도 복합적인 expression 들과 block 들에서 구분 기호로 사용될 수 있습니다. 새 줄은 세미콜론처럼 작동합니다. 즉, sequence 들을 생성합니다 :
+
+<!--versetest-->
+<!-- 62 -->
 ```verse
 Lines := (
     1
@@ -1207,17 +1280,15 @@ Lines := (
 Lines = 3        # Same as (1; 2; 3)
 ```
 
-## Compound and Block Expressions
+## 복합 Expressions 와 Block Expressions
 
-Compound expressions, delimited by braces, group multiple expressions
-into a single expression. The value of a compound expression is the
-value of its last sub-expression:
+중괄호로 구분된 복합 Expressions 은 여러 expression 들을 하나의 expression 으로 그룹화 합니다. 복합 expression 의 값은 마지막 하위 expression 의 것과 같습니다 :
 
 <!--versetest
-ComputeIntermediate()<computes>:int=3
-CalculateAdjustment(Base:int)<computes>:int=3
+ComputeIntermediate():int=3
+CalculateAdjustment(o:int):int=3
 -->
-<!-- 64 -->
+<!-- 63 -->
 ```verse
 Result := {
     Temp := ComputeIntermediate()
@@ -1227,34 +1298,39 @@ Result := {
 Result = 6
 ```
 
-Compound expressions create new scopes for variables, allowing local bindings that do not affect the enclosing scope:
+복합 expressions 은 variables 에 대한 새 범위를 만들어서, 상위 범위에 영향을 미치지 않는 지역적인 bind 를 만듭니다 :
 
 <!--versetest-->
-<!-- 65 -->
+<!-- 64 -->
 ```verse
 block:
     X := 10    # Local to this block
     Y := 20
     X + Y
-               # X and Y no longer accessible
+               # X 와 Y 는 더이상 접근할 수 없습니다
 ```
 
-You can separate expressions within a compound using semicolons, commas,
-or newlines. Semicolons and newlines create sequences (returning the
-last value), while commas create tuples. See [Semicolons vs
-Commas](#semicolons-vs-commas) for the complete
-rules:
+세미콜론, 쉼표, 또는 새 줄을 이용해서 복합 Expression 을 나눌 수도 있습니다. 세미콜론과 새 줄은 sequence 들을 생성하는 반면(이들은 마지막 값을 return 합니다), 쉼표는 tuples 를 생성합니다. 자세한 내용은 [Semicolons vs Commas](#semicolons-vs-commas) 를 확인하세요.
 
 <!--versetest
 A:int = 1
 B:int = 2
 C:int = 3
+M():void =
+    X := { A; B; C }
+    Y := { A, B, C }
+    Z := {
+        A
+        B
+        C
+    }
+<#
 -->
-<!-- 66 -->
+<!-- 65 -->
 ```verse
-Semi := { A; B; C }   # Semicolon separation (returns C)
-Comma := { A, B, C }  # Comma separation (returns tuple (A, B, C))
-Lines := {            # Newline separation (returns C)
+Semi := { A; B; C }   # 세미콜론에 의한 구분 (C 를 return 합니다)
+Comma := { A, B, C }  # 쉼표에 의한 구분 (tuple (A, B, C)를 return 합니다)
+Lines := {            # 새 줄에 의한 구분 (C 를 return 합니다)
     A
     B
     C
@@ -1262,25 +1338,33 @@ Lines := {            # Newline separation (returns C)
 Semi = Lines
 Comma = (A, B, C)
 ```
+<!-- #> -->
 
 ## Array Expressions
 
-Array expressions create array values using the `array` keyword
-followed by elements in braces:
+Array expressions 는 `array` 키워드를 이용해서 array 값을 생성합니다. 키워드 뒤에는 내부에 element 들이 들어간 중괄호를 배치합니다 :
 
 <!--versetest-->
-<!-- 67 -->
+<!-- 66 -->
 ```verse
 NumArray := array{1, 2, 3, 4, 5}
 Empty := array{}
-Mixed := array{1, "two", 3.0}  # Element type is comparable, their common supertype
+Mixed := array{1, "two", 3.0}  # 이 경우 element 의 자료형은 comparable (자료형의 한 종류)이 되며, 이는 개별 element 자료형의 common supertype 입니다
+
+<#>
+    Common supertype : 공통 상위 자료형
+    여러 자료형이 있을 때, 그 자료형들을 포괄할 수 있는 상위 자료형을 말합니다.
+    어떤 supertype 을 구성하는 하위 자료형은 subtype 이라고 말합니다.
+    위의 예에서는 int 자료형인 1, float 자료형인 3.0 이 comparable 의 subtype 이 될 수 있습니다.
+    문맥상 string 자료형인 "two" 도 다른 두 element 와 함께 comparable 의 subtype 이 될 수 있는 것처럼 표현되어 있으나,
+    string 까지 포함하려면 comparable 자료형보다 범위가 넓은 supertype 인 'any' 를 사용하는것이 안전합니다.
+    
 ```
 
-You can also construct arrays using indented syntax for clarity with
-longer lists:
+목록이 길어질 경우, 가독성을 높이기 위해 들여쓰기 구문을 이용해서 array 를 구성할 수도 있습니다 :
 
 <!--versetest-->
-<!-- 68 -->
+<!-- 67 -->
 ```verse
 Colors := array:
     "red"
@@ -1288,3 +1372,57 @@ Colors := array:
     "blue"
     "yellow"
 ```
+
+[^Expressions]: 표현식. evaluation(평가) 된 결괏값을 도출하는 코드를 말합니다.
+[^Statements]: 명령문. 동작을 지시하는 코드를 말합니다. 
+[^SideEffect]: 부수 효과. 함수 내부에서 이뤄지는 연산이 해당 함수 외부의 상태 변경에 미치는 효과를 말합니다.
+[^Literals]: 리터럴. Damage := 100 에서의 100 처럼, identifier 를 사용하지 않고 직접 입력된 값을 말합니다. 만약 identifier 를 사용한다면 Damage := BaseDamage 처럼 표현될 수 있을 것입니다.
+[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
+[^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.
+[^Integers]: 정수를 표현할 수 있는 자료형을 말합니다. 1, 10, 100 등을 표현할 수 있습니다.
+[^Floats]: 소수를 표현할 수 있는 자료형을 말합니다. 1.618, 3.14 등을 표현할 수 있습니다.
+[^Characters]: 단일 문자를 표현할 수 있는 자료형을 말합니다. A, a, ! 등을 표현할 수 있습니다.
+[^Strings]: 문자열을 표현할 수 있는 자료형을 말합니다. Hello World, Lorem Ipsum 등을 표현할 수 있습니다.
+[^Booleans]: 참 또는 거짓을 표현할 수 있는 자료형을 말합니다.
+[^Functions]: 함수를 표현할 수 있는 자료형을 말합니다. 함수는 입력을 받아 결과를 도출하는 코드를 말하지만, Verse 에서는 함수 자체가 값으로 취급될 수 있어서 functions 라는 용어가 자료형 중 하나로도 쓰입니다. 
+[^ArbitraryPrecisionArithmetic]: 임의 연산 방식. 저장 공간의 크기를 미리 32비트, 64비트 등으로 제한하지 않고, 필요한 만큼 늘려가며 계산하는 방식을 말합니다. int64 와 같은 자료형은 저장 공간이 64-bit 로 제한되어 있어서, 범위를 넘는 값을 표현하면 Overflow (값이 순환되거나 오류를 발생시키는 현상) 가 발생합니다. 임의 연산 방식을 사용할 경우, 범위가 제한되어 있지 않아 Overflow 발생을 예방할 수 있습니다.
+[^StringInterpolation]: 문자열 안에 값을 삽입하는 기능을 말합니다. Print("Found {Items.Quantity} Items !") 라는 코드에서, {Items.Quantity} 부분을 통해 값을 넣는 등을 예로 들 수 있습니다.
+[^Persisted]: 프로그램의 실행이 끝나거나 환경이 바뀌어도 계속 유지되도록 저장된 데이터를 말합니다.
+[^f64]: 숫자를 처리하는 방식 중 하나를 말합니다. 64bit 중 1bit 는 부호(sign) 표시에, 11bit 는 지수(exponent) 표시에, 나머지 52bit 는 분수로 표현되는 유효숫자(significand) 표시에 사용하는 방식입니다. 32bit 를 사용하는 f32 방식에 비해 소수점 이하 수를 정밀하게 표현할 수 있습니다. 단, 예시에서는 접미사로써 사용되는 것이므로, '앞선 값을 64비트 부동소수점 값으로 취급한다.' 는 의도를 명시적으로 표기하는 효과를 얻는데 그치고, 이 접미사를 적는다고 해서 12.34 라는 값의 소수점 셋째 자리 이하에 없던 값이 추가적으로 생성되는 것은 아닙니다.
+[^IEEE754]: 미국 전기전자공학회인 IEEE (Institute of Electrical and Electronics Engineers)가 제정한 floats 산술 표준을 말합니다.
+[^DoublePrecision]: 배정밀도. floats 자료형이 얼마나 많은 유효 숫자를 정확하게 표현할 수 있는지 비교하기 위한 표현 중 하나입니다. 64bit 를 double precision(배정밀도), 32bit 를 single precision(단정밀도) 로 구분해 부릅니다.
+[^UnaryOperators]: 단항 연산자. 피연산자(operand)를 하나만 필요로 하는 연산자를 말합니다. 예시의 -1.0 에서 - 를, +1.0 에서 + 를 Unary Operators 라고 부릅니다. <> 이해를 위한 개념으로, Binary operator(이항 연산자)가 있습니다. Binary operator 는 피연산자를 두 개 필요로 합니다. 예를 들어, 1+2 라는 예시 식에서 + 는 1 과 2 라는 두 피연산자를 갖는 Binary operator 입니다.
+[^Overflow]: 입력된 값이 시스템의 처리 상한을 넘는 상태를 총칭 합니다. 현재 맥락에서는 Floats 자료형의 64-bit 에 담을 수 있는 최대값 이상의 값을 담은 경우에 발생하는 floats overflow 만을 의미합니다. 구분되어야 할 개념으로 Integer overflow, stack overflow, buffer overflow 가 있습니다.
+[^Underflow]: 입력된 값이 시스템의 처리 하한을 넘거나, 처리에 필요한 최소량에 미치지 못하는 상태를 총칭 합니다. 현재 맥락에서는 Floats 자료형의 64-bit 에 담을 수 있는 최소값 이하의 값을 담은 경우에 발생하는 floats underflow 만을 의미합니다. 구분되어야 할 개념으로 Integer underflow, stack underflow, buffer underflow 가 있습니다.
+[^CompileTimeErrors]: 컴파일 타임 에러. Compile 은 소스 코드를 실행 가능한 프로그램으로 전환하는 절차를 말하고, 이 절차 중에 발생하는 에러를 Compile-time errors 라고 합니다.
+[^Runtime]: 런타임. 이미 컴파일을 마친 상태의 프로그램이 실행중인 상태를 말합니다.
+[^Semantics]: 특정 코드나 연산이 실제로 어떤 의미를 가지며, 어떤 결과를 내야 하는지를 정의하는 규칙을 말합니다. 보통 '의미론' 이라고 번역됩니다.
+[^UnicodeCodePoints]: Unicode 표준에서 각 문자를 식별하기 위해 부여한 고유한 번호를 말합니다. 예를 들어, 문자 'a' 의 Unicode Code Points 는 U+0061 입니다.
+[^ImplicitConversion]: 암시적 형 변환. 개발자가 자료형 변환 코드를 직접 작성하지 않았어도 언어의 규칙에 따라 자동으로 형이 변환되는 것을 말합니다.
+[^QueryOperator]: 쿼리 연산자. 데이터 집합(데이터 베이스, 배열, 리스트 등)에서 원하는 데이터를 찾고, 거르고, 정렬하고, 변환하기 위해 사용하는 기호나 함수를 말합니다.
+[^Comparisons]: 비교연산. 두 개 이상의 값을 서로 대조하여 그 관계가 참(True)인지 거짓(False)인지 판단하는 연산을 말합니다.
+[^Modules]: 모듈. 특정 기능들을 수행하는 소스 코드(변수, 함수, 클래스 등)를 모아놓은 하나의 파일을 말합니다.
+[^Packages]: 패키지. 여러 모듈을 모아둔 폴더(디렉터리)입니다.
+[^Alphanumeric]: 영숫자. 영어의 알파벳과 0~9 의 숫자로 이뤄진 구성을 말합니다.
+[^PathSegments]: 경로 분절. 예를 들어 경로가 /Fortnite.com/Characters/PlayerController 인 경우, 'Fortnite.com', 'Characters', 'PlayerController' 각각을 하나의 path segment 라고 말합니다. 원문에는 Path segments 가 아닌 'Identifiers' 라고 표현되어 있는데, 맥락상의 명확성을 감안하여 Path segments 로 수정했습니다.
+[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
+[^Evaluation]: 평가. expression 을 실제로 계산하여 그 결과값(value)을 얻는 것을 말합니다.
+[^Tuple]: 튜플. 서로 관련된 여러 값을 하나의 값으로 묶어 놓은 것을 말합니다. 예를 들어, X=100, Y=200, Z=300 로 분리된 세 값을 (100, 200, 300) 으로 묶는다면, 이 묶인 값을 Tuple 이라고 할 수 있습니다.
+[^Element]: 어떤 Collection 내부의 개별 값들을 말합니다.↩
+[^Construct]: 생성. 설정된 특정 타입에 해당하는 실제 값이나 객체를 만들어내는 것을 말합니다.
+[^Operand]: 피연산자. Operator(연산자) 가 연산을 수행하는 대상이 되는 값이나 표현식을 말합니다.
+[^Member]: 멤버. 어떤 Structure, Object 또는 자료형에 소속된 구성 요소를 말합니다.
+[^Struct]: 구조체. 서로 다른 여러 자료형의 데이터를 하나로 묶은 사용자 지정 자료형 입니다. 한 대상과 관련된 여러 특성을 한번에 관리하기 위해 씁니다. 예를 들어, 자료형이 float 인 AmountOfDamage, 자료형이 Emumeration 인 DamageType, 자료형이 Boolean 인 CanBeBlocked 라는 구성 요소들을 모아 '피해'와 관련된 여러 특성을 관리하는 DamageInfo 라는 이름의 struct 로 만들 수 있습니다.
+[^ComputedAccess]: 접근할 대상이 고정된 Member 가 아니고, 어떤 표현식의 평가 결과일 때, 그에 대한 접근을 Computed Accecss 라고 말합니다. 이와 달리, 고정된 Member 에의 접근은 Direct Access 라고 말합니다.
+[^Maps]: Key 와 Value 를 1:1 로 매칭시킨 목록을 갖는 자료형을 말합니다.
+[^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
+[^Collections]: 여러 값을 묶어 놓은 자료형을 말합니다.
+[^Body]: 본문. 반복문 말미의 중괄호 {} 안에 표현되어, 각 회차에서 반복적으로 evaluate 되는 부분을 말합니다. 위 문장에서는 Print("Item at {Index} is {Item}") 부분이 Body 입니다.
+[^Assignment]: 할당. 어떤 값을 특정한 variables 나 identifiers 에 입력하여, 그 이름으로 해당 값을 참조할 수 있도록 하는 것을 말합니다.
+[^Binding]: 어떤 값이 특정한 variables, identifiers, functions 등에 대응된 상태를 말합니다.
+[^PrecedenceLevel]: 우선순위. Operator 들이 처리되는 순서를 말합니다. precedence level 이 가장 낮은(lowest) operator 라고 하면, 가장 '나중에' 연산되는 operator 를 의미합니다. 예를 들어, 1+2= 에서 lowest precedence level 에 있는 operator 는 = 입니다. 
+[^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
+[^ShortCircuitEvaluation]: 단락 평가. 논리 연산의 결과가 이미 결정되면, 뒤에 있는 expression 을 더 이상 evaluate 하지 않고 중단하는 것을 말합니다.↩
+[^Rational]: 유리수.
+[^LValue]: Left-hand Value. Assignment operator 왼쪽에 놓여 새로운 값을 저장할 수 있는 대상을 말합니다.
+[^Generator]: Verse 의 반복문에서, 반복할 값의 범위를 기재한 부분을 말합니다. 예를 들어, for (Item : Collection) {} 와 같이 기술한 경우, Collection 이 Generator 입니다.
