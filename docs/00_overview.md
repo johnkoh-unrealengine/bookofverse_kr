@@ -1,155 +1,179 @@
-# The Verse Programming Language
+# 프로그래밍 언어 Verse
 
-## Overview
+## 개요
 
-Verse is a multi-paradigm programming language developed by Epic Games for creating gameplay in Unreal Editor for Fortnite and building experiences in the metaverse. Drawing from functional, logic, and imperative traditions, Verse represents a departure from traditional programming languages, designed for long-term evolution and stability.
+Verse 는 Epic Games에서 Fortnite의 Unreal Editor 게임플레이 제작 및 메타버스 환경 구축을 위해 개발한 다중 패러다임 프로그래밍 언어입니다. 함수형, 논리형, 명령형 프로그래밍 전통을 계승한 Verse는 기존 프로그래밍 언어와는 차별화된, 장기적인 발전과 안정성을 고려하여 설계되었습니다.
 
-Verse is built on three fundamental principles:
+Verse 는 세가지 근본적인 원칙을 지켜 만들어졌습니다 :
 
-- **It's Just Code**:
-Complex concepts that might require special syntax or constructs in other languages are expressed as regular Verse code. There's no magic—everything is built from the same primitive constructs, creating a uniform and predictable programming model.
+- **그냥 코드 입니다** :
+다른 언어에서 특별한 구문이나 구조를 필요로 할 수 있는 복잡한 개념들도 Verse에서는 일반적인 코드로 표현됩니다. 마법 같은 것은 없습니다. 모든 것은 동일한 기본 구조로 이루어져 있어 균일하고 예측 가능한 프로그래밍 모델을 제공합니다.
 
-- **Just One Language**:
-The same language constructs work at both compile-time and run-time. There is no preprocessor. What you write is what executes, whether during compilation or at runtime.
+- **한 종류의 언어로 되어 있습니다** :
+하나의 언어 구문이 컴파일에도 쓰이고, 런타임에도 쓰입니다. 둘 사이의 처리 과정 없이 작성 내용이 그대로 실행됩니다.
 
-- **Metaverse First**:
-Verse is designed for a future where code runs in a single global simulation—the metaverse. This influences every aspect of the language, from its strong compatibility guarantees to its effect system that tracks side effects and ensures safe concurrent execution.
+- **메타버스를 우선시 합니다** :
+Verse는 코드가 단일 글로벌 시뮬레이션인 메타버스에서 실행되는 미래를 위해 설계되었습니다. 이는 강력한 호환성 보장부터 side effects[^SideEffects] 를 추적하고 안전한 동시 실행을 보장하는 effect 시스템에 이르기까지 언어의 모든 측면에 영향을 미칩니다.
 
-Verse aims to be:
+Verse는 다음과 같은 목표를 가지고 있습니다 :
 
-- **Simple enough** for first-time programmers to learn, with consistent rules and minimal special cases.
+- **간결할 것.** 프로그래밍을 처음 접하는 사람도 쉽게 배울 수 있을 만큼 간단하며, 규칙이 일관적이고, 특이 케이스가 최소화되어 있습니다.
 
-- **Expressive enough** for sophisticated game logic and distributed systems, with advanced features that scale to large codebases.
+- **표현력이 좋을 것.** 정교한 게임 로직과 분산 시스템에 필요한 표현력을 갖추고 있으며, 대규모 코드베이스에 맞춰 확장 가능한 고급 기능을 제공합니다.
 
-- **Safe enough** for untrusted code to run in a shared environment, with strong sandboxing and effect tracking.
+- **안전할 것.** 신뢰할 수 없는 코드가 공유 환경에서 실행될 수 있을 만큼 안전하며, 강력한 샌드박싱 및 effect 추적 기능을 제공합니다.
 
-- **Fast enough** for real-time games and simulations, with an implementation that can optimize pure computations aggressively.
+- **빠를 것.** 실시간 게임 및 시뮬레이션에서 충분히 빠르며, pure computations[^PureComputations] 를 적극적으로 최적화할 수 있는 구현 방식을 갖추고 있습니다.
 
-- **Stable enough** to last for decades, with strong backward compatibility guarantees and careful evolution.
+- **안정적일 것.** 수십 년 동안 지속될 만큼 안정적이며, 강력한 Backward Compatibility[^BackwardCompatibility]를 보장하고, 구조 변경에 신중합니다.
 
-#### Why Verse?
+**왜 Verse 인가?**
 
-Traditional programming languages carry decades of historical baggage and design compromises. Verse starts fresh, learning from the past but not being bound by it. It's designed for a future where:
+기존 프로그래밍 언어는 수십 년에 걸친 역사적 유산과 설계상의 타협점을 안고 있습니다. Verse는 과거에서 배우되, 과거에 얽매이지 않고 새롭게 시작합니다. Verse는 향후 변화할 프로그래밍의 다음과 같은 특징들에 대응하기 위해 설계되었습니다 :
 
-- Code lives forever in a persistent metaverse
-- Millions of developers contribute to a shared codebase
-- Programs must be safe, concurrent, and composable by default
-- Backward compatibility is not optional but essential
-- The boundary between compile-time and runtime is fluid
+- 코드가 영구적인 메타버스 속에 영원히 잔류한다.
+- 수백만 명의 개발자가 공유 코드베이스에 기여한다.
+- 프로그램이 기본적으로 안전하고, 동시 실행 가능하며, 조합 가능해진다.
+- 하위 호환성 지원이 선택이 아니라 필수가 된다.
+- 컴파일 타임과 런타임의 경계가 유연해진다.
 
-Ready to dive in? Start with [Built-in Types](02_primitives.md) to understand Verse's fundamental data types, or jump to [Expressions](01_expressions.md) to see how everything in Verse computes values.
+함께 할 준비가 되셨나요? Verse 의 기본적인 자료형을 이해하시려면 [Built-in Types](02_primitives.md) 부터 확인 해보세요. Verse 의 모든 것이 값을 계산하는 방식을 보시려면 [Expressions](01_expressions.md) 부터 확인하셔도 됩니다.
 
-For experienced programmers coming from other languages, the [Failure System](08_failure.md) and [Effects](13_effects.md) sections highlight some of Verse's distinctive features.
+이미 다른 프로그래밍 언어에 익숙하신 프로그래머 분들께서는 [Failure System](08_failure.md) 과 [Effects](13_effects.md)  를 보시면 Verse 만의 독특한 기능들을 확인하실 수 있습니다.
 
-## Key Features
+## 주요 특징
 
-#### Everything is an Expression
+**모든것은 표현식이다.**
 
-In Verse, there are no statements—everything is an expression that produces a value. This creates a composable system where any piece of code can be used anywhere a value is expected.
-
-<!-- 01 -->
-```verse
-Scores := array{10, 20, 30}
-
-# Even control flow produces a value
-Verdict := if (Scores.Length > 2) then "long" else "short"
-Verdict = "long"
-
-# So does a loop
-Doubled := for (Score : Scores) { Score * 2 }
-Doubled = array{20, 40, 60}
-```
-
-#### Failure as Control Flow
-
-Instead of boolean conditions and exceptions, Verse uses failure as a primary control flow mechanism. Expressions can succeed (producing a value) or fail (producing no value), enabling natural control flow patterns:
-
-<!-- 02 -->
-```verse
-ValidateName(N:string)<computes><decides>:void = N.Length > 0
-Greet(N:string):void = Print("Hello, {N}")
-
-Welcome(Name:string):void =
-    if (ValidateName[Name]):  # Square brackets: this call may fail
-        Greet(Name)           # Parentheses: this call must succeed
-```
-
-The [Failure](08_failure.md) chapter covers failable expressions and failure contexts in depth, and [Control Flow](07_control.md) explains if expressions.
-
-#### Strong Static Typing with Inference
-
-Verse features a powerful type system that catches errors at compile time while minimizing the need for type annotations through inference. See [Types](11_types.md) for more on the type system and subtyping.
-
-<!-- 03 -->
-```verse
-Level := 42                     # int, inferred from the literal
-Names := array{"Ada", "Alan"}   # []string, inferred from the elements
-```
-
-#### Effect Tracking
-
-Functions declare their side effects through specifiers like `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, and `<suspends>`. These effect specifiers make it immediately clear what a function can do beyond computing its return value:
-
-<!-- 04 -->
-```verse
-scoreboard := class:
-    var Score:int = 0
-
-    BonusFor(Streak:int)<computes>:int = Streak * 100  # No side effects
-    CurrentScore()<reads>:int = Score                  # Can read mutable state
-    AddPoints(N:int)<transacts>:void = set Score += N  # Can read, write, allocate
-```
-
-The [Effects](13_effects.md) chapter provides complete details on the effect system.
-
-#### Built-in Concurrency
-
-Concurrency is a first-class feature with structured concurrency primitives that make concurrent programming safe and predictable.
+Verse 에는 구문이 없습니다. 모든 것은 값을 생성하는 표현식 입니다. 이것이 값이 필요한 모든 곳에서 어떤 코드 조각이든 사용할 수 있는 조합 시스템을 만듭니다.
 
 <!--versetest
-LoadTerrain()<suspends>:void = {}
-LoadTextures()<suspends>:void = {}
-ReadFromCache()<suspends>:void = {}
-FetchFromServer()<suspends>:void = {}
+Condition()<computes><decides> :void= {}
+Array :[]int= array{1}
+-->
+<!-- 01 -->
+```verse
+# 심지어 control flow 조차도 값을 생성합니다
+Result := if (Condition[]) then "yes" else "no"
+
+# Loops 도 표현식입니다
+Multiply := for (X : Array) { X * 42 }
+```
+
+**Control Flow[^ControlFlow] 로서의 Failure**
+
+Boolean 조건과 예외 대신, Verse 는 failure 를 기본 control flow 매커니즘으로 사용합니다. 표현식은 성공할 수도 있고(이 경우 값을 도출합니다), 실패할 수도 있으며, 이를 통해 자연스러운 control flow 패턴을 만듭니다.
+
+<!--versetest
+ValidateInput(x:string)<computes><decides>:void= {}
+ProcessData(x:string)<computes>:void= {}
+myclass := class{
+Data:string="hi"
+M()<decides>:void=
+    ValidateInput[Data] # Square brackets indicate that this function may fail
+    ProcessData(Data)   # Data is only processed if valid, parentheses mean must succeed
+}
+<#
+-->
+<!-- 02 -->
+```verse
+ValidateInput[Data]  # 대괄호는 이 함수가 실패할 수도 있음을 의미합니다
+ProcessData(Data)    # 유효한 Data만 처리되며, 괄호는 이 함수가 반드시 성공함을 의미합니다
+```
+<!-- #> -->
+
+[Failure](08_failure.md) 장에서는 failure 될 수 있는 표현식과 failure 컨텍스트를 심층적으로 다루고, [Control Flow](07_control.md) 장에서는 if 표현식을 설명합니다.
+
+**추론 기능을 갖춘 강력한 정적 자료형 검사**
+
+Verse 의 강력한 자료형 시스템은 컴파일 타임에 오류를 잡아내고, 추론 방식을 적용해 자료형을 수동으로 지정할 필요성을 최소화합니다. 자료형 시스템 및 보조 자료형에 대한 자세한 내용은 [Types](11_types.md)를 참조하세요.
+
+<!--versetest-->
+<!-- 03 -->
+```verse
+X := 42                    # X : int = 42 로 적지 않아도 자료형이 추론됩니다
+Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형이 추론됩니다
+```
+
+**Effect 추적**
+
+함수는 `<computes>`, `<reads>`, `<writes>`, `<transacts>`, `<decides>`, `<suspends>`와 같은 Specifiers[^Specifiers] 를 통해 side effects 를 선언합니다. 이러한 Effect Specifiers 를 보면 함수가 반환 값을 계산하는 것 외에 어떤 작업을 수행할 수 있는지 빠르고 명확하게 알 수 있습니다:
+
+<!--versetest
+x := class:
+    GetCurrentValue()<reads>:int=1
+    var Score:int=0
+    PureCompute()<computes>:int = 2 + 2            
+    ReadState()<reads>:int = GetCurrentValue()     
+    UpdateGame()<transacts>:void = set Score += 10 
+<#
+-->
+<!-- 04 -->
+```verse
+PureCompute()<computes>:int = 2 + 2              # side effects 가 없습니다
+ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태를 읽을 수 있습니다
+UpdateGame()<transacts>:void = set Score += 10   # 읽고, 쓰고, 할당할 수 있습니다
+```
+<!-- #> -->
+
+[Effects](13_effects.md) 장에서는 효과 시스템에 대한 자세한 내용을 보실 수 있습니다.
+
+**내장된 동시성**
+
+동시성은 구조화된 동시성 기본 요소를 갖춘 핵심 기능으로, 동시 프로그래밍을 안전하고 예측 가능하게 만듭니다.
+
+<!--versetest
+TaskA()<suspends>:void={}
+TaskB()<suspends>:void={}
+TaskC():void={}
+FastPath()<suspends>:void={}
+SlowButReliablePath()<suspends>:void={}
+M()<suspends>:void=
+    # Run tasks concurrently and wait for all
+    sync:
+        TaskA()
+        TaskB()
+        TaskC()
+
+    # Race tasks and take first result
+    race:
+        FastPath()
+        SlowButReliablePath()
+<#
 -->
 <!-- 05 -->
 ```verse
-StartLevel()<suspends>:void =
-    # Run both and wait for the slower one to finish
-    sync:
-        LoadTerrain()
-        LoadTextures()
+# 여러 작업을 동시에 실행하고, 모든 작업이 완료될 때까지 기다립니다
+sync:
+    TaskA()
+    TaskB()
+    TaskC()
 
-    # Run both and keep whichever finishes first
-    race:
-        ReadFromCache()
-        FetchFromServer()
+# 여러 작업을 동시에 실행하고, 가장 먼저 도출된 결과를 채택합니다
+race:
+    FastPath()
+    SlowButReliablePath()
 ```
+<!-- #> -->
 
-#### Speculative Execution
+**Speculative Execution[^SpeculativeExecution]**
 
-Verse can speculatively execute code and roll back changes if the execution fails, enabling flexible patterns for validation and error handling.
+Verse는 코드를 예측 실행하고, 실행에 실패할 경우 변경 사항을 되돌릴 수 있습니다. 이것은 유효성 검사 및 오류 처리에 유연한 패턴을 적용할 수 있도록 돕습니다.
 
+<!--versetest
+TryComplexOperation()<computes><decides>:void={}
+-->
 <!-- 06 -->
 ```verse
-wallet := class:
-    var Gold:int = 100
-
-    # Deducts the price, then fails if that overdrew the account
-    Buy(Price:int)<transacts><decides>:void =
-        set Gold -= Price
-        Gold >= 0
-
-Purse := wallet{}
-not Purse.Buy[150]  # Too expensive, so the whole call fails...
-Purse.Gold = 100    # ...and the deduction it had already made is rolled back
-Purse.Buy[30]
-Purse.Gold = 70
+if (TryComplexOperation[]):
+    # TryComplexOperation[] 에 의한 변경 사항이 커밋 됩니다
+else:
+    # TryComplexOperation[] 에 의한 변경 사항이 자동으로 롤백 됩니다
 ```
 
-#### Reactive Programming with Live Variables
+**실시간 변수를 사용하는 반응형 프로그래밍**
 
-Verse provides first-class support for reactive programming through live variables that automatically recompute when their dependencies change, reducing the need for manual event handling.
+Verse 는 종속성이 변경될 때마다 자동적으로 다시 계산되는 실시간 변수를 사용함으로써, 반응형 프로그래밍을 위한 최고 수준의 지원을 제공합니다. 이는 이벤트 처리를 수동으로 해야 할 부담을 줄여줍니다.
 
 <!--versetest
 Log(:string)<transacts>:void={}
@@ -160,55 +184,108 @@ var MaxHealth:int = 100
 var Damage:int = 0
 var live Health:int = MaxHealth - Damage
 
-# Reactive constructs for event handling
+# 종속성이 변경되면 Health 값이 자동으로 업데이트 됩니다
+set Damage = 20      # Health 값이 80 이 됩니다
+set MaxHealth = 150  # Health 값이 130 이 됩니다
+
+# 이벤트 처리를 위한 반응형 구조
 when(Health < 25):
     Log("Low health warning!")
-
-# Health recomputes whenever a variable it reads changes
-set Damage = 20
-Health = 80
-set MaxHealth = 150
-Health = 130
 ```
 
-Verse provides a foundation for building interactive experiences in persistent virtual environments.
+Verse 는 영속적 가상 환경에서의 상호 경험을 구축하기 위한 기반을 제공합니다.
 
-## An Example
+## 예시
 
-The following example demonstrates key language features by building an inventory management system for a game, showing how Verse's constructs create robust, maintainable code.
+다음 예시는 게임용 인벤토리 관리 시스템을 구축하여 Verse 의 주요 언어 기능을 보여주고, Verse 의 구문이 어떻게 견고하고 유지보수 가능한 코드를 생성하는지 설명합니다.
 
-<!-- 08 -->
-```verse
-# An enumeration: type-safe constants, no boilerplate
+<!--versetest
+# Define item rarity as an enumeration - showing Verse's type system
 item_rarity := enum<persistable>:
     common
+    uncommon
     rare
+    epic
     legendary
 
-# A struct: immutable value data, saved and restored with the player's profile
+# Struct for immutable item data - functional programming style
 item_stats := struct<persistable>:
+    Damage:float = 0.0
+    Defense:float = 0.0
     Weight:float = 1.0
     Value:int = 0
 
+# Class for game items - object-oriented features with functional constraints
 game_item := class<final><persistable>:
     Name:string
     Rarity:item_rarity = item_rarity.common
     Stats:item_stats = item_stats{}
+    StackSize:int = 1
 
-    # <decides> marks a function that may fail instead of returning
+    # Method with decides effect - can fail
     GetRarityMultiplier()<computes><decides>:float =
         case(Rarity):
             item_rarity.common => 1.0
+            item_rarity.uncommon => 1.5
             item_rarity.rare => 2.0
-            _ => {false?; 0.0}  # Fails on a rarity we have not priced
+            item_rarity.epic => 3.0
+            _ => {false?; 0.0}  # Fails if the item is legendary or unexpected
 
-    GetEffectiveValue()<reads><decides>:int =
+    # Computed property using closed-world function
+    GetEffectiveValue()<reads><decides>:int=
         Floor[Stats.Value * GetRarityMultiplier[]]
 
+# Inventory system with state management and effects
 inventory_system := class:
     var Items:[]game_item = array{}
+    var MaxWeight:float = 100.0
     var Gold:int = 1000
-    MaxWeight:float = 20.0
+
+    # Method demonstrating failure handling and transactional semantics
+    AddItem(NewItem:game_item)<transacts><decides>:void =
+        # Calculate new weight - speculative execution
+        CurrentWeight := GetTotalWeight()
+        NewWeight := CurrentWeight + NewItem.Stats.Weight
+
+        # This check might fail, rolling back any changes
+        NewWeight <= MaxWeight
+
+        # Only executes if weight check passes
+        set Items += array{NewItem}
+        Print("Added {NewItem.Name} to inventory")
+
+    # Method with query operator and failure propagation
+    RemoveItem(ItemName:string)<transacts><decides>:game_item =
+        var RemovedItem:?game_item = false
+        var NewItems:[]game_item = array{}
+
+        for (Item : Items):
+            if (Item.Name = ItemName, not RemovedItem?):
+                set RemovedItem = option{Item}
+            else:
+                set NewItems += array{Item}
+        set Items = NewItems
+        RemovedItem?  # Fails if item not found
+
+    # Purchase with complex failure logic and rollback
+    PurchaseItem(ShopItem:game_item)<transacts><decides>:void =
+        # Multiple failure points - any failure rolls back all changes
+        Price := ShopItem.GetEffectiveValue[]
+        Price <= Gold  # Fails if not enough gold
+
+        # Tentatively deduct gold
+        set Gold = Gold - Price
+
+        # Try to add item - might fail due to weight
+        AddItem[ShopItem]
+
+        # All succeeded - changes are committed
+        Print("Purchased {ShopItem.Name} for {Price} gold")
+
+    # Higher-order function with type parameters and where clauses
+    FilterItems(Predicate:type{_(:game_item)<computes><decides>:void})<reads><decides>:[]game_item =
+        for (Item : Items, Predicate[Item]):
+            Item
 
     GetTotalWeight()<transacts>:float =
         var Total:float = 0.0
@@ -216,149 +293,432 @@ inventory_system := class:
             set Total += Item.Stats.Weight
         Total
 
-    AddItem(NewItem:game_item)<transacts><decides>:void =
-        NewWeight := GetTotalWeight() + NewItem.Stats.Weight
-        NewWeight <= MaxWeight  # A plain fact: if it is false, nothing below runs
-        set Items += array{NewItem}
+# Player class using composition
+player_character := class:
+    Name:string
+    var Level:int = 1
+    var Experience:int = 0
+    var Inventory:inventory_system = inventory_system{}
 
-    # Any failure below rolls back the gold as well as the item
+    LevelUpThreshold:int = 100
+
+    GainExperience(Amount:int)<transacts>:void =
+        set Experience += Amount
+
+        # Automatic level up check with failure handling
+        loop:
+            RequiredXP := LevelUpThreshold * Level
+            if (Experience >= RequiredXP):
+                set Experience -= RequiredXP
+                set Level += 1
+                Print("{Name} leveled up to {Level}!")
+            else:
+                break
+
+    # Method showing qualified access
+    EquipStarterGear()<transacts><decides>:void =
+        StarterSword := game_item{
+            Name := "Rusty Sword"
+            Rarity := item_rarity.common
+            Stats := item_stats{Damage := 10.0, Weight := 5.0, Value := 50}
+        }
+        # These might fail if inventory is full
+        Inventory.AddItem[StarterSword]
+
+# Example usage demonstrating control flow and failure handling
+assert:
+    # Create a player (can't fail)
+    Hero := player_character{Name := "Verse Hero"}
+
+    # Try to equip starter gear (might fail)
+    if (Hero.EquipStarterGear[]):
+        Print("Hero equipped with starter gear")
+
+    # Demonstrate transactional behavior
+    ExpensiveItem := game_item{
+        Name := "Golden Crown"
+        Rarity := item_rarity.epic
+        Stats := item_stats{Value := 2000, Weight := 90.0}  # Very heavy!
+    }
+
+    # This might fail due to weight or insufficient gold
+    if (Hero.Inventory.PurchaseItem[ExpensiveItem]):
+        Print("Purchase successful!")
+    else:
+        Print("Purchase failed - gold remains at {Hero.Inventory.Gold}")
+
+    # Use higher-order functions with nested function predicate
+    IsRareOrLegendary(I:game_item)<computes><decides>:void =
+        I.Rarity = item_rarity.rare or I.Rarity = item_rarity.legendary
+
+    RareItems := Hero.Inventory.FilterItems[IsRareOrLegendary]
+
+    Print("Found {RareItems.Length} rare items")
+<#
+-->
+<!-- 08 -->
+```verse
+# 모듈 선언 - 아래처럼 유틸리티 함수를 가져오는 것부터 시작합니다
+using { /Verse.org/VerseCLR }
+
+# Enumeration(이는 Verse 의 자료형 시스템을 보여줍니다)으로 게임 내 아이템 희귀도를 정의합니다
+item_rarity := enum<persistable>:
+    common
+    uncommon
+    rare
+    epic
+    legendary
+
+# 게임 내 아이템의 불변 데이터 (여기서는 item 의 stats) 를 위한 구조체를 정의합니다 - 이는 함수형 프로그래밍 스타일의 예시 입니다
+item_stats := struct<persistable>:
+    Damage:float = 0.0
+    Defense:float = 0.0
+    Weight:float = 1.0
+    Value:int = 0
+
+# 게임 내 아이템의 Class 를 정의합니다 - 이는 함수적 제약 조건을 갖는 객체 지향 기능의 예시 입니다
+game_item := class<final><persistable>:
+    Name:string
+    Rarity:item_rarity = item_rarity.common
+    Stats:item_stats = item_stats{}
+    StackSize:int = 1
+
+    # <decides> 효과를 갖는 Method - 이는 연산 결과 fail 될 수 있습니다
+    GetRarityMultiplier()<decides>:float =
+        case(Rarity):
+            item_rarity.common => 1.0
+            item_rarity.uncommon => 1.5
+            item_rarity.rare => 2.0
+            item_rarity.epic => 3.0
+            _ => {false?; 0.0}   # 해당 아이템의 rarity 가 legendary 이거나 규격 외인 경우 Fail 됩니다
+
+    # Closed-world 함수(연산 대상이 정해져 있고, 그것이 확장되지 않는다고 전제되는 함수)를 사용해 계산된 속성
+    GetEffectiveValue()<reads><decides>:int=
+        Floor[Stats.Value * GetRarityMultiplier[]]
+
+# 상태 관리 및 효과를 갖춘 inventory_system 라는 이름의 Class 를 선언합니다
+inventory_system := class:
+    var Items:[]game_item = array{}
+    var MaxWeight:float = 100.0
+    var Gold:int = 1000
+
+    # 오류 처리 및 트랜잭션 의미론을 보여주는 Method
+    AddItem(NewItem:game_item)<transacts><decides>:void =
+        # 새 무게를 계산합니다 - 이는 Speculative Execution (투기적 실행) 의 예시입니다
+        CurrentWeight := GetTotalWeight()
+        NewWeight := CurrentWeight + NewItem.Stats.Weight
+
+        # 위 검사는 fail 될 수 있고, 그 경우 아래와 같이 모든 변경 사항을 되돌립니다
+        NewWeight <= MaxWeight
+
+        # 아래 연산은 weight 검사가 통과된 경우에만 실행됩니다
+        set Items += array{NewItem}
+        Print("Added {NewItem.Name} to inventory")
+
+    # 쿼리 연산자와 오류 전파를 사용하는 Method
+    RemoveItem(ItemName:string)<transacts><decides>:game_item =
+        var RemovedItem:?game_item = false
+        var NewItems:[]game_item = array{}
+
+        for (Item : Items):
+            if (Item.Name = ItemName, not RemovedItem?):
+                set RemovedItem = option{Item}
+            else:
+                set NewItems += array{Item}
+        set Items = NewItems
+        RemovedItem?  # 아이템이 탐색되지 않으면 Fail 됩니다
+
+    # 복잡한 오류 로직 및 롤백 기능을 갖춘 아이템 구매 기능
     PurchaseItem(ShopItem:game_item)<transacts><decides>:void =
+        # 여러 failure 가 발생할 수 있는 지점 - failure 가 하나라도 발생하면 모든 변경 사항을 되돌립니다
         Price := ShopItem.GetEffectiveValue[]
-        Price <= Gold
-        set Gold -= Price
+        Price <= Gold  # 골드가 충분하지 않으면 Fail 됩니다
+
+        # 잠정적으로 골드를 차감합니다
+        set Gold = Gold - Price
+
+        # 아이템 추가를 시도합니다 - 이는 무게에 의해 실패할 수 있습니다
         AddItem[ShopItem]
 
-    RemoveItem(ItemName:string)<transacts><decides>:game_item =
-        var Found:?game_item = false
-        var Rest:[]game_item = array{}
-        for (Item : Items):
-            if (Item.Name = ItemName, not Found?):
-                set Found = option{Item}
-            else:
-                set Rest += array{Item}
-        set Items = Rest
-        Found?  # Fails if no item had that name
+        # 모든 과정에 성공한 경우 - 변경사항이 커밋 됩니다
+        Print("Purchased {ShopItem.Name} for {Price} gold")
 
-    FilterItems(Predicate:type{_(:game_item)<computes><decides>:void})<reads>:[]game_item =
+    # 자료형 파라미터와 자료형 제약 구문을 사용하는 중첩 함수
+    FilterItems(Predicate:type{_(:game_item)<computes><decides>:void})<reads><decides>:[]game_item =
         for (Item : Items, Predicate[Item]):
             Item
 
-Bag := inventory_system{}
-Sword := game_item{Name := "Rusty Sword", Stats := item_stats{Weight := 5.0, Value := 50}}
-Crown := game_item{Name := "Golden Crown", Rarity := item_rarity.rare, Stats := item_stats{Weight := 90.0, Value := 300}}
+    GetTotalWeight()<transacts>:float =
+        var Total:float = 0.0
+        for (Item : Items):
+            set Total += Item.Stats.Weight
+        Total
 
-Bag.PurchaseItem[Sword]
-Bag.Gold = 950
+# Composition 을 사용하는 Class (player_character)
+player_character<public> := class:
+    Name<public>:string
+    var Level:int = 1
+    var Experience:int = 0
+    var Inventory:inventory_system = inventory_system{}
 
-# The crown is affordable but too heavy, so its price is refunded too
-not Bag.PurchaseItem[Crown]
-Bag.Gold = 950
+    LevelUpThreshold := 100
 
-IsRareOrLegendary(I:game_item)<computes><decides>:void =
-    I.Rarity = item_rarity.rare or I.Rarity = item_rarity.legendary
+    GainExperience(Amount:int)<transacts>:void =
+        set Experience += Amount
 
-Bag.FilterItems(IsRareOrLegendary).Length = 0
-Bag.RemoveItem["Rusty Sword"].Name = "Rusty Sword"
-Bag.Items.Length = 0
+        # 오류 처리 기능을 갖춘 자동 레벨업 확인 기능
+        loop:
+            RequiredXP := LevelUpThreshold * Level
+            if (Experience >= RequiredXP):
+                set Experience -= RequiredXP
+                set Level += 1
+                Print("{Name} leveled up to {Level}!")
+            else:
+                break
+
+    # 적격 접근을 보여주는 Method
+    EquipStarterGear()<transacts><decides>:void =
+        StarterSword := game_item{
+            Name := "Rusty Sword"
+            Rarity := item_rarity.common
+            Stats := item_stats{Damage := 10.0, Weight := 5.0, Value := 50}
+        }
+        # 아래 로직은 인벤토리가 가득 찬 경우 fail 될 수 있습니다
+        Inventory.AddItem[StarterSword]
+
+# Control Flow 와 오류 처리를 보여주는 사용 예시
+RunExample<public>()<suspends>:void =
+    # player 를 생성합니다 (이는 fail 될 수 없습니다)
+    Hero := player_character{Name := "Verse Hero"}
+
+    # StarterGear 장착을 시도합니다 (이는 fail 될 수 있습니다)
+    if (Hero.EquipStarterGear[]):
+        Print("Hero equipped with starter gear")
+
+    # Transactional 작동 방식을 보여줍니다
+    ExpensiveItem := game_item{
+        Name := "Golden Crown"
+        Rarity := item_rarity.epic
+        Stats := item_stats{Value := 2000, Weight := 90.0}  # 매우 무겁습니다!
+    }
+
+    # 무게 또는 골드 부족 때문에 fail 될 수 있습니다
+    if (Hero.Inventory.PurchaseItem[ExpensiveItem]):
+        Print("Purchase successful!")
+    else:
+        Print("Purchase failed - gold remains at {Hero.Inventory.Gold}")
+
+    # Predicate(조건자)와 함께 고차 함수를 사용하고 있습니다
+    IsRareOrLegendary(I:game_item)<computes><decides>:void =
+        I.Rarity = item_rarity.rare or I.Rarity = item_rarity.legendary
+
+    RareItems := Hero.Inventory.FilterItems[IsRareOrLegendary]
+
+    Print("Found {RareItems.Length} rare items")
 ```
+<!-- #> -->
 
-Several things in this example are specific to Verse.
+이 예시는 Verse를 실제 상황에서 사용하는 방법을 보여줍니다. 이 코드가 Verse만의 특징을 갖는 이유를 살펴보겠습니다 :
 
-Data modeling comes first, and it leans on Verse's rich type system. Types flow naturally through the code; many type annotations are omitted as they can be inferred. When we do specify types, like `Items:[]game_item`, they document intent rather than just satisfy the compiler. The `item_rarity` enum provides type-safe constants without the boilerplate of traditional enumerations. The `item_stats` struct marked as `<persistable>` can be saved and loaded from persistent storage, essential for game saves. The `game_item` class is marked `<final>` and `<persistable>` so its instances can be saved and restored; because persistable data is serialized by value, such classes cannot also be `<unique>`.
+**자료형 시스템과 데이터 모델링**
 
-Failure, rather than exceptions or error codes, is what drives control flow throughout the code. The `<decides>` effect marks functions that can fail, and failure propagates naturally through expressions. When `GetRarityMultiplier()` encounters an unknown rarity, it does not throw an exception or return a sentinel value - it simply fails, and the calling code handles this gracefully.
-The `AddItem` method demonstrates how failure creates declarative validation. The expression `NewWeight <= MaxWeight` either succeeds (allowing execution to continue) or fails (preventing the item from being added). There's no explicit control flow - just a declarative assertion of what must be true.
+이 예시는 Verse 의 풍부한 자료형 시스템으로부터 시작합니다. 코드 전체에 걸쳐 자료형이 자연스럽게 흐르도록 설계되었으며, 많은 type annotation[^TypeAnnotation] 들은 추론이 가능하므로 생략되었습니다. `Items:[]game_item`처럼 자료형을 명시한 부분은 컴파일러의 요구 사항을 충족하기 위해서가 아니라 의도를 문서로 남기기 위해 그렇게 했습니다. `item_rarity` 라고 명명된 enum[^enumeration] 은 기존 enum 에서 흔히 사용되는 boilerplate[^Boilerplate] 없이 자료형 안전성이 보장되는 상수를 제공합니다. `<persistable>`로 표시된 `item_stats` 구조는 영구 저장소에 저장하고 불러올 수 있어 게임 저장에 필수적입니다. `game_item` class 는 인스턴스를 저장하고 복원하려는 의도를 담아 `<final>` 및 `<persistable>`로 표시 해두었습니다. 영구 저장소에 저장된 데이터는 값을 기준으로 serialize [^Serialize] 되므로, 이러한 class 는 `<unique>` 속성을 가질 수 없습니다.
 
-Transactional semantics and speculative execution fall out of that same mechanism. Methods marked with `<transacts>` provide automatic rollback on failure. In `PurchaseItem`, we deduct gold from the player, then try to add the item. If adding fails (as it does for the crown, which is too heavy to carry), the gold deduction is automatically rolled back, and the assertion that follows the failed purchase checks that the gold really did come back. This eliminates entire categories of bugs related to partial state updates.
-This transactional behavior extends to complex operations. When multiple changes need to succeed or fail together, Verse ensures consistency without need for manual clean up.
+**Control Flow 로서의 Failure**
 
-Functions are first-class values, which the example uses twice. The `FilterItems` method accepts a predicate function, demonstrating higher-order programming. The locally defined `IsRareOrLegendary` shows how functions can be written right where they are needed and passed around like any other value. This functional programming style combines naturally with the imperative and object-oriented features.
+코드 전체에 걸쳐서, 예외 코드나 에러 코드가 아닌 failure 가 control flow 를 주합니다. `<decides>` effect 는 fail 될 수 있는 함수를 표시하고, failure 는 표현식을 통 자연스럽게 전파됩니다. `GetRarityMultiplier()` 함수는 사전에 정의되지 않은 희귀도 값을 맞닥뜨리면 예외를 발생시거나 sentinel 값을 반환하지 않고 단순히 fail 되며, 이를 호출한 코드가 그것을 적절하게[^Gracefully] 처리합니다. `AddItem` Method[^Method] 는 failure 가 어떻게 선언적 유효성 검사 구조를 생성하는지 보여줍니다. `NewWeight <= MaxWeight` 표현식은 성공(이 경우 실행 절차를 계속 합니다)할 수도 있고 실패(이 경우 아이템이 추가되는 것을 막습니다)할 수도 있습니다. 명시적인 control flow 는 없고, 단지 무엇이 참이어야 하는지에 대한 선언적 assertion[^Assertion] 이 있을 뿐입니다.
 
-Optional types and query operators are how Verse describes a value that may not be there. The inventory removal logic uses optional types (`?game_item`) to represent values that might not exist. The query operator `?` extracts values from options, failing if the option is empty. This eliminates null pointer exceptions while providing convenient syntax for handling absent values.
+**트랜젝션 의미론과 Speculative Execution**
 
-Pattern matching is another place where control flow produces a value. The `case` expression in `GetRarityMultiplier` demonstrates pattern matching. Unlike a switch statement, `case` is an expression that produces a value. The underscore `_` provides a catch-all pattern, though in this example it leads to failure.
-The `if` expression similarly produces values and can bind variables in its condition. The compound conditions show how multiple operations can be chained with automatic failure propagation.
+`<transacts>` 라고 마크 되어 있는 Method 들은 failure 시에 자동으로 롤백 됩니다. `PurchaseItem` 에서 우리는 플레이어로부터 골드를 차감한 뒤, 구매한 아이템을 인벤토리에 추가할 것을 시도 했습니다. 만약 추가에 실패한다면(아마도 무게 제한 때문일 것입니다), 골드 차감 연산은 자동으로 롤백 됩니다. 이는 부분적 상태 갱신과 관련한 버그 발생 가능성을 사전에 모두 제거하는 효과를 갖습니다. 이러한 transactional[^Transactional] 연산 방식은 복잡한 작업에까지 확장됩니다. 여러 변경 사항이 동시에 성공하거나 실패해야 하는 상황에서, Verse는 수동 뒤처리 작업 없이도 연산의 일관성을 보장합니다.
 
-The module system and its access control surround all of this. A Verse file normally begins with `using` statements that import functionality from other modules; this example draws only on the built-in types, so it needs none of its own. The path-based module system ensures that dependencies are unambiguous and permanently addressable. Access specifiers like `<public>` control visibility at a fine-grained level.
+**First-Class Values[^FirstClassValues] 로써의 함수**
 
-Data is immutable by default. Data structures are immutable unless explicitly marked with `var`, which is why `MaxWeight` is fixed for the life of an inventory while `Gold` and `Items` can change. This eliminates large classes of bugs and makes concurrent programming safer. When we do need mutation, it is explicit and tracked by the effect system. See [Mutability](05_mutability.md) for complete details on `var` and `set`.
+`FilterItems` method 는 predicate function[^PredicateFunction] 을 인수로 받고 있는데, 이는 고차 프로그래밍의 예가 됩니다. `RunExample` 내부에 있는 nested function[^NestedFunction] 인 `IsRareOrLegendary`는 '함수'가 어떻게 다른 '값'들과 마찬가지로 locally[^Locally] 정의되고, 전달될 수 있는지 보여줍니다. 이러한 함수형 프로그래밍 스타일은 명령형 기능 및 객체지향형 기능과 자연스럽게 결합됩니다.
 
-## Naming Conventions
+**Optional[^Optional] 자료형과 쿼리 Operators[^Operators]**
 
-Verse has a set of naming conventions that make code readable and predictable. While the language does not enforce these conventions, following them ensures your code integrates well with the broader Verse ecosystem and is immediately familiar to other Verse developers.
+인벤토리의 제거 로직은 존재하지 않을 수도 있는 값을 표현하기 위해 (`?game_item`) 이라는 Optional 자료형을 사용합니다. 쿼리 operator `?` 는 options 에서 값을 추출하고, 만약 그 option 이 비어있으면 fail 됩니다. 이것은 absent values[^AbsentValues] 를 다루기 위한 편리한 구문을 제공함과 동시에 null pointer exceptions[^NullPointerExceptions] 를 제거 해주기도 합니다.
 
-Identifiers should be in PascalCase (CamelCase starting with uppercase), while the names of types are written in snake_case:
+**패턴 매칭과 Control Flow**
 
+`GetRarityMultiplier` 내부의 `case` 표현식은 패턴 매칭을 보여줍니다. switch 구문과 달리, `case` 는 값을 생성하는 표현식 입니다. 밑줄 `_` 는 catch-all pattern[^CatchAllPattern] 이 사용 됐음을 보여주지만, 이 예시에서는 결과적으로 fail 됩니다. `if` 표현식도 마찬가지로 값을 생성하며, 조건에 변수들을 binding[^Binding] 할 수 있습니다. 예시의 compound conditions[^CompoundConditions] 는 여러 작업이 어떻게 자동 failure 전파에 의해 속박되는지를 보여줍니다.
+
+**모듈 시스템 및 접근 제어**
+
+예시의 코드는 다른 모듈로부터 기능을 가져오는 `using` 구문으로 시작합니다. 경로 기반 모듈 시스템은 dependencies[^Dependencies]의 명확성과 영구적 접근성을 보장합니다. `<public>` 과 같은 Access specifiers[^AccessSpecifiers] 는 세부적인 수준에서 visibility[^Visibility] 를 제어합니다.
+
+**기본적 변경 불가능성**
+
+데이터 구조는 `var` 에 의해 명시적으로 마크 되지 않는 한 변경 불가합니다. 이렇게 하면 많은 종류의 버그를 제거하고 동시 프로그래밍을 더욱 안전하게 만들 수 있습니다. 의도적 변경이 필요한 경우에는 그것이 코드 상에 명시적으로 표현되고, effect 시스템에 의해서 추적됩니다. `var` 과 `set` 에 대한 보다 자세한 정보는 [Mutability](05_mutability.md) 를 확인 해보세요.
+
+## 명명 규칙
+
+Verse 에는 코드를 읽기 쉽고 예측 가능하게 하는 명명 규칙이 있습니다. 언어 자체가 이 규칙을 강제하지는 않습니다. 하지만 규칙을 준수하면 작성하신 코드가 Verse 생태계 전반과 잘 통합되고, 다른 Verse 개발자들이 그것을 쉽게 알아볼 수 있게 됩니다.
+
+Identifiers[^Identifiers] 는 PascalCase(대문자로 시작하는 CamelCase) 이어야 합니다 :
+
+<!--versetest
+player_record := struct:
+    Name:string
+
+PlayerDatabase(Id:int)<decides>:player_record =
+    if (Id = 0):
+        player_record{Name := "Alice"}
+    else if (Id = 1):
+        player_record{Name := "Bob"}
+    else:
+        false?
+        player_record{Name := ""}
+-->
 <!-- 09 -->
 ```verse
-# Variables, constants, functions, fields and methods use PascalCase
+# PascalCase 를 이용한 변수와 상수들
+PlayerHealth:int = 100
 MaxInventorySize:int = 50
-CalculateDamage(Base:float, Multiplier:float):float = Base * Multiplier
+IsGameActive:logic = true
 
-# Classes, structs, enums and their enumerators use snake_case
+# PascalCase 를 이용한 함수들
+CalculateDamage(Base:float, Multiplier:float):float =
+    Base * Multiplier
+
+GetPlayerName(Id:int)<decides>:string =
+    PlayerDatabase[Id].Name
+
+# snake_case 를 이용한 Classes 와 structs
+player_character := class:
+    Name:string
+    Level:int
+
 inventory_item := struct:
     ItemId:int
     Quantity:int
 
+# Enums 와 그 값들에는 snake_case 를 씁니다
 game_state := enum:
     main_menu
     in_game
+    paused
     game_over
 ```
 
-Generic type parameters use single lowercase letters or short descriptive names:
+Generic[^Generic] 자료형 파라미터는 소문자 한 개를 쓰거나, 의미가 직관적으로 전달되는 짧은 이름을 씁니다 :
 
 <!--versetest-->
 <!-- 10 -->
 ```verse
+# 간단한 Generic 파라미터 표현을 위해 소문자 한 개가 쓰인 경우
 Find(Array:[]t, Target:t where t:type):?int = false
 
+# 복잡한 관계 표현을 위해 짧은 이름이 사용된 경우 (인풋 자료형을 뜻하는 in_t 과 아웃풋 자료형을 뜻하는 out_t)
 Transform(Input:in_t, Processor:type{_(:in_t):out_t} where in_t:type, out_t:type):?out_t = false
 ```
 
-Module names always use PascalCase, and so does every segment of a module path, so the modules you define yourself follow the same rule as the ones you import with `using { /Fortnite.com/Characters }` or `using { /Verse.org/Random }`:
 
+모듈 이름은 언제나 PascalCase 를 씁니다. 모든 path segments[^PathSegments] 에 대해서도 그렇게 합니다 :
+
+<!--NoCompile-->
 <!-- 11 -->
 ```verse
+# 모듈 정의 부분
 InventorySystem := module:
-    MaxStackSize:int = 64
+    # 모듈 내용이 들어가는 부분
+
+# Path segments 에도 PascalCase 를 씁니다.
+using { /Fortnite.com/Characters/PlayerController }
+using { /MyGame.com/Systems/CombatSystem }
+using { /Verse.org/Random }
 ```
 
-Class and struct fields use PascalCase, and methods follow the same PascalCase convention as functions.
+Class 와 struct 의 fields[^Fields] 는 PascalCase 를 사용하고, methods 도 같은 PascalCase 이름을 함수로서 그대로 씁니다.
 
-## Code Formatting
+<!--versetest-->
+<!-- 12 -->
+```verse
+player := class:
+    Name:string          # Class 의 field 가 PascalCase 를 쓰고 있습니다
+    var Health:float= 0.0
 
-Verse code follows consistent formatting patterns to emphasize readability. Use four spaces to indent code blocks, as every example in this chapter does. The colon at the end of a line introduces a block, and the lines indented beneath it are the contents of that block, whether it is the body of an `if`, a `for`, a class, or a function.
+    # Method 도 함수와 마찬가지로 PascalCase 를 씁니다.
+    TakeDamage(Amount:float):void =
+        set Health = Max(0.0, Health - Amount)
 
-Complex expressions benefit from clear formatting that shows structure:
+    IsAlive():logic =
+        logic{Health > 0.0}
+```
+
+## 코드 서식
+
+Verse 코드는 가독성을 높이기 위해 일관된 서식을 따릅니다.
+
+코드 블록을 들여쓰기 하려면 스페이스를 네번 씁니다. 쌍점 기호는 블록을 나타내며, 그 아래로 이어지는 줄들은 들여쓰기 합니다 :
+
+<!--versetest
+Condition()<decides><transacts>:void = {}
+DoSomething()<transacts>:void = {}
+DoSomethingElse()<transacts>:void = {}
+Inventory:[]int = array{1, 2, 3}
+ProcessItem(Item:int)<transacts>:void = {}
+UpdateDisplay()<transacts>:void = {}
+ImplementationHere()<transacts>:void = {}
+
+-->
+<!-- 13 -->
+```verse
+if (Condition[]):
+    DoSomething()
+    DoSomethingElse()
+
+for (Item : Inventory):
+    ProcessItem(Item)
+    UpdateDisplay()
+
+class_definition := class:
+    Field1:int
+    Field2:string
+
+    Method():void =
+        ImplementationHere()
+```
+
+복잡한 표현식에는 구조를 보여주는 명확한 서식을 사용합니다 :
 
 <!--versetest
 player_type := struct{Health:int = 75}
 BaseDamage:float = 100.0
 LevelMultiplier:float = 1.5
 BonusPercentage:float = 10.0
+rarity_type := enum{common; uncommon; rare; epic; legendary}
 -->
-<!-- 12 -->
+<!-- 14 -->
 ```verse
 Player:player_type = player_type{}
+Rarity:rarity_type = rarity_type.rare
 
-# Multi-line conditionals
-Condition := if (Player.Health > 50):
+# 여러 줄로 작성된 conditionals (조건식)
+Result := if (Player.Health > 50):
     "healthy"
 else if (Player.Health > 20):
     "injured"
 else:
     "critical"
-Condition = "healthy"
 
-# Chained operations with clear precedence
+# 우선순위가 명확한 연쇄 작업
 FinalDamage :=
     BaseDamage *
     LevelMultiplier *
     (1.0 + BonusPercentage / 100.0)
+
+# 정렬된 케이스를 사용한 패턴 매칭
+DamageMultiplier := case(Rarity):
+    rarity_type.common => 1.0
+    rarity_type.uncommon => 1.5
+    rarity_type.rare => 2.0
+    rarity_type.epic => 3.0
+    rarity_type.legendary => 5.0
 ```
 
-Functions follow a consistent pattern with effects and return types clearly specified:
+함수는 effect 와 반환 자료형을 명확하게 지정하는 일관된 형식을 따릅니다 :
 
 <!--versetest
 difficulty_level := enum{easy; medium; hard}
@@ -368,14 +728,18 @@ RecordTransaction()<transacts>:void = {}
 GetBaseReward(Difficulty:difficulty_level)<decides>:?int = option{100}
 CalculateTimeBonus(CompletionTime:float):int = 50
 -->
-<!-- 13 -->
+<!-- 15 -->
 ```verse
+# 간단한 pure function (연산에 주어진 값만 사용하는 함수)
+Add(X:int, Y:int)<computes>:int = X + Y
+
+# effect (여기서는 <transacts> 와 <decides>) 가 지정된 함수
 ProcessTransaction(Amount:int)<transacts><decides>:void =
     ValidateAmount[Amount]
     DeductBalance(Amount)
     RecordTransaction()
 
-# A long signature splits across lines, one parameter per line
+# 구조가 명확한 여러 줄 함수
 CalculateReward(
     PlayerLevel:int,
     Difficulty:difficulty_level,
@@ -387,96 +751,129 @@ CalculateReward(
     BaseReward + LevelBonus + TimeBonus
 ```
 
-## Comments
+## 주석
 
-Comments are ignored during execution but help with understanding and maintaining code. Verse offers several styles of comments to suit different documentation needs. The simplest is the single-line comment, which begins with `#` and continues to the end of the line:
+주석은 연산에는 아무 효과가 없지만, 코드를 이해하거나 유지 보수 하는데 도움을 줍니다. Verse 는 다양한 문서상의 수요를 충족하기 위해 여러 스타일의 주석을 제공합니다. 가장 간단한 것은 `#` 으로 시작해서 그 코드 줄 끝까지 이어지는 한 줄 짜리 주석 입니다.
 
 <!--versetest-->
-<!-- 14 -->
+<!-- 16 -->
 ```verse
-CriticalDamage := 100.0 * 1.5   # Apply critical hit multiplier
+CalculateDamage := 100 * 1.5   # 치명타 배율을 적용합니다
 ```
 
-When you need to document something within a line of code without breaking it up, inline block comments provide the perfect solution. These are enclosed between `<#` and `#>`:
+코드 줄을 나누지 않고 중간에 내용을 적어야 하는 경우에는 인라인 블록 주석을 쓰시면 됩니다. 이 주석의 내용은 `<#` 와 `#>` 사이에 봉해집니다 :
 
 <!--versetest
 BaseValue:int = 100
 Multiplier:int = 2
 Bonus:int = 10
 -->
-<!-- 15 -->
-```verse
-Result := BaseValue <# original amount #> * Multiplier <# scaling factor #> + Bonus
-```
-
-The same can be used to write multi-line block comments, making them ideal for explaining complex algorithms or providing detailed context:
-
-<!--versetest-->
-<!-- 16 -->
-```verse
-<# The quadratic damage falloff makes damage decrease smoothly with
-   distance, which rewards players for careful positioning. #>
-CalculateFalloffDamage(Distance:float, MaxDamage:float):float =
-    MaxDamage  # Implementation here
-```
-
-Block comments nest, which allows you to temporarily disable code that already contains comments without having to remove or modify existing documentation:
-
-<!--versetest-->
 <!-- 17 -->
 ```verse
-<# Temporarily disabled for testing
-   OriginalFunction()  <# This had a bug #>
+Result := BaseValue <# 원래의 양 #> * Multiplier <# 배율 #> + Bonus
+```
+
+같은 방식으로 여러 줄 블록 주석도 작성할 수 있어서, 복잡한 알고리즘에 대한 설명이나 자세한 맥락을 제공하는데 적합합니다 :
+
+<!--versetest-->
+<!-- 18 -->
+```verse
+<# 이 함수는 게임 전반에 걸쳐 사용되는 2차 피해 감소 공식을 구현합니다.
+   이 감소 공식은 피해가 거리에 따라 부드럽게 감소하도록 하여,
+   플레이어에게 전략적인 위치 선정 기회를 제공합니다. #>
+CalculateFalloffDamage(Distance:float, MaxDamage:float):float =
+    MaxDamage  # 여기에 구현
+```
+
+중첩 블록 주석 기능은 이미 주석 처리가 되어있는 코드를 지우거나 수정하지 않아도 일시적으로 비활성화 할 수 있게 해줍니다 :
+
+<!--versetest-->
+<!-- 19 -->
+```verse
+<# 실험중이라 일시적으로 비활성화 시켜둔 부분
+   OriginalFunction()  <# 여기서 버그 발견됐으니 주의! #>
+   NewFunction()       # 이걸로 해볼 것
 #>
 ```
 
-Indented comments begin with a `<#>` on its own line; everything indented by four spaces on subsequent lines becomes part of the comment:
+새 줄에서 `<#>` 로 시작하는 들여쓰기 주석; 이것은 스페이스 키 4 번으로 들여쓰기 된 후속 코드 줄들을 모두 해당 주석에 포함 시킵니다 :
 
 <!--versetest
 DoSomething():void = {}
 -->
-<!-- 18 -->
+<!-- 20 -->
 ```verse
 <#>
-    This entire block is a comment because it is indented.
-    It provides a clean way to write longer documentation
-    without cluttering each line with comment markers.
+    들여쓰기가 되어 있으므로 이 블록 전체가 주석입니다.
+    이를 통해 각 줄에 주석 표시를 덕지덕지 붙이지 않고도
+    긴 문서를 깔끔하게 작성할 수 있습니다.
 
-DoSomething()  # Not part of the comment.
+DoSomething()  # 반면 이 부분은 위 주석에 포함되지 않는 별개의 주석입니다
 ```
 
-## Syntactic Styles
+## 구문 스타일
 
-Verse offers flexible syntax to accommodate different programming styles. The same logic can be expressed using braces, indentation, or inline forms, allowing you to choose the clearest representation for each context.
+Verse 는 다양한 프로그래밍 스타일을 수용할 수 있도록 유연한 구문을 지원합니다. 같은 로직이 괄호로도, 들여쓰기로도, 한 줄로 표현될 수도 있어서, 각 상황에 가장 적합한 표현 방식을 선택할 수 있습니다.
 
-The braced style uses curly braces to delimit blocks, familiar from C-family languages. The indented style uses colons and indentation to define structure, similar to Python. For simple expressions, the inline style keeps everything on one line. The dotted style uses a period to introduce the expression. Here is one conditional written in all four:
+중괄호 스타일은 C 계열 언어에서 흔히 볼 수 있는 중괄호를 사용하여 코드 블록을 구분합니다 :
 
-<!-- 19 -->
+<!--versetest
+Score:int = 85
+-->
+<!-- 21 -->
 ```verse
-Score := 85
-
-Braced := if (Score > 90) { "excellent" } else { "needs improvement" }
-
-Indented := if (Score > 90):
+Result := if (Score > 90) {
     "excellent"
+} else if (Score > 70) {
+    "good"
+} else {
+    "needs improvement"
+}
+```
+
+들여쓰기 스타일은 파이썬과 유사하게 쌍점과 들여쓰기를 사용하여 구조를 정의합니다 :
+
+<!--versetest
+Score:int = 85
+-->
+<!-- 22 -->
+```verse
+Result := if (Score > 90):
+    "excellent"
+else if (Score > 70):
+    "good"
 else:
     "needs improvement"
-
-Inline := if (Score > 90) then "excellent" else "needs improvement"
-
-Dotted := if (Score > 90). "excellent" else. "needs improvement"
-
-Braced = Indented and Indented = Inline and Inline = Dotted
 ```
 
-You can even mix styles when it makes sense:
+간단한 표현식의 경우 인라인 스타일을 사용하면 모든 내용이 한 줄에 표시됩니다 :
+
+<!--versetest
+Score:int = 85
+-->
+<!-- 23 -->
+```verse
+Result := if (Score > 90) then "excellent" else if (Score > 70) then "good" else "needs improvement"
+```
+
+점 표기 방식은 마침표를 사용해서 표현식을 나타냅니다 :
+
+<!--versetest
+Score:int = 85
+-->
+<!-- 24 -->
+```verse
+Result := if (Score > 90). "excellent" else if (Score > 70). "good" else. "needs improvement"
+```
+
+문법적으로 문제가 없다면 여러 스타일을 섞어 쓸 수도 있습니다 :
 
 <!--versetest
 ComplexCondition()<transacts><decides>:void = {}
 AnotherCheck()<transacts><decides>:void = {}
 YetAnotherValidation()<transacts><decides>:void = {}
 -->
-<!-- 20 -->
+<!-- 25 -->
 ```verse
 Result := if:
     ComplexCondition[] and
@@ -485,6 +882,38 @@ Result := if:
 then { "condition met" } else { "condition not met" }
 ```
 
-All these forms produce the same result, which is what the last line of the four-way example checks. The choice between them is about readability and context.
-Use braces when working with existing brace-heavy code, indentation for cleaner vertical layouts,
-and inline forms for simple expressions. This flexibility lets you write code that reads naturally.
+위의 모든 양식은 그 결과가 같습니다. 무엇을 선택할지는 가독성과 문맥의 문제일 뿐입니다. 중괄호가 많이 사용된 기존 코드와 함께 작업할 때는 중괄호를 쓰고, 세로 레이아웃을 깔끔하게 정리하고자 하는 경우에는 들여쓰기 방식을 쓰고, 간단한 표현식에는 인라인 형식을 쓰시면 됩니다. 이러한 유연성을 바탕으로 자연스럽게 읽히는 코드를 쓰실 수 있습니다.
+
+
+[^SideEffects]: 부수 효과. 함수 내부에서 이뤄지는 연산이 해당 함수 외부의 상태 변경에 미치는 효과를 말합니다.
+[^PureComputations]: 순수 연산. 주어진 입력만으로 결과가 결정되며, 외부 상태에 의존하지 않고 외부 상태를 변경하지도 않는 연산을 말합니다.
+[^BackwardCompatibility]: 하위 호환성. 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
+[^ControlFlow]: 제어 흐름. 조건문, 반복문, 분기, 실패 기반 실행 등 프로그램이 어떤 경로로 실행될지를 결정하는 방법을 말합니다.
+[^Specifiers]: 지정자. 대상의 속성, 조건, 동작 등을 구체적으로 명시하는 문법 요소를 말합니다.
+[^SpeculativeExecution]: 예측 실행. 투기적 실행이라고도 합니다. 실행 결과가 채택될지 확정되지 않은 상태에서 일단 실행한 뒤, 채택이 확정되면 결과값을 반영하고, 그렇지 않으면 결과값을 폐기한 후 롤백하는 방식을 말합니다.
+[^enumeration]: 열거형. 미리 정해 놓은 여러 개의 선택지 중 하나를 나타내는 형식의 자료형을 말합니다.
+[^TypeAnnotation]: 자료형 주석.
+[^Boilerplate]: 상용구 코드. 기계적으로 반복 기재해야 했던 준비 코드를 말합니다.
+[^Serialize]: 직렬화. 메모리에서 계산 중인 데이터를 저장, 전송할 수 있는 데이터로 변환하는 절차를 말합니다.
+[^Gracefully]: 원문에는 handle this gracefully 라고 표현되므로, 직역하면 '우아하게' 처리 한다고 번역될 수 있습니다. 하지만 프로그래밍에서 'gracefully'는 'failure 또는 예외가 발생해도 프로그램이 적절하게 대응하여 정상적인 흐름을 유지할 수 있게' 를 의미합니다.
+[^Method]: 멤버 함수. 다른 객체나 클래스에 소속된 함수를 의미합니다. 이와 대조적으로, 독립적으로 존재하는 함수는 Function 이라고 부르며 구분합니다.
+[^Assertion]: 검증 조건. 연산되는 시점에 참이어야 한다고 명시하는 조건을 말합니다. 참이면 연산을 계속 진행하고, 거짓이면 fail 됩니다. 이 예시에서는 NewWeight <= MaxWeight 부분이 이에 해당합니다. 4딸라
+[^Transactional]: 여러 작업을 하나의 논리적 단위로 취급하는 프로그래밍 방식을 말합니다. 아킬레우스의 발목 - 발목이 적셔지지 않았기 때문에(fail), 다른 모든 신체부위가 스틱스 강물에 적셔졌더라도(success) 전체 연산 결과(무적 효과 부여 기능)가 fail 됨.
+[^FirstClassValues]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
+[^PredicateFunction]: 프레디케이트 함수. 입력값을 받아 참(True) 또는 거짓(False)을 반환하는 함수를 말합니다.
+[^NestedFunction]: 중첩 함수. 어떤 다른 함수의 내부에 선언된 함수를 말합니다.
+[^Locally]: 지역적으로. 어떤 함수에 선언된 값을 그 함수 내부에서만 쓸 수 있게 한 경우, 그 값이 '지역적으로' 선언되었다고 합니다. <> Globally (전역적으로)
+[^Optional]: 자료형(Types) 중 하나. '값이 있을 수도 있고 없을 수도 있는 상태'를 표현할 수 있다는 특징이 있습니다.
+[^Operators]: 연산자. 값과 변수를 이용한 특정 연산을 수행하도록 지시하는 기호를 말합니다. 산술, 할당, 비교, 논리, 증감, 삼항 연산자를 총칭합니다.
+[^AbsentValues]: 결측값. 시스템이 가리킨 주소를 찾아갔는데 들어있는 값이 없어 '비어있다' 고 읽어야 하는 값을 말합니다.
+[^NullPointerExceptions]: 할당된 주소가 존재하지 않기 때문에 발생하는 예외를 말합니다.
+[^CatchAllPattern]: 처리 방식을 따로 지정하지 않은 나머지 모든 값들을 일괄처리 하는 방식을 말합니다.
+[^Binding]: A = x 처럼, 어떤 변수에 값을 지정하는 것을 말합니다. 예시에서 if 구문의 조건 입력 부분인 괄호를 보면, 등호를 이용해 변수에 값을 binding 해주고 있습니다.
+[^CompoundConditions]: 복합 조건. 예시의 if 구문 괄호 안의 내용과 같이, 하나의 조건식에 2개 이상의 조건을 건 경우, 그 조건들을 복합 조건이라고 합니다.
+[^Dependencies]: 의존성. 어떤 코드가 정상적으로 작동하기 위해 다른 코드나 모듈 등을 필요로 하는 관계를 말합니다.
+[^AccessSpecifiers]: 접근 한정자. 어떤 코드 요소를 '어디에서 접근할 수 있는가'를 지정하는 역할을 합니다. Public, Private 등이 있습니다.
+[^Visibility]: 가시성. 다른 코드에서 어떤 변수를 참조할 수 있는지 없는지의 여부를 말합니다.
+[^Identifiers]: 식별자. 특정 코드 요소를 구분하여 가리키기 위해 부여한 이름을 말합니다. 변수의 이름, 클래스의 이름, 함수의 이름 등이 예시가 됩니다.
+[^Generic]: 자료형(Types) 중 하나. 구체적인 자료형을 미리 정하지 않고, 나중에 자료형을 지정해서 사용할 수 있다는 특징이 있습니다.
+[^PathSegments]: 경로 분절. 예를 들어 경로가 /Fortnite.com/Characters/PlayerController 인 경우, 'Fortnite.com', 'Characters', 'PlayerController' 각각을 하나의 path segment 라고 말합니다.
+[^Fields]: Class 또는 struct 하위에 정의된 각각의 데이터 항목을 말합니다. 본문 예시 중 'item_stats' 라는 이름으로 명명된 struct 하위의 Damage, Defense, Weight, Value 등이 각각 field 의 예시가 됩니다.
