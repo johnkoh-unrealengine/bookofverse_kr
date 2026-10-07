@@ -4,8 +4,8 @@ import * as Shiki from "https://esm.sh/shiki@3.0.0";
 
 const Cache = {
     // Lenka: This is from the mkdocs.yml `site_url`, if its changed, this needs to be updated as well. if there is a way to fetch this, lmk.
-    SitePath: "/book/",
-    AssetsPath: "/book/Assets/",
+    SitePath: "/bookofverse_kr/",
+    AssetsPath: "/bookofverse_kr/Assets/",
     // Lenka: Attribute to watch, this should never change (if it does get the new one from body tag from the rendered html).
     Attribute: "data-md-color-media",
     Grammar: null,
