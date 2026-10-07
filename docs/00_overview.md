@@ -43,9 +43,9 @@ Verse는 다음과 같은 목표를 가지고 있습니다 :
 
 ## 주요 특징
 
-**모든것은 표현식이다.**
+**모든것은 Expression[^Expression] 이다.**
 
-Verse 에는 구문이 없습니다. 모든 것은 값을 생성하는 표현식 입니다. 이것이 값이 필요한 모든 곳에서 어떤 코드 조각이든 사용할 수 있는 조합 시스템을 만듭니다.
+Verse 에는 구문이 없습니다. 모든 것은 값을 생성하는 expression 입니다. 이것이 값이 필요한 모든 곳에서 어떤 코드 조각이든 사용할 수 있는 조합 시스템을 만듭니다.
 
 <!--versetest
 Condition()<computes><decides> :void= {}
@@ -53,11 +53,15 @@ Array :[]int= array{1}
 -->
 <!-- 01 -->
 ```verse
-# 심지어 control flow 조차도 값을 생성합니다
-Result := if (Condition[]) then "yes" else "no"
+Scores := array{10, 20, 30}
 
-# Loops 도 표현식입니다
-Multiply := for (X : Array) { X * 42 }
+# 심지어 control flow 조차도 값을 생성합니다
+Verdict := if (Scores.Length > 2) then "long" else "short"
+Verdict = "long"
+
+# Loops 도 그렇습니다
+Doubled := for (Score : Scores) { Score * 2 }
+Doubled = array{20, 40, 60}
 ```
 
 **Control Flow[^ControlFlow] 로서의 Failure**
@@ -77,8 +81,12 @@ M()<decides>:void=
 -->
 <!-- 02 -->
 ```verse
-ValidateInput[Data]  # 대괄호는 이 함수가 실패할 수도 있음을 의미합니다
-ProcessData(Data)    # 유효한 Data만 처리되며, 괄호는 이 함수가 반드시 성공함을 의미합니다
+ValidateName(N:string)<computes><decides>:void = N.Length > 0
+Greet(N:string):void = Print("Hello, {N}")
+
+Welcome(Name:string):void =
+    if (ValidateName[Name]):  # 대괄호 : 이 call 은 실패할 수도 있습니다
+        Greet(Name)           # 괄호 : 이 call 은 반드시 성공하게 됩니다
 ```
 <!-- #> -->
 
@@ -91,8 +99,8 @@ Verse 의 강력한 자료형 시스템은 컴파일 타임에 오류를 잡아�
 <!--versetest-->
 <!-- 03 -->
 ```verse
-X := 42                    # X : int = 42 로 적지 않아도 자료형이 추론됩니다
-Name := "Verse"            # Name : str = "Verse" 로 적지 않아도 자료형이 추론됩니다
+Level := 42                     # literal 로 부터 int 로 추론됩니다
+Names := array{"Ada", "Alan"}   # element 들에 의해서, Names 의 자료형이 []string (string 을 원소로 갖는 array) 로 추론됩니다
 ```
 
 **Effect 추적**
@@ -110,9 +118,12 @@ x := class:
 -->
 <!-- 04 -->
 ```verse
-PureCompute()<computes>:int = 2 + 2              # side effects 가 없습니다
-ReadState()<reads>:int = GetCurrentValue()       # 변경 가능한 상태를 읽을 수 있습니다
-UpdateGame()<transacts>:void = set Score += 10   # 읽고, 쓰고, 할당할 수 있습니다
+scoreboard := class:
+    var Score:int = 0
+
+    BonusFor(Streak:int)<computes>:int = Streak * 100  # side effects 가 없습니다
+    CurrentScore()<reads>:int = Score                  # 변경 가능한 상태를 읽을 수 있습니다
+    AddPoints(N:int)<transacts>:void = set Score += N  # 읽고, 쓰고, 할당할 수 있습니다
 ```
 <!-- #> -->
 
@@ -143,16 +154,16 @@ M()<suspends>:void=
 -->
 <!-- 05 -->
 ```verse
-# 여러 작업을 동시에 실행하고, 모든 작업이 완료될 때까지 기다립니다
-sync:
-    TaskA()
-    TaskB()
-    TaskC()
+StartLevel()<suspends>:void =
+    # 둘 다 실행하고, 하나가 먼저 끝나면 늦게 끝나는 것이 마저 끝나기를 기다립니다
+    sync:
+        LoadTerrain()
+        LoadTextures()
 
-# 여러 작업을 동시에 실행하고, 가장 먼저 도출된 결과를 채택합니다
-race:
-    FastPath()
-    SlowButReliablePath()
+    # 둘 다 실행하고, 먼저 도출된 결과를 채택합니다
+    race:
+        ReadFromCache()
+        FetchFromServer()
 ```
 <!-- #> -->
 
@@ -165,10 +176,19 @@ TryComplexOperation()<computes><decides>:void={}
 -->
 <!-- 06 -->
 ```verse
-if (TryComplexOperation[]):
-    # TryComplexOperation[] 에 의한 변경 사항이 커밋 됩니다
-else:
-    # TryComplexOperation[] 에 의한 변경 사항이 자동으로 롤백 됩니다
+wallet := class:
+    var Gold:int = 100
+
+    # Price 를 차감한 뒤, 잔액이 마이너스가 되면 거래가 실패합니다
+    Buy(Price:int)<transacts><decides>:void =
+        set Gold -= Price
+        Gold >= 0
+
+Purse := wallet{}
+not Purse.Buy[150]  # 너무 비싸서 모든 call 이 실패합니다
+Purse.Gold = 100    # 그리고 이미 차감 처리된 금액은 원상복구 됩니다
+Purse.Buy[30]
+Purse.Gold = 70
 ```
 
 **실시간 변수를 사용하는 반응형 프로그래밍**
@@ -191,6 +211,24 @@ set MaxHealth = 150  # Health 값이 130 이 됩니다
 # 이벤트 처리를 위한 반응형 구조
 when(Health < 25):
     Log("Low health warning!")
+
+
+
+
+
+var MaxHealth:int = 100
+var Damage:int = 0
+var live Health:int = MaxHealth - Damage
+
+# event 처리를 위한 반응형 constructs
+when(Health < 25):
+    Log("체력 경고!")
+
+# 읽어들이는 variable 값이 변경 될때마다 Health 값이 재계산 됩니다
+set Damage = 20
+Health = 80
+set MaxHealth = 150
+Health = 130
 ```
 
 Verse 는 영속적 가상 환경에서의 상호 경험을 구축하기 위한 기반을 제공합니다.
@@ -515,10 +553,100 @@ RunExample<public>()<suspends>:void =
     RareItems := Hero.Inventory.FilterItems[IsRareOrLegendary]
 
     Print("Found {RareItems.Length} rare items")
+
+
+
+
+
+
+
+
+# Enumeration(열거형) : 자료형에 제한받지 않는 constants 이고, 상용구 코드가 필요하지 않습니다.
+item_rarity := enum<persistable>:
+    common
+    rare
+    legendary
+
+# Struct: 변경할 수 없는 값 데이터. player 의 프로파일과 함께 저장되고 복구됩니다
+item_stats := struct<persistable>:
+    Weight:float = 1.0
+    Value:int = 0
+
+game_item := class<final><persistable>:
+    Name:string
+    Rarity:item_rarity = item_rarity.common
+    Stats:item_stats = item_stats{}
+
+    # <decides> 는 return 하는 대신 실패 처리될 수 있는 function 을 표시합니다
+    GetRarityMultiplier()<computes><decides>:float =
+        case(Rarity):
+            item_rarity.common => 1.0
+            item_rarity.rare => 2.0
+            _ => {false?; 0.0}  # 별도로 가격 책정하지 않은 rarity 에 대해서는 fail 처리 됩니다
+
+    GetEffectiveValue()<reads><decides>:int =
+        Floor[Stats.Value * GetRarityMultiplier[]]
+
+inventory_system := class:
+    var Items:[]game_item = array{}
+    var Gold:int = 1000
+    MaxWeight:float = 20.0
+
+    GetTotalWeight()<transacts>:float =
+        var Total:float = 0.0
+        for (Item : Items):
+            set Total += Item.Stats.Weight
+        Total
+
+    AddItem(NewItem:game_item)<transacts><decides>:void =
+        NewWeight := GetTotalWeight() + NewItem.Stats.Weight
+        NewWeight <= MaxWeight  # 명백한 사실 : 만약 여기서 실패한다면, 아래의 모든 코드가 실행되지 않습니다
+        set Items += array{NewItem}
+
+    # 아래의 실패가 하나라도 발생하면, gold 및 item 이 원상복구 됩니다
+    PurchaseItem(ShopItem:game_item)<transacts><decides>:void =
+        Price := ShopItem.GetEffectiveValue[]
+        Price <= Gold
+        set Gold -= Price
+        AddItem[ShopItem]
+
+    RemoveItem(ItemName:string)<transacts><decides>:game_item =
+        var Found:?game_item = false
+        var Rest:[]game_item = array{}
+        for (Item : Items):
+            if (Item.Name = ItemName, not Found?):
+                set Found = option{Item}
+            else:
+                set Rest += array{Item}
+        set Items = Rest
+        Found?  # 어떤 item 도 그 이름을 가지고 있지 않은 경우 실패합니다
+
+    FilterItems(Predicate:type{_(:game_item)<computes><decides>:void})<reads>:[]game_item =
+        for (Item : Items, Predicate[Item]):
+            Item
+
+Bag := inventory_system{}
+Sword := game_item{Name := "Rusty Sword", Stats := item_stats{Weight := 5.0, Value := 50}}
+Crown := game_item{Name := "Golden Crown", Rarity := item_rarity.rare, Stats := item_stats{Weight := 90.0, Value := 300}}
+
+Bag.PurchaseItem[Sword]
+Bag.Gold = 950
+
+# 왕관에 대한 가격은 지불할 수 있지만, 너무 무겁습니다. 그래서 환불됩니다
+not Bag.PurchaseItem[Crown]
+Bag.Gold = 950
+
+IsRareOrLegendary(I:game_item)<computes><decides>:void =
+    I.Rarity = item_rarity.rare or I.Rarity = item_rarity.legendary
+
+Bag.FilterItems(IsRareOrLegendary).Length = 0
+Bag.RemoveItem["Rusty Sword"].Name = "Rusty Sword"
+Bag.Items.Length = 0
+
 ```
 <!-- #> -->
 
-이 예시는 Verse를 실제 상황에서 사용하는 방법을 보여줍니다. 이 코드가 Verse만의 특징을 갖는 이유를 살펴보겠습니다 :
+이 예시에서, Verse 에서만 해당하는 몇 가지 사항이 있습니다.
 
 **자료형 시스템과 데이터 모델링**
 
@@ -551,6 +679,7 @@ RunExample<public>()<suspends>:void =
 **기본적 변경 불가능성**
 
 데이터 구조는 `var` 에 의해 명시적으로 마크 되지 않는 한 변경 불가합니다. 이렇게 하면 많은 종류의 버그를 제거하고 동시 프로그래밍을 더욱 안전하게 만들 수 있습니다. 의도적 변경이 필요한 경우에는 그것이 코드 상에 명시적으로 표현되고, effect 시스템에 의해서 추적됩니다. `var` 과 `set` 에 대한 보다 자세한 정보는 [Mutability](05_mutability.md) 를 확인 해보세요.
+
 
 ## 명명 규칙
 
@@ -884,7 +1013,7 @@ then { "condition met" } else { "condition not met" }
 
 위의 모든 양식은 그 결과가 같습니다. 무엇을 선택할지는 가독성과 문맥의 문제일 뿐입니다. 중괄호가 많이 사용된 기존 코드와 함께 작업할 때는 중괄호를 쓰고, 세로 레이아웃을 깔끔하게 정리하고자 하는 경우에는 들여쓰기 방식을 쓰고, 간단한 표현식에는 인라인 형식을 쓰시면 됩니다. 이러한 유연성을 바탕으로 자연스럽게 읽히는 코드를 쓰실 수 있습니다.
 
-
+[^Expression]: 표현식. evaluation(평가) 된 결괏값을 도출하는 코드를 말합니다.
 [^SideEffects]: 부수 효과. 함수 내부에서 이뤄지는 연산이 해당 함수 외부의 상태 변경에 미치는 효과를 말합니다.
 [^PureComputations]: 순수 연산. 주어진 입력만으로 결과가 결정되며, 외부 상태에 의존하지 않고 외부 상태를 변경하지도 않는 연산을 말합니다.
 [^BackwardCompatibility]: 하위 호환성. 최신 버전 소프트웨어가 구버전 기능을 그대로 쓸 수 있는 성질을 말합니다.
