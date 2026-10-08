@@ -33,7 +33,7 @@ theme:
         name: Switch to System preference
 
   features:
-#    - content.footnote.tooltips
+    - content.footnote.tooltips
 #    - navigation.tabs
     - search.suggest
     - search.highlight
