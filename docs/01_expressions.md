@@ -344,13 +344,13 @@ IsEqual := logic{X = Y}              # 동등하면 true 를, 그렇지 않으�
 Valid := logic{false?}               # 사용 가능합니다. false? 에 실패 가능성이 있기 때문입니다
 ```
 
-`logic{}` 내부에 입력되는 복수의 expressions 는 세미콜론(;)이나 콤마(,)로 구분됩니다 (자세한 내용은 [Semicolons vs Commas](#semicolons-vs-commas) 를 확인하세요) :
+`logic{}` 내부에 입력되는 복수의 expressions 는 세미콜론(;)이나 쉼표(,)로 구분됩니다 (자세한 내용은 [Semicolons vs Commas](#semicolons-vs-commas) 를 확인하세요) :
 
 <!--versetest-->
 <!-- 19 -->
 ```verse
 Result1 := logic{true?; true?}       # 세미콜론으로 구분된 예시
-Result2 := logic{true?, true?}       # 콤마로 구분된 예시
+Result2 := logic{true?, true?}       # 쉼표로 구분된 예시
 ```
 
 #### 경로 Literals
@@ -573,7 +573,7 @@ Y := GetData()
 
 ### Function 호출
 
-Function 을 호출하려면 괄호와 콤마(,) 로 나뉘는 인수를 사용합니다. Verse 는 function 호출을 그 function 의 반환 값으로 평가되는 expression 으로 취급합니다.
+Function 을 호출하려면 괄호와 쉼표(,) 로 나뉘는 인수를 사용합니다. Verse 는 function 호출을 그 function 의 반환 값으로 평가되는 expression 으로 취급합니다.
 
 <!--versetest
 Sqrt(X:int):float = 4.0
