@@ -1,10 +1,6 @@
-# Primitive Data Types
+# 기본 데이터 자료형
 
-Verse's primitive types are the numeric types `int`, `float`, and
-`rational`; `logic` for boolean values; `char`, `char32`, and `string`
-for text; and two types with special roles in the hierarchy: `any`, the
-supertype of all types, and `void`, which discards whatever it is
-given.
+Verse 의 기본 자료형은 숫자 자료형인 `int`, `float`, `rational` ; boolean 값인 `logic` ; 문자를 위한 `char`, `char32`, `string` 이 있습니다. 그리고 계층 구조에서 특별한 역할을 수행하는 두 자료형이 있습니다. 하나는 모든 자료형의 supertype 인 `any` 이고, 다른 하나는 주어지는 값이 무엇이든 다 폐기하는 `void` 입니다.
 
 ## Intrinsics
 
