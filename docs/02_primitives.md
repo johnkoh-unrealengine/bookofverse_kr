@@ -2,20 +2,11 @@
 
 Verse 의 기본 자료형은 숫자 자료형인 `int`, `float`, `rational` ; boolean 값인 `logic` ; 문자를 위한 `char`, `char32`, `string` 이 있습니다. 그리고 계층 구조에서 특별한 역할을 수행하는 두 자료형이 있습니다. 하나는 모든 자료형의 supertype 인 `any` 이고, 다른 하나는 주어지는 값이 무엇이든 다 폐기하는 `void` 입니다.
 
-## Intrinsics
+## Intrinsics[^Intrinsics]
 
-Some of what looks like ordinary Verse code is not written in Verse at
-all. *Intrinsic functions* are operations the compiler synthesises: the
-operators, container indexing, and functions such as `Abs`, `Floor`,
-and `Ceil`. They cannot be written in Verse because they need access to
-runtime internals, and because the compiler recognises each one by name
-it can also optimize the call. The [Runtime API
-Reference](api/verse_runtime_api.html) catalogues them, alongside the
-parts of the runtime that the engine implements in C++.
+평범한 Verse 코드로 보이는 것들 중 몇몇은 사실 Verse 로 쓰여진게 아닙니다. *Intrinsic functions* 는 컴파일러가 합성하는 operations 입니다. operators 나 container indexing, 또는 `Abs`, `Floor`, `Ceil` 과 같은 function 들이 여기 속합니다. 이것들은 runtime internals[^RuntimeInternals] 에 접근해야 하기 때문에 Verse 로 쓰일 수 없습니다. 그리고 컴파일러가 이들 각각을 이름으로 인식하기 때문에 call 을 최적화 할 수 있습니다. [Runtime API Reference](api/verse_runtime_api.html) 에서 이들의 목록이 나열된 것을 보실 수 있고, 엔진이 C++ 로 구현하는 runtime 구성요소도 함께 보실 수 있습니다.
 
-Most intrinsic functions *cannot be referenced as first-class
-values*. This means you can call them directly, but you cannot store
-them in variables or pass them as function arguments:
+대부분의 intrinsic functions 는 *first-class value[^FirstClassValue] 로 참조할 수 없습니다*. 이는 그것들을 직접적으로 call 할 수는 있지만, variables 내부에 저장하거나 function 의 arguments 로서 전달될 수는 없다는 것을 의미합니다 :
 
 <!--versetest
 assert_semantic_error(3502):
@@ -1400,3 +1391,7 @@ box(t:type) := class:
                         # invariant, so []int does not fit
 ```
 <!-- #> -->
+
+[^Intrinsics]: 내장함수. 별도의 소스 없이, 컴파일러가 직접 정의하고 지원하는 functions 를 말합니다.
+[^RuntimeInternals]: 런타임 내부 구현 요소. 프로그램이 실행되는 동안 실제로 연산을 수행하고 데이터를 관리하는 시스템 내부의 세부 구현 사항을 말합니다.
+[^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다. 
