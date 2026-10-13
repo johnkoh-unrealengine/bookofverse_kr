@@ -14,30 +14,21 @@ assert_semantic_error(3502):
 -->
 <!-- 01 -->
 ```verse
-Result := Abs(-42)  # Returns 42
+Result := Abs(-42)  # 42 를 return 합니다
 
-# Invalid: Cannot reference without calling
-# F := Abs  # ERROR
-# Invalid: Cannot pass as parameter
-# ApplyFunction(Abs, -42)  # ERROR
+# 유효하지 않음 : Calling 없이 참조할 수 없습니다
+# F := Abs  # 오류
+# 유효하지 않음 : Parameter 로 전달할 수 없습니다
+# ApplyFunction(Abs, -42)  # 오류
 ```
 
-This restriction exists because intrinsics often require special
-calling conventions or optimizations that do not fit the standard
-function model. If you need to pass intrinsic functionality around,
-wrap it in a regular function or nested function.
+이와 같은 제한이 있는 이유는 intrinsics 가 종종 표준 function 모델에 맞지 않는 특별한 calling 규칙이나 최적화를 필요로 하기 때문입니다. 만약 intrinsic functions 를 전달해야 할 필요가 있는 경우에는 일반적인 function 이나 nested function[^NestedFunction] 으로 그것을 감싸야 합니다.
 
-## Integers
+## Integers[^Integers]
 
-The `int` type represents integer, non-fractional values. An `int` can
-contain a positive number, a negative number, or zero. At runtime,
-integers are arbitrary precision and can grow beyond any fixed size.
-However, integer *literals* must fit within a 64-bit signed range
-(`-9,223,372,036,854,775,808` to `9,223,372,036,854,775,807`), and
-integers exceeding 64-bit have limited support (e.g., cannot be used
-in string interpolation or persisted).
+`int` 자료형은 integer, 즉 소수점 자리가 없는 값을 나타냅니다. 하나의 `int` 에는 양수, 음수, 0 을 담을 수 있습니다. 런타임 중의 integers 는 임의의 정밀도를 가지며, 어떠한 고정 크기를 초과해서 커질 수 있습니다. 하지만, integer *literals* 는 반드시 64-bit 의 부호화된 범위(`-9,223,372,036,854,775,808` to `9,223,372,036,854,775,807`) 내에 들어와야 합니다. 64-bit 의 범위를 넘는 integers 는 제한된 지원만 받을 수 있습니다. (예를 들어, 이들은 string interpolation[^StringInterpolation] 에 사용될 수 없고, persisted[^Persisted] 로서도 사용될 수 없습니다)
 
-You can include `int` values within your code as literals.
+코드 내에서는 literals[^Literals] 로 `int` 값을 쓸 수 있습니다.
 
 <!--versetest-->
 <!-- 02 -->
@@ -1394,4 +1385,9 @@ box(t:type) := class:
 
 [^Intrinsics]: 내장함수. 별도의 소스 없이, 컴파일러가 직접 정의하고 지원하는 functions 를 말합니다.
 [^RuntimeInternals]: 런타임 내부 구현 요소. 프로그램이 실행되는 동안 실제로 연산을 수행하고 데이터를 관리하는 시스템 내부의 세부 구현 사항을 말합니다.
-[^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다. 
+[^FirstClassValue]: 일급 객체 값. (1) 함수의 실질적인 매개변수가 될 수 있고 (2) 함수의 반환 값이 될 수 있고 (3) 할당의 대상이 될 수 있고 (4) 비교연산을 적용할 수 있는 객체를 일급 객체라고 합니다.
+[^NestedFunction]: 중첩 함수. 어떤 다른 함수의 내부에 선언된 함수를 말합니다.
+[^Integers]: 정수를 표현할 수 있는 자료형을 말합니다. 1, 10, 100 등을 표현할 수 있습니다.
+[^StringInterpolation]: 문자열 보간. 문자열(String) 안에 값이나 표현식을 삽입하는 방식을 말합니다. 예를 들어, Message := "Current level: {Level}" 라는 코드는 쌍따옴표로 표시되는 문자열 내부에 {Level} 이라는 값을 삽입하고 있습니다.
+[^Persisted]: 프로그램의 실행이 끝나거나 환경이 바뀌어도 계속 유지되도록 저장된 데이터를 말합니다.
+[^Literals]: 리터럴. Damage := 100 에서의 100 처럼, identifier 를 사용하지 않고 직접 입력된 값을 말합니다. 만약 identifier 를 사용한다면 Damage := BaseDamage 처럼 표현될 수 있을 것입니다. ↩
