@@ -33,23 +33,21 @@ Result := Abs(-42)  # 42 를 return 합니다
 <!--versetest-->
 <!-- 02 -->
 ```verse
-A :int= -42                    # civilian size
-#B := 42424242424242424242424242424242424242424242424242 # scary numbers...
-                               # ...can be computed but not written as literals
+A :int= -42                    # 평범한 숫자
+#B := 42424242424242424242424242424242424242424242424242 # 딱 봐도 낯선 무서운 숫자...
+                               # ... 계산될 수는 있지만 literals 로 쓰일 수는 없습니다
 
-AnswerToTheQuestion :int= 42   # A variable that never changes
-CoinsPerQuiver :int= 100       # A quiver costs this many coins
-ArrowsPerQuiver :int= 15       # A quiver contains this many arrows
+AnswerToTheQuestion :int= 42   # 변하지 않는 variable
+CoinsPerQuiver :int= 100       # 화살통 한 통의 가격은 동전 100 개 입니다
+ArrowsPerQuiver :int= 15       # 화살통 한 통에는 화실이 15 개 들어 있습니다
 
-# Mutable variables (see Mutability chapter for details on var and set)
-var Coins :int= 225           # The player currently has 225 coins
-var Arrows :int= 3            # The player currently has 3 arrows
-var TotalPurchases :int= 0    # Track total purchases
+# 변할 수 있는 variables (var 와 set 에 대한 자세한 내용은 Mutability 챕터를 확인하세요)
+var Coins :int= 225           # 이 플레이어는 지금 225 개의 동전을 가지고 있습니다
+var Arrows :int= 3            # 이 플레이어는 지금 3 개의 화살을 가지고 있습니다
+var TotalPurchases :int= 0    # 총 구매량을 추적합니다
 ```
 
-You can use the four basic math operations with integers: `+` for
-addition, `-` for subtraction, `*` for multiplication, and `/` for
-division.
+integers 로는 네 종류의 기본 계산을 할 수 있습니다. `+` 는 덧셈을, `-` 는 뺄셈을, `*` 는 곱셈을, `/` 는 나눗셈을 합니다.
 
 <!--versetest
 MyInt:int=10
@@ -57,26 +55,21 @@ MyHugeInt:int=1010100101
 -->
 <!-- 03 -->
 ```verse
-var C :int= (-MyInt + MyHugeInt - 2) * 3   # arithmetic
-set C += 1                                 # like saying, set C = C + 1
-set C *= 2                                 # like saying, set C = C * 2
+var C :int= (-MyInt + MyHugeInt - 2) * 3   # 산수
+set C += 1                                 # set C = C + 1 와 같습니다
+set C *= 2                                 # set C = C * 2 와 같습니다
 ```
 
-For integers, the operator `/` is failable, and the result is a
-`rational` type if it succeeds.
+integers 에서, `/` operator 는 실패할 수 있습니다. 그리고 성공한 경우에 그 결과는 `rational` 자료형을 갖습니다.
 
-### Overflow and VM Differences
+### Overflow[^Overflow] 와 VM[^VM] 차이점
 
-`int` behaves differently on the two VMs at the edges of the 64-bit range:
+`int` 는 VM 마다 64-bit 범위의 끝 부분에서 작동하는 방식이 다릅니다 :
 
-- **VerseVM** uses arbitrary precision. Arithmetic that would exceed 64 bits
-  simply produces the larger value.
-- **BPVM** uses 64-bit integers and raises a runtime error
-  (`MathIntrinsicCallFailure`) on overflow — including via `+=`, `*=`, unary
-  negation of the minimum value, and the bitwise intrinsics.
+- **VerseVM[^VerseVM]** 은 임의의 정확도를 사용합니다. 64 bit 를 초과하는 산수는 단지 더 큰 값을 생성합니다.
+- **BPVM[^BPVM]** 은 64-bit integers 를 쓰고, overflow 발생 시 런타임 에러(`MathIntrinsicCallFailure`)를 발생 시킵니다. 이 때, 대상이 되는 overflow 는 `+=` 나 `*=` 에 의해 발생한 것 뿐만 아니라, 범위 내 최소 값에 대한 unary negation[^UnaryNegation] 에 발생한 경우, bit 단위 연산을 수행하는 intrinsics 에 의해 발생한 경우를 가리지 않습니다.
 
-Code that must behave identically on both VMs should stay inside the signed
-64-bit range.
+따라서, 두 VM 환경에서 동일하게 작동되어야 하는 코드의 경우, 반드시 부호화된 64-bit 의 범위 내에 있어야 합니다.
 
 ## Rationals
 
@@ -1390,4 +1383,9 @@ box(t:type) := class:
 [^Integers]: 정수를 표현할 수 있는 자료형을 말합니다. 1, 10, 100 등을 표현할 수 있습니다.
 [^StringInterpolation]: 문자열 보간. 문자열(String) 안에 값이나 표현식을 삽입하는 방식을 말합니다. 예를 들어, Message := "Current level: {Level}" 라는 코드는 쌍따옴표로 표시되는 문자열 내부에 {Level} 이라는 값을 삽입하고 있습니다.
 [^Persisted]: 프로그램의 실행이 끝나거나 환경이 바뀌어도 계속 유지되도록 저장된 데이터를 말합니다.
-[^Literals]: 리터럴. Damage := 100 에서의 100 처럼, identifier 를 사용하지 않고 직접 입력된 값을 말합니다. 만약 identifier 를 사용한다면 Damage := BaseDamage 처럼 표현될 수 있을 것입니다. ↩
+[^Literals]: 리터럴. Damage := 100 에서의 100 처럼, identifier 를 사용하지 않고 직접 입력된 값을 말합니다. 만약 identifier 를 사용한다면 Damage := BaseDamage 처럼 표현될 수 있을 것입니다.
+[^Overflow]: 오버플로. 컴퓨터의 정수 연산 계산 결과가 허용 범위를 초과할 때 발생하는 오류를 말합니다.
+[^VM]: 버추얼 머신 (Virtual Machine). 프로그래밍 언어로 작성된 코드를 실행하기 위해 소프트웨어로 구현한 가상의 런타임 환경을 말합니다.
+[^VerseVM]: Verse Virtual Machine. Verse를 실행하기 위해 마련된 별도의 가상 머신을 말합니다.
+[^BPVM]: Blueprint Virtual Machine. Blueprint 의 실행 바이트코드를 처리하는 가상 머신을 말합니다.
+[^UnaryNegation]: 단항 부정. 하나의 피연산자 앞에 마이너스(-) 기호 또는 부정 연산자(!, ~)를 붙여 값을 반전시키는 연산을 말합니다. 64-bit 의 int 범위 최소값은 -9,223,372,036,854,775,808 이고, 최대값은 9,223,372,036,854,775,807 입니다. 따라서, 최소값을 단항 부정하면 -(-9,223,372,036,854,775,808) = 9,223,372,036,854,775,808 이 되므로, 범위의 최대값보다 1 커지게 됩니다. 즉, 본문의 의미는 이 1 차이에 의한 overflow 에 의해서도 (MathIntrinsicCallFailure) 가 발생한다는 것입니다.↩
