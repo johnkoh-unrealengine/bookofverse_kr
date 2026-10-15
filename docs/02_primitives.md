@@ -71,58 +71,51 @@ integers 에서, `/` operator 는 실패할 수 있습니다. 그리고 성공�
 
 따라서, 두 VM 환경에서 동일하게 작동되어야 하는 코드의 경우, 반드시 부호화된 64-bit 의 범위 내에 있어야 합니다.
 
-## Rationals
+## Rationals[^Rationals]
 
-The `rational` type represents exact fractions as ratios of
-integers. Unlike `int` or `float`, you cannot write a `rational`
-literal directly—integer division using the `/` operator creates
-rationals.
+`rational` 자료형은 integers 의 비율로서의 분수를 말합니다. `int` 나 `float` 와는 달리, `rational` literal 은 직접적으로는 작성할 수 없습니다. 대신, operator `/` 를 사용하는 integer 의 나눗셈이 rationals 를 만듭니다.
 
 <!--versetest-->
 <!-- 04 -->
 ```verse
-X := 7 / 3    # X has type rational, representing exactly 7÷3
+X := 7 / 3    # X 는 rational 자료형을 갖게 되고, 정확히 7÷3 을 표현합니다
 ```
 
-Rationals provide *exact arithmetic* without the precision loss of
-floating-point numbers, making them ideal for game logic requiring
-precise fractional calculations (resource distribution, turn-based
-systems, probability calculations).
+Rationals 는 소수점 숫자에서의 정밀 손실이 없는 *정확한 산수* 를 제공합니다. 따라서 정확한 분수 계산이 필요한 게임 로직에 사용하기 좋습니다. (자원 분배, 턴제 시스템, 확률 계산 등)
 
-Integer division with `/` produces a rational value. Division by zero fails:
+`/` 로 나뉜 integer 는 rational 값을 만듭니다. 0 으로 나뉘면 실패합니다 :
 
 <!--versetest-->
 <!-- 05 -->
 ```verse
-Half := 5 / 2           # rational: exactly 5/2
-Third := 10 / 3         # rational: exactly 10/3
-Quarter := 1 / 4        # rational: exactly 1/4
+Half := 5 / 2           # rational: 정확히 5/2
+Third := 10 / 3         # rational: 정확히 10/3
+Quarter := 1 / 4        # rational: 정확히 1/4
 
 if (not (1 / 0)):
-    # Division by zero fails
+    # 0으로 나뉘면 실패합니다
 ```
 
-Rationals are automatically reduced to lowest terms for equality comparisons:
+Rationals 는 동등성 비교시 자동적으로 lowest terms[^LowestTerms] 로 변환됩니다 :
 
 <!--versetest-->
 <!-- 06 -->
 ```verse
-# All these are equal - reduced to 5/2
-(5 / 2) = (10 / 4)      # true
-(5 / 2) = (15 / 6)      # true
-(10 / 4) = (15 / 6)     # true
+# 아래의 모든 값은 같습니다 - 즉, 5/2 로 변환됩니다
+(5 / 2) = (10 / 4)      # 참
+(5 / 2) = (15 / 6)      # 참
+(10 / 4) = (15 / 6)     # 참
 ```
 
-This normalization ensures that mathematically equivalent rationals
-compare as equal regardless of how they were constructed.
+이 정규화는 각각의 값이 어떻게 형성 되었는지와 무관하게, 수학적으로 동등한 rationals 를 비교하면 그 값들이 서로 동등한 값으로써 비교 되도록 보장합니다.
 
-Negative signs are normalized to the numerator:
+음의 기호는 분자에 맞춰지도록 정규화 됩니다.
 
 <!--versetest-->
 <!-- 07 -->
 ```verse
-(1 / -3) = (-1 / 3)     # true: negative moves to numerator
-(-1 / -3) = (1 / 3)     # true: double negative becomes positive
+(1 / -3) = (-1 / 3)     # 참: 음의 기호가 분자로 옮겨 갑니다
+(-1 / -3) = (1 / 3)     # 참: 분자와 분모 모두에 음의 기호가 있으면 양의 기호로 바뀝니다
 ```
 
 This canonical form simplifies equality checking and ensures
@@ -1388,4 +1381,6 @@ box(t:type) := class:
 [^VM]: 버추얼 머신 (Virtual Machine). 프로그래밍 언어로 작성된 코드를 실행하기 위해 소프트웨어로 구현한 가상의 런타임 환경을 말합니다.
 [^VerseVM]: Verse Virtual Machine. Verse를 실행하기 위해 마련된 별도의 가상 머신을 말합니다.
 [^BPVM]: Blueprint Virtual Machine. Blueprint 의 실행 바이트코드를 처리하는 가상 머신을 말합니다.
-[^UnaryNegation]: 단항 부정. 하나의 피연산자 앞에 마이너스(-) 기호 또는 부정 연산자(!, ~)를 붙여 값을 반전시키는 연산을 말합니다. 64-bit 의 int 범위 최소값은 -9,223,372,036,854,775,808 이고, 최대값은 9,223,372,036,854,775,807 입니다. 따라서, 최소값을 단항 부정하면 -(-9,223,372,036,854,775,808) = 9,223,372,036,854,775,808 이 되므로, 범위의 최대값보다 1 커지게 됩니다. 즉, 본문의 의미는 이 1 차이에 의한 overflow 에 의해서도 (MathIntrinsicCallFailure) 가 발생한다는 것입니다.↩
+[^UnaryNegation]: 단항 부정. 하나의 피연산자 앞에 마이너스(-) 기호 또는 부정 연산자(!, ~)를 붙여 값을 반전시키는 연산을 말합니다. 64-bit 의 int 범위 최소값은 -9,223,372,036,854,775,808 이고, 최대값은 9,223,372,036,854,775,807 입니다. 따라서, 최소값을 단항 부정하면 -(-9,223,372,036,854,775,808) = 9,223,372,036,854,775,808 이 되므로, 범위의 최대값보다 1 커지게 됩니다. 즉, 본문의 의미는 이 1 차이에 의한 overflow 에 의해서도 (MathIntrinsicCallFailure) 가 발생한다는 것입니다.
+[^Rationals]: 유리수. 즉, 분수로 나타낼 수 있는 수를 말합니다.
+[^LowestTerms]: 기약분수. 분모와 분자의 공약수가 1뿐이어서 더 이상 약분할 수 없는 분수를 말합니다.↩
