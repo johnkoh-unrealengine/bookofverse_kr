@@ -118,24 +118,21 @@ Rationals 는 동등성 비교시 자동적으로 lowest terms[^LowestTerms] 로
 (-1 / -3) = (1 / 3)     # 참: 분자와 분모 모두에 음의 기호가 있으면 양의 기호로 바뀝니다
 ```
 
-This canonical form simplifies equality checking and ensures
-consistent behavior.
+이와 같은 표준 양식은 동등성 검사를 간결하게 하고, 일관된 방식으로 작동되도록 보장합니다.
 
-An important property: *`int` is a subtype of `rational`*. This means
-any integer can be used where a rational is expected:
+중요한 특징 : *`int` 는 `rational` 의 subtype 입니다.* 이것은 rational 이 쓰여야 되는 곳이라면 그곳이 어디든 integer 도 쓰일 수 있다는 의미입니다 :
 
 <!--versetest-->
 <!-- 08 -->
 ```verse
 ProcessRational(X:rational):rational = X
 
-# Can pass integers directly
-ProcessRational(5) = 5/1     # 5 is implicitly 5/1 (rational)
-ProcessRational(0) = 0/1     # 0 is implicitly 0/1 (rational)
+# integer 를 직접적으로 보낼 수 있습니다
+ProcessRational(5) = 5/1     # 5 는 암묵적으로 5/1 (rational) 입니다
+ProcessRational(0) = 0/1     # 0 은 암묵적으로 0/1 (rational) 입니다
 ```
 
-However, you *cannot* return a rational where an int is expected—that
-would be a narrowing conversion:
+하지만, int 가 기대되는 곳에 rational 을 return 할 수는 *없습니다* - 그것은 narrowing conversion[^NarrowingConversion] 이 되기 때문입니다 :
 
 <!--versetest
 assert_semantic_error(3510):
@@ -144,7 +141,7 @@ assert_semantic_error(3510):
 -->
 <!-- 09 -->
 ```verse
-BadFunction(X:rational):int = X  # Error
+BadFunction(X:rational):int = X  # 오류
 ```
 <!-- #> -->
 
@@ -1383,4 +1380,5 @@ box(t:type) := class:
 [^BPVM]: Blueprint Virtual Machine. Blueprint 의 실행 바이트코드를 처리하는 가상 머신을 말합니다.
 [^UnaryNegation]: 단항 부정. 하나의 피연산자 앞에 마이너스(-) 기호 또는 부정 연산자(!, ~)를 붙여 값을 반전시키는 연산을 말합니다. 64-bit 의 int 범위 최소값은 -9,223,372,036,854,775,808 이고, 최대값은 9,223,372,036,854,775,807 입니다. 따라서, 최소값을 단항 부정하면 -(-9,223,372,036,854,775,808) = 9,223,372,036,854,775,808 이 되므로, 범위의 최대값보다 1 커지게 됩니다. 즉, 본문의 의미는 이 1 차이에 의한 overflow 에 의해서도 (MathIntrinsicCallFailure) 가 발생한다는 것입니다.
 [^Rationals]: 유리수. 즉, 분수로 나타낼 수 있는 수를 말합니다.
-[^LowestTerms]: 기약분수. 분모와 분자의 공약수가 1뿐이어서 더 이상 약분할 수 없는 분수를 말합니다.↩
+[^LowestTerms]: 기약분수. 분모와 분자의 공약수가 1뿐이어서 더 이상 약분할 수 없는 분수를 말합니다.
+[^NarrowingConversion]: 축소 변환. 더 큰 범위나 높은 정밀도를 가진 데이터 자료형을 더 작은 범위나 낮은 정밀도를 가진 데이터 자료형으로 변환하는 것을 말합니다. 축소 변환되는 경우, 정밀한 값을 갖는 데이터 부분이 손실되거나, overflow 가 발생할 수 있습니다. 1.25L 짜리 음료수를 255ml 짜리 컵에 전부 쏟아 부으면, 음료(Data)가 넘쳐서(overlow) 손실되기 마련인 점을 생각해보면 되겠습니다.↩
