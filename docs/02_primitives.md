@@ -145,65 +145,60 @@ BadFunction(X:rational):int = X  # 오류
 ```
 <!-- #> -->
 
-Whole number rationals equal their integer equivalents:
+나머지가 없는 rationals 는 그 등가물의 integer 와 동등합니다 :
 
 <!--versetest-->
 <!-- 10 -->
 ```verse
-(2 / 1) = 2             # true
-2 = (2 / 1)             # true
-(4 / 2) = 2             # true: 4/2 reduces to 2/1, equals 2
-(9 / 3) = 3             # true: 9/3 reduces to 3/1, equals 3
+(2 / 1) = 2             # 참
+2 = (2 / 1)             # 참
+(4 / 2) = 2             # 참 : 4/2 가 2/1 로 줄어들므로, 2 와 같습니다
+(9 / 3) = 3             # 참 : 9/3 가 3/1 로 줄어들므로, 3 과 같습니다
 ```
 
-This enables seamless mixing of integer and rational values in calculations.
+이로 인해 계산에서 integer 와 rational 값을 원활하게 섞어 쓸 수 있습니다.
 
-Two functions convert rationals to integers: `Floor` rounds toward
-negative infinity, and `Ceil` toward positive infinity.
+다음의 두 function 들이 rationals 를 integers 로 변환합니다 : `Floor` 는 내림을 하고, `Ceil` 은 올림을 합니다. 
 
 <!--versetest-->
 <!-- 11 -->
 ```verse
-# Positive rationals
-Floor(5 / 2)= 2         # 2.5 → 2 (down)
-Ceil(5 / 2) = 3         # 2.5 → 3 (up)
+# 양수 rationals
+Floor(5 / 2)= 2         # 2.5 → 2 (내림)
+Ceil(5 / 2) = 3         # 2.5 → 3 (올림)
 
-# Negative rationals - note direction!
-Floor((-5) / 2) = -3    # -2.5 → -3 (toward negative infinity)
-Ceil((-5) / 2) = -2     # -2.5 → -2 (toward positive infinity)
+# 음수 rationals - 방향을 잘 보세요!
+Floor((-5) / 2) = -3    # -2.5 → -3 (음의 방향으로 가까운 정수)
+Ceil((-5) / 2) = -2     # -2.5 → -2 (양의 방향으로 가까운 정수)
 
-# With negative denominator
-Floor(5 / -2) = -3      # Same as (-5)/2
-Ceil(5 / -2) = -2       # Same as (-5)/2
+# 분모가 음수인 경우
+Floor(5 / -2) = -3      # (-5)/2 와 같습니다
+Ceil(5 / -2) = -2       # (-5)/2 와 같습니다
 
-# Both negative
+# 분자와 분모 모두 음수인 경우
 Floor((-5) / -2) = 2    # 2.5 → 2
 Ceil((-5) / -2) = 3     # 2.5 → 3
 ```
 
-Rounding toward negative infinity is *not* truncation: the two agree
-on positive values and part company on negative ones. On a rational
-argument neither function can fail; the `float` overloads are
-`<decides>`.
+내림은 버림이 *아닙니다* : 이 둘은 양수에서는 결과가 같지만, 음수에서는 결과가 다릅니다. rational 을 인수로 받는 경우, Floor 와 Ceil 은 모두 실패할 수 없습니다. 하지만 `float` 를 인자로 받는 경우에는 `<decides>` 지정자가 붙으면서 실패할 수 있는 수식이 됩니다.
 
-When you apply `Floor` or `Ceil` to an integer-valued rational (one
-that reduces to a whole number), it returns that integer:
+`Floor` 또는 `Ceil` 을 integer 에 상당하는 rational (정수로 딱 떨어지는 값) 에 적용하면, 그것은 integer 를 return 합니다 :
 
 <!--versetest-->
 <!-- 12 -->
 ```verse
-# Integer-valued rationals
+# Integer 에 상당하는 rationals
 PositiveRational:rational = 5
 NegativeRational:rational = -5
 
-Floor(PositiveRational) = 5   # Returns the integer 5
-Ceil(PositiveRational) = 5    # Returns the integer 5
-Floor(NegativeRational) = -5  # Returns the integer -5
-Ceil(NegativeRational) = -5   # Returns the integer -5
+Floor(PositiveRational) = 5   # integer 5 를 return 합니다
+Ceil(PositiveRational) = 5    # integer 5 를 return 합니다
+Floor(NegativeRational) = -5  # integer -5 를 return 합니다
+Ceil(NegativeRational) = -5   # integer -5 를 return 합니다
 
-# Also works for rationals that reduce to integers
-Floor(10 / 2) = 5             # 10/2 = 5/1, returns 5
-Ceil(10 / 2) = 5              # 10/2 = 5/1, returns 5
+# Integers 로 딱 떨어지는 rationals 에도 작동합니다.
+Floor(10 / 2) = 5             # 10/2 = 5/1, 5 를 return 합니다
+Ceil(10 / 2) = 5              # 10/2 = 5/1, 5 를 return 합니다
 ```
 
 Rationals can be used as parameter and return types:
