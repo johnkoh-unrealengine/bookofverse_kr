@@ -201,23 +201,21 @@ Floor(10 / 2) = 5             # 10/2 = 5/1, 5 를 return 합니다
 Ceil(10 / 2) = 5              # 10/2 = 5/1, 5 를 return 합니다
 ```
 
-Rationals can be used as parameter and return types:
+Rationals 는 파라미터로 쓰이거나 return 되는 자료형으로 쓰일 수 있습니다 :
 
 <!--versetest-->
 <!-- 13 -->
 ```verse
-# Function returning rational
+# rational 을 return 하는 Function
 Half(X:int)<computes><decides>:rational = X / 2
 
-# Use the result
+# 위 function 의 결과를 파라미터로 사용하는 코드
 if (Result := Half[7]):
-    Floor(Result) = 3   # 7/2 = 3.5, Floor gives 3
-    Ceil(Result) = 4    # 7/2 = 3.5, Ceil gives 4
+    Floor(Result) = 3   # 7/2 = 3.5 이므로, Floor 는 3 을 반환합니다
+    Ceil(Result) = 4    # 7/2 = 3.5 이므로, Ceil 은 4 를 반환합니다
 ```
 
-
-Because `int` is a subtype of `rational`, you *cannot* overload based
-solely on these types:
+`int` 는 `rational` 의 subtype 이므로, 이 두 자료형들에 의해서만 어떠한 함수를 overload[^Overload] 할 수는 *없습니다*. `rational` 이 `int` 도 받을 수 있기 때문에, `int` 를 전달하는 코드에서 `int` 를 매개변수로 받는 함수와 `rational` 을 매개변수로 받는 함수 중 어떤 것을 호출해야 할지 모호해지고, 이를 원인으로 하는 오류가 발생하기 때문입니다 :
 
 <!--versetest
 assert_semantic_error(3532):
@@ -228,7 +226,7 @@ assert_semantic_error(3532):
 <!-- 14 -->
 ```verse
 ProcessValue(X:int):void = {}
-ProcessValue(X:rational):void = {}  # Error!
+ProcessValue(X:rational):void = {}  # 오류!
 ```
 <!-- #> -->
 
@@ -1376,4 +1374,5 @@ box(t:type) := class:
 [^UnaryNegation]: 단항 부정. 하나의 피연산자 앞에 마이너스(-) 기호 또는 부정 연산자(!, ~)를 붙여 값을 반전시키는 연산을 말합니다. 64-bit 의 int 범위 최소값은 -9,223,372,036,854,775,808 이고, 최대값은 9,223,372,036,854,775,807 입니다. 따라서, 최소값을 단항 부정하면 -(-9,223,372,036,854,775,808) = 9,223,372,036,854,775,808 이 되므로, 범위의 최대값보다 1 커지게 됩니다. 즉, 본문의 의미는 이 1 차이에 의한 overflow 에 의해서도 (MathIntrinsicCallFailure) 가 발생한다는 것입니다.
 [^Rationals]: 유리수. 즉, 분수로 나타낼 수 있는 수를 말합니다.
 [^LowestTerms]: 기약분수. 분모와 분자의 공약수가 1뿐이어서 더 이상 약분할 수 없는 분수를 말합니다.
-[^NarrowingConversion]: 축소 변환. 더 큰 범위나 높은 정밀도를 가진 데이터 자료형을 더 작은 범위나 낮은 정밀도를 가진 데이터 자료형으로 변환하는 것을 말합니다. 축소 변환되는 경우, 정밀한 값을 갖는 데이터 부분이 손실되거나, overflow 가 발생할 수 있습니다. 1.25L 짜리 음료수를 255ml 짜리 컵에 전부 쏟아 부으면, 음료(Data)가 넘쳐서(overlow) 손실되기 마련인 점을 생각해보면 되겠습니다.↩
+[^NarrowingConversion]: 축소 변환. 더 큰 범위나 높은 정밀도를 가진 데이터 자료형을 더 작은 범위나 낮은 정밀도를 가진 데이터 자료형으로 변환하는 것을 말합니다. 축소 변환되는 경우, 정밀한 값을 갖는 데이터 부분이 손실되거나, overflow 가 발생할 수 있습니다. 1.25L 짜리 음료수를 255ml 짜리 컵에 전부 쏟아 부으면, 음료(Data)가 넘쳐서(overlow) 손실되기 마련인 점을 생각해보면 되겠습니다.
+[^Overload]: 오버로드. 같은 클래스에 이름은 같고 매개변수만 다른 메서드를 여러개 만드는 것을 말합니다. 예를 들어, Calculate 라는 클래스 안에 서로 다른 매개변수를 쓰는 add(int a, int b) 와 add(float a, float b) 를 동시에 정의할 수 있는데, 이를 두고 add 라는 함수가 overload 되어있다고 표현할 수 있습니다. ↩
