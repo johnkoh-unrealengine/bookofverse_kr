@@ -230,32 +230,31 @@ ProcessValue(X:rational):void = {}  # 오류!
 ```
 <!-- #> -->
 
-The compiler sees `int` as more specific than `rational`, so the
-signatures would be ambiguous.
+컴파일러는 `int` 를 `rational` 보다 더 구체적인 것으로 인식하므로, signature[^Signature] 가 모호해집니다.
 
-Rationals excel at resource distribution and fairness calculations:
+Rationals 는 자원 분배와 공평한 계산이 필요한 경우에 장점을 갖습니다 :
 
 <!--versetest-->
 <!-- 15 -->
 ```verse
-# Fair resource distribution
+# 공평한 자원 분배
 DistributeResources(TotalGold:int, NumPlayers:int)<decides>:int =
     GoldPerPlayer := TotalGold / NumPlayers
-    Floor(GoldPerPlayer)  # Converts to whole gold pieces (can be 0)
+    Floor(GoldPerPlayer)  # 정수 갯수로 떨어지는 금화 조각으로 변환됩니다 (0 개 일 수도 있음)
 
-# To fail when there's insufficient gold, check > 0
+# 금화가 충분하지 않을 때 실패 처리를 하기 위해, > 0 인지 확인합니다.
 DistributeResourcesOrFail(TotalGold:int, NumPlayers:int)<decides>:int =
     GoldPerPlayer := TotalGold / NumPlayers
-    Floor(GoldPerPlayer) > 0  # Fails if each player gets 0
+    Floor(GoldPerPlayer) > 0  # 각 플레이어들이 0 개를 갖게 되면 실패 처리됩니다
 
-# Item affordability calculation
+# 아이템 구매 가능 여부 계산
 Coins:int = 225
 CoinsPerQuiver:int = 100
 ArrowsPerQuiver:int = 15
 
 if (NumberOfQuivers := Floor(Coins / CoinsPerQuiver)):
     TotalArrows:int = NumberOfQuivers * ArrowsPerQuiver
-    # Player can afford 2 quivers = 30 arrows
+    # 플레이어는 2 개의 화살통(=30 개의 화살)을 구매할 수 있습니다
 ```
 
 ## Floats
@@ -1375,4 +1374,5 @@ box(t:type) := class:
 [^Rationals]: 유리수. 즉, 분수로 나타낼 수 있는 수를 말합니다.
 [^LowestTerms]: 기약분수. 분모와 분자의 공약수가 1뿐이어서 더 이상 약분할 수 없는 분수를 말합니다.
 [^NarrowingConversion]: 축소 변환. 더 큰 범위나 높은 정밀도를 가진 데이터 자료형을 더 작은 범위나 낮은 정밀도를 가진 데이터 자료형으로 변환하는 것을 말합니다. 축소 변환되는 경우, 정밀한 값을 갖는 데이터 부분이 손실되거나, overflow 가 발생할 수 있습니다. 1.25L 짜리 음료수를 255ml 짜리 컵에 전부 쏟아 부으면, 음료(Data)가 넘쳐서(overlow) 손실되기 마련인 점을 생각해보면 되겠습니다.
-[^Overload]: 오버로드. 같은 클래스에 이름은 같고 매개변수만 다른 메서드를 여러개 만드는 것을 말합니다. 예를 들어, Calculate 라는 클래스 안에 서로 다른 매개변수를 쓰는 add(int a, int b) 와 add(float a, float b) 를 동시에 정의할 수 있는데, 이를 두고 add 라는 함수가 overload 되어있다고 표현할 수 있습니다. ↩
+[^Overload]: 오버로드. 같은 클래스에 이름은 같고 매개변수만 다른 메서드를 여러개 만드는 것을 말합니다. 예를 들어, Calculate 라는 클래스 안에 서로 다른 매개변수를 쓰는 add(int a, int b) 와 add(float a, float b) 를 동시에 정의할 수 있는데, 이를 두고 add 라는 함수가 overload 되어있다고 표현할 수 있습니다.
+[^Signature]: 시그니처. 함수 시그니처 라고도 합니다. 함수(Function)를 호출하는 방법과 규격에 대한 명세를 말합니다. 그 구성요소로는 함수의 이름, 매개변수 목록, 반환 자료형 등이 있습니다. 선언부에 기재된 이와 같은 정보로 인해, 개발자들은 함수 내부 코드를 다 읽어보지 않아도 해당 함수를 쓰기 위해 어떤 데이터를 넣어야 할지 파악할 수 있습니다.↩
