@@ -259,20 +259,14 @@ if (NumberOfQuivers := Floor(Coins / CoinsPerQuiver)):
 
 ## Floats
 
-The `float` type represents all non-integer numerical values. It can
-hold large values and precise fractions, such as `1.0`, `-50.5`, and
-`3.14159`. A float is an IEEE 64-bit float, which means it can contain
-a positive or negative number that has a decimal point in the range
-`[-2^1024 + 1, … , 0, … , 2^1024 - 1]`, or has the value `NaN` (Not a
-Number). The implementation differs from the IEEE standard in the
-following ways:
+`float` 자료형은 정수가 아닌 숫자 값 전체를 표시합니다. 이는 `1.0`, `-50.5`, `3.14159` 등 큰 값과 정확한 분수를 표현할 수 있습니다. float 는 IEEE 의 64 비트 float 을 말하는데, 이는 `[-2^1024 + 1, … , 0, … , 2^1024 - 1]` 범위의 소수점 있는 양수 및 음수 값, 그리고 `NaN` (Not a Number, 숫자가 아님) 값을 담을 수 있다는 의미입니다. 다만, 그 구현 방식은 아래의 면에서 IEEE 의 표준 방식과 다릅니다 :
 
-- There is only one `NaN` value.
-- `NaN` is equal to itself.
-- Every number is equal to itself.
-- `0` cannot be negative.
+- 하나의 `NaN` 값만을 갖습니다.
+- `NaN` 값은 그 자신의 값과 동등한 값으로 해석됩니다.
+- 모든 숫자는 그 자신의 값과 동등한 값으로 해석됩니다.
+- `0` 은 음수가 될 수 없습니다.
 
-You can include float values within your code as literals:
+작성자는 작성하는 코드 안에 float 값을 literals 로 포함할 수 있습니다 :
 
 <!--versetest-->
 <!-- 16 -->
@@ -282,25 +276,21 @@ B := 2.14
 MaxHealth : float = 100.0
 
 var C:float = A + B
-C = 3.14              # succeeds
+C = 3.14              # 성공
 set C -= 3.14
-C = 0.0               # succeeds
-# C = 0              # compile error; 0 is not a `float` literal
+C = 0.0               # 성공
+# C = 0              # 컴파일 에러; 위에 C 의 자료형을 `float` 로 선언했는데, 0 은 `float` literal 이 아니기 때문입니다. (0 은 `int` literal 입니다.)
 ```
 
-You can use the four basic math operations with floats: `+` for
-addition, `-` for subtraction, `*` for multiplication, and `/` for
-division. There are also combined operators for doing the basic math
-operations (addition, subtraction, multiplication, and division), and
-updating the value of a variable:
+floats 는 네 가지 기본 산수에 쓸 수 있습니다 : `+` 로 덧셈을, `-` 로 뺄셈을, `*` 로 곱셈을, `/` 로 나눗셈을 할 수 있습니다. 또, 이 네 가지 기본 산수를 수행하면서 변수 값을 업데이트 하는 조합된 operators 도 있습니다 :
 
 <!--versetest-->
 <!-- 17 -->
 ```verse
 var CurrentHealth : float = 100.0
-set CurrentHealth /= 2.0    # Halves the value of CurrentHealth
-set CurrentHealth += 10.0   # Adds 10 to CurrentHealth
-set CurrentHealth *= 1.5    # Multiplies CurrentHealth by 1.5
+set CurrentHealth /= 2.0    # CurrentHealth 값을 반으로 나누고 업데이트 합니다
+set CurrentHealth += 10.0   # CurrentHealth 값에 10 을 더하고 업데이트 합니다
+set CurrentHealth *= 1.5    # CurrentHealth 값에 1.5 를 곱하고 업데이트 합니다
 ```
 
 ### Special Float Values
