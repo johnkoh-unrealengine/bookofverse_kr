@@ -293,35 +293,30 @@ set CurrentHealth += 10.0   # CurrentHealth 값에 10 을 더하고 업데이트
 set CurrentHealth *= 1.5    # CurrentHealth 값에 1.5 를 곱하고 업데이트 합니다
 ```
 
-### Special Float Values
+### 특수한 Float 값들
 
-Float operations follow IEEE 754 semantics, which include special
-values for infinity and Not-a-Number (NaN):
+Float 는 IEEE 754 semantics 를 따르며, 여기에는 무한과 숫자가 아닌(NaN) 데이터에 대한 특수한 값이 포함됩니다.
 
 <!--versetest-->
 <!-- 18 -->
 ```verse
-# Infinity from division by zero
+# 0 으로 나뉜 값에 의한 무한
 PosInf := 1.0 / 0.0
 NegInf := -1.0 / 0.0
 
-# NaN from invalid operations
+# 유효하지 않은 operations 에 의한 NaN
 NaNFromZeroDiv := 0.0 / 0.0
 NaNFromSqrt := Sqrt(-1.0)
 NaNFromInfDiv := PosInf / PosInf
 
-# NaN propagates through operations
-Result := NaNFromZeroDiv + 100.0  # Result is NaN
-Product := NaNFromSqrt * 2.0      # Product is NaN
+# NaN 값은 연산을 통해 전달 됩니다
+Result := NaNFromZeroDiv + 100.0  # Result 는 NaN 입니다
+Product := NaNFromSqrt * 2.0      # Product 는 NaN 입니다
 ```
 
-Division by zero produces `Inf` or `-Inf` rather than failing. Invalid
-operations like `0.0 / 0.0`, `Sqrt(-1.0)`, or `Inf - Inf` produce NaN
-values. Arithmetic operations with NaN propagate the NaN to the
-result. Unlike standard IEEE 754, Verse's NaN equals itself when
-compared.
+0 으로 나뉜 수는 실패로 처리되지 않고, `inf` 또는 `-inf` 를 생성합니다. `0.0 / 0.0`, `Sqrt(-1.0)`, 또는 `Inf - Inf` 와 같이 유효하지 않은 연산은 NaN 값을 생성합니다. NaN 이 포함된 수학적 연산은 그 NaN 값을 결과에 전달합니다. 표준 IEEE 754 와 달리, Verse 에서의 NaN 은 그 자신과 비교되면 동등한 값으로 취급됩니다. (역자 주 - 표준 IEEE 754 에서, NaN == NaN 은 False, NaN != NaN 은 True 로 읽힙니다. 이와 반대로, Verse 에서는 NaN == NaN 이 Ture, NaN != NaN 이 False 로 읽힙니다.)
 
-To convert an `int` to a `float`, multiply it by `1.0`: `MyFloat:=MyInt*1.0`.
+`int` 를 `float` 로 변환하려면, `MyFloat:=MyInt*1.0` 처럼 기존에 가지고 있던 값에 `1.0` 을 곱하면 됩니다.
 
 ## Mathematical Functions
 
