@@ -318,17 +318,11 @@ Product := NaNFromSqrt * 2.0      # Product 는 NaN 입니다
 
 `int` 를 `float` 로 변환하려면, `MyFloat:=MyInt*1.0` 처럼 기존에 가지고 있던 값에 `1.0` 을 곱하면 됩니다.
 
-## Mathematical Functions
+## 수학적 Functions
 
-The mathematical functions are intrinsics. The [Runtime API
-Reference](api/verse_runtime_api.html) lists every one of them with its
-signature, its effects, and how it behaves at the edges of its domain; this
-section pins down the behaviour that most often catches people out.
+수학적 function 들은 intrinsics[^Intrinsics] 입니다. The [Runtime API Reference](api/verse_runtime_api.html) 에는 모든 수학적 function 들이 그들의 signature[^Signature], effects 와 함께 나열되어 있고, domain[^Domain] 의 경계에서 그들이 어떻게 작동하는지도 함께 기록되어 있습니다; 이 섹션에서는 사람들이 자주 혼동하는 작동 방식에 대해 명확히 다룹니다.
 
-`Abs`, `Min` and `Max` are defined for both `int` and `float`. On floats they
-follow Verse's rule that `NaN` is a value like any other rather than something
-that poisons a comparison, so it propagates out of `Min` and `Max` instead of
-being ignored:
+`Abs`, `Min` 그리고 `Max` 는 `int` 와 `float` 모두에 쓸 수 있습니다. floats 의 경우, `NaN` 은 '비교 구문을 적용할 수 없는' 값으로 간주되지 않고, 다른 값들과 마찬가지로 '처리할 수 있는' 값으로 간주하는 Verse 의 규칙을 따릅니다. 그렇기 때문에 Verse 에서 `NaN` 은 무시되지 않고, `Min` 과 `Max` 로부터 다른 식으로 전달 됩니다 :
 
 <!--versetest-->
 <!-- 19 -->
@@ -337,11 +331,11 @@ Abs(5) = 5
 Abs(-5) = 5
 Abs(3.14) = 3.14
 
-# NaN propagates through comparison
+# 비교 구문에서 Nan 값이 전달됩니다
 Max(NaN, 5.0) = NaN
 Min(NaN, 5.0) = NaN
 
-# Infinity is ordered as you would expect
+# 무한대 값이 상식적으로 기대되는 대로 처리됩니다
 Max(Inf, 100.0) = Inf
 Min(-Inf, 100.0) = -Inf
 ```
@@ -1360,4 +1354,5 @@ box(t:type) := class:
 [^LowestTerms]: 기약분수. 분모와 분자의 공약수가 1뿐이어서 더 이상 약분할 수 없는 분수를 말합니다.
 [^NarrowingConversion]: 축소 변환. 더 큰 범위나 높은 정밀도를 가진 데이터 자료형을 더 작은 범위나 낮은 정밀도를 가진 데이터 자료형으로 변환하는 것을 말합니다. 축소 변환되는 경우, 정밀한 값을 갖는 데이터 부분이 손실되거나, overflow 가 발생할 수 있습니다. 1.25L 짜리 음료수를 255ml 짜리 컵에 전부 쏟아 부으면, 음료(Data)가 넘쳐서(overlow) 손실되기 마련인 점을 생각해보면 되겠습니다.
 [^Overload]: 오버로드. 같은 클래스에 이름은 같고 매개변수만 다른 메서드를 여러개 만드는 것을 말합니다. 예를 들어, Calculate 라는 클래스 안에 서로 다른 매개변수를 쓰는 add(int a, int b) 와 add(float a, float b) 를 동시에 정의할 수 있는데, 이를 두고 add 라는 함수가 overload 되어있다고 표현할 수 있습니다.
-[^Signature]: 시그니처. 함수 시그니처 라고도 합니다. 함수(Function)를 호출하는 방법과 규격에 대한 명세를 말합니다. 그 구성요소로는 함수의 이름, 매개변수 목록, 반환 자료형 등이 있습니다. 선언부에 기재된 이와 같은 정보로 인해, 개발자들은 함수 내부 코드를 다 읽어보지 않아도 해당 함수를 쓰기 위해 어떤 데이터를 넣어야 할지 파악할 수 있습니다.↩
+[^Signature]: 시그니처. 함수 시그니처 라고도 합니다. 함수(Function)를 호출하는 방법과 규격에 대한 명세를 말합니다. 그 구성요소로는 함수의 이름, 매개변수 목록, 반환 자료형 등이 있습니다. 선언부에 기재된 이와 같은 정보로 인해, 개발자들은 함수 내부 코드를 다 읽어보지 않아도 해당 함수를 쓰기 위해 어떤 데이터를 넣어야 할지 파악할 수 있습니다.
+[^Domain]: 정의역. 함수에 입력할 수 있도록 허용된 수나 값들의 전체 범위를 말합니다. Domain 의 경계값 이라는 것은, 그 범위의 끝에 있는 값들을 말합니다. 예를 들어, 정의역이 '0 보다 큰 integer' 로 정의되어 있다면, 0 은 Domain 에 포함되지 않는 경계값이고, 1 은 Domain 에 포함되는 경계값 입니다. ↩
