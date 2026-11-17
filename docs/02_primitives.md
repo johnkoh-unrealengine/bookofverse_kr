@@ -340,21 +340,18 @@ Max(Inf, 100.0) = Inf
 Min(-Inf, 100.0) = -Inf
 ```
 
-`Ceil`, `Floor`, `Round` and `Int` convert a `float` to an `int`, and all four
-can fail: a non-finite argument has no integer to round to, which is why they
-are written with square brackets. `Round` breaks ties to even rather than away
-from zero, so a long run of rounded values does not drift upwards:
+`Ceil`, `Floor`, `Round`, `Int` 는 `float` 를 `int` 로 변경합니다. 그리고 이들 네 수식은 실패할 수 있습니다 : 유한하지 않은 argument 는 반올림할 정수가 없으므로 대괄호와 함께 쓰입니다. `Round` 는 0 에서 멀어지는 방향으로 일관되게 반올림 하는 대신, break ties to even[^BreakTiesToEven] 방식을 채택합니다. 따라서, 반올림이 반복 적용된 값이라도 그 결과가 큰 값 쪽으로 치우치지 않습니다 :
 
 <!--versetest-->
 <!-- 20 -->
 ```verse
-Round[1.5] = 2     # tie, rounds to even 2
-Round[2.5] = 2     # tie, rounds to even 2
-Round[-1.5] = -2   # tie, rounds to even -2
-Round[0.5] = 0     # tie, rounds to even 0
+Round[1.5] = 2     # 동률이므로 짝수 2 로 계산됩니다
+Round[2.5] = 2     # 동률이므로 짝수 2 로 계산됩니다
+Round[-1.5] = -2   # 동률이므로 짝수 -2 로 계산됩니다
+Round[0.5] = 0     # 동률이므로 짝수 0 으로 계산됩니다
 
-Round[1.4] = 1     # no tie, rounds down
-Round[1.6] = 2     # no tie, rounds up
+Round[1.4] = 1     # 동률이 아니므로 1 로 계산됩니다
+Round[1.6] = 2     # 동률이 아니므로 2 로 계산됩니다
 ```
 
 The rest of the floating-point functions never fail. Where a mathematician
@@ -1355,4 +1352,5 @@ box(t:type) := class:
 [^NarrowingConversion]: 축소 변환. 더 큰 범위나 높은 정밀도를 가진 데이터 자료형을 더 작은 범위나 낮은 정밀도를 가진 데이터 자료형으로 변환하는 것을 말합니다. 축소 변환되는 경우, 정밀한 값을 갖는 데이터 부분이 손실되거나, overflow 가 발생할 수 있습니다. 1.25L 짜리 음료수를 255ml 짜리 컵에 전부 쏟아 부으면, 음료(Data)가 넘쳐서(overlow) 손실되기 마련인 점을 생각해보면 되겠습니다.
 [^Overload]: 오버로드. 같은 클래스에 이름은 같고 매개변수만 다른 메서드를 여러개 만드는 것을 말합니다. 예를 들어, Calculate 라는 클래스 안에 서로 다른 매개변수를 쓰는 add(int a, int b) 와 add(float a, float b) 를 동시에 정의할 수 있는데, 이를 두고 add 라는 함수가 overload 되어있다고 표현할 수 있습니다.
 [^Signature]: 시그니처. 함수 시그니처 라고도 합니다. 함수(Function)를 호출하는 방법과 규격에 대한 명세를 말합니다. 그 구성요소로는 함수의 이름, 매개변수 목록, 반환 자료형 등이 있습니다. 선언부에 기재된 이와 같은 정보로 인해, 개발자들은 함수 내부 코드를 다 읽어보지 않아도 해당 함수를 쓰기 위해 어떤 데이터를 넣어야 할지 파악할 수 있습니다.
-[^Domain]: 정의역. 함수에 입력할 수 있도록 허용된 수나 값들의 전체 범위를 말합니다. Domain 의 경계값 이라는 것은, 그 범위의 끝에 있는 값들을 말합니다. 예를 들어, 정의역이 '0 보다 큰 integer' 로 정의되어 있다면, 0 은 Domain 에 포함되지 않는 경계값이고, 1 은 Domain 에 포함되는 경계값 입니다. ↩
+[^Domain]: 정의역. 함수에 입력할 수 있도록 허용된 수나 값들의 전체 범위를 말합니다. Domain 의 경계값 이라는 것은, 그 범위의 끝에 있는 값들을 말합니다. 예를 들어, 정의역이 '0 보다 큰 integer' 로 정의되어 있다면, 0 은 Domain 에 포함되지 않는 경계값이고, 1 은 Domain 에 포함되는 경계값 입니다.
+[^BreakTiesToEven]: 반올림 방식의 하나를 말합니다. Banker's rounding 이라고도 합니다. 반올림할 자리가 정확히 중간값(0.5 등) 인 경우, 가장 가까운 짝수로 계산하되, 앞자리가 홀수이면 큰 방향의 짝수로, 앞자리가 짝수이면 작은 값의 짝수로 계산합니다. 예를 들어 2.5 는 2 로 계산되고, 3.5 도 4 로 계산됩니다.↩
