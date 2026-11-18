@@ -354,33 +354,31 @@ Round[1.4] = 1     # 동률이 아니므로 1 로 계산됩니다
 Round[1.6] = 2     # 동률이 아니므로 2 로 계산됩니다
 ```
 
-The rest of the floating-point functions never fail. Where a mathematician
-would say the answer does not exist, they return `NaN` or an infinity and let
-it flow onwards:
+나머지 소수점 function 들은 결코 실패하지 않습니다. 수학자들의 관점에서 답이 존재하지 않는다고 판단할 법한 지점에서도, `NaN` 또는 무한을 반환한 뒤 계산을 이어나갑니다 : 
 
 <!--versetest-->
 <!-- 21 -->
 ```verse
 Sqrt(4.0) = 2.0
-Sqrt(-1.0) = NaN   # negative inputs have no real root
+Sqrt(-1.0) = NaN   # 음수 입력값에 대한 실수 루트 결과값은 존재하지 않습니다
 Sqrt(Inf) = Inf
 
-Pow(2.0, 3.0) = 8.0     # Pow(Base, Exponent)
-Pow(4.0, 0.5) = 2.0     # square root
-Pow(2.0, -1.0) = 0.5    # reciprocal
-Pow(0.0, 0.0) = 1.0     # by convention
-Pow(NaN, 0.0) = 1.0     # a zero exponent always gives 1
-Pow(1.0, NaN) = 1.0     # 1 to any power is 1
+Pow(2.0, 3.0) = 8.0     # 제곱근(밑, 지수)
+Pow(4.0, 0.5) = 2.0     # 루트 2
+Pow(2.0, -1.0) = 0.5    # 역수
+Pow(0.0, 0.0) = 1.0     # 0 의 0 제곱은 관례에 따라 1 입니다
+Pow(NaN, 0.0) = 1.0     # 어떤 값의 0 제곱은 언제나 1 입니다
+Pow(1.0, NaN) = 1.0     # 1은 어떤 값으로 제곱하든 1 입니다
 
-Exp(0.0) = 1.0
+Exp(0.0) = 1.0          # Exp() 는 밑을 자연상수 e (약 2.71828) 로 하는 지수 함수 입니다. 즉, e 의 0 제곱 = 1
 Exp(-Inf) = 0.0
-Ln(1.0) = 0.0
-Ln(Exp(1.0)) = 1.0      # ln(e) = 1
+Ln(1.0) = 0.0           # Ln() 은 밑을 자연상수 e (약 2.71828) 로 하는 자연로그 함수 입니다. 즉, 수식에서 e 를 넘기면, 1 = e 의 0 제곱
+Ln(Exp(1.0)) = 1.0      # Ln(e) = 1
 Ln(0.0) = -Inf
 Ln(-1.0) = NaN
 
-Log(10.0, 100.0) = 2.0  # log₁₀(100); the base comes first
-Log(2.0, 8.0) = 3.0     # log₂(8)
+Log(10.0, 100.0) = 2.0  # log₁₀(100); 밑이 함수의 첫번째 변수가 됩니다
+Log(2.0, 8.0) = 3.0     # log₂(8) 를 나타냅니다
 ```
 
 The trigonometric functions work in radians, and `PiFloat` is the nearest
