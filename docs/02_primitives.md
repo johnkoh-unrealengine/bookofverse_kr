@@ -381,9 +381,7 @@ Log(10.0, 100.0) = 2.0  # log₁₀(100); 밑이 함수의 첫번째 변수가 �
 Log(2.0, 8.0) = 3.0     # log₂(8) 를 나타냅니다
 ```
 
-The trigonometric functions work in radians, and `PiFloat` is the nearest
-`float` to π rather than π itself. That distinction is visible: angles which
-mathematically give exactly zero only come close.
+삼각함수는 radian 단로 작동하고, `PiFloat` 은 π 자체는 아니지만 π 에 가장 가까 `float` 값입니다. 이 구분은 시작적으로 명확하게 드러나는데, 수학적 계산 방식으로 정확히 0 이 되어야 하는 각도도 단지 0 에 가깝게 계산되기 때문입니다.
 
 <!--versetest-->
 <!-- 22 -->
@@ -394,27 +392,23 @@ Cos(0.0) = 1.0
 Cos(PiFloat) = -1.0
 
 Sin(NaN) = NaN
-Sin(Inf) = NaN          # no meaningful angle
+Sin(Inf) = NaN          # 의미있는 각도가 아닙니다
 
-# PiFloat is not π, so these are near zero rather than zero
+# PiFloat 은 π 가 아니기 때문에, 아래의 값들도 0 에 가까울 뿐 0 이 아닙니다
 Sin(PiFloat) > 0.0 and Sin(PiFloat) < 0.000001
 Cos(PiFloat / 2.0) > 0.0 and Cos(PiFloat / 2.0) < 0.000001
 
-# The inverses answer an angle: ArcSin and ArcTan in [-π/2, π/2],
-# ArcCos in [0, π]
+# ArcSin, ArcCos, ArcTan 의 역삼각함수들은 다음의 범위에서 각도를 결과로 반환합니다 :
+# ArcSin 과 ArcTan 은 [-π/2, π/2] 의 범위
+# ArcCos 은 [0, π] 의 범위
 ArcSin(1.0) = PiFloat / 2.0
 ArcCos(-1.0) = PiFloat
 ArcTan(1.0) = PiFloat / 4.0
 ```
 
-Beware that `ArcSin` and `ArcCos` do not fail outside `[-1, 1]`, and do not
-return `NaN` either: they clamp, so `ArcSin(2.0)` quietly answers π/2. The
-engine leaves that behaviour unspecified, so range-check the argument yourself
-when a bad input needs to be visible.
+`ArcSin` 과 `ArcCos` 이 `[-1, 1]` 의 범위 밖에서도 실패하지 않고, 그렇다고 `NaN` 을 반환하지도 않는다는 사실에 주의 하십시오. 범위를 벗어나는 경우 clamp 되므로, `ArcSin(2.0)` 은 단순히 π/2 를 반환하게 됩니다. 엔진은 이와 같은 작동 방식을 오류로 표시하지 않으므로, 부적절한 입력값이 표시되도록 하려면 적절한 범위 내의 argument 를 사용했는지 코드의 작성자가 스스로 체크 해야합니다.
 
-`IsFinite` is the guard for all of this. It fails for `Inf`, `-Inf` and `NaN`,
-and otherwise succeeds with the value itself, which lets it sit in the middle
-of a calculation:
+`IsFinite` 는 이와 같은 상황에서 보완 장치로 쓸 수 있습니다. 이는 `Inf`, `-Inf`, `Nan` 에 대해서는 모두 실패로 처리하고, 그 외의 경우에는 결과값 자체를 성공으로 처리하므로, 전체 계산 과정에서 값이 유지될 수 있게 해줍니다.
 
 <!--versetest
 
@@ -436,16 +430,16 @@ SafeDivide(X:float, Y:float)<computes><decides>:float =
 -->
 <!-- 23 -->
 ```verse
-(5.0).IsFinite[]      # succeeds
-(-100.0).IsFinite[]   # succeeds
+(5.0).IsFinite[]      # 성공
+(-100.0).IsFinite[]   # 성공
 
-(Inf).IsFinite[]  # fails
-(NaN).IsFinite[]  # fails
+(Inf).IsFinite[]  # 실패
+(NaN).IsFinite[]  # 실패
 
-# Succeeds with the value, so it can be used inline
+# 원래 값을 반환하며 성공하므로, 다른 표현식 안에서 직접 사용할 수 있습니다.
 (15.16).IsFinite[] = 15.16
 
-# Validation: fails rather than yielding Inf or NaN
+# 유효성 검사 : Inf 또는 NaN 을 반환하지 않고 그냥 실패로 처리됩니다
 SafeDivide(X:float, Y:float)<computes><decides>:float =
     X.IsFinite[] and Y.IsFinite[]
     Result := X / Y
