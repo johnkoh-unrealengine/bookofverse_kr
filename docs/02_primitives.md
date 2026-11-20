@@ -448,19 +448,20 @@ SafeDivide(X:float, Y:float)<computes><decides>:float =
 ```
 <!-- #> -->
 
-Finally, the named constants:
+마지막으로, named constants[^NamedConstants]는 다음과 같습니다 :
 
 <!--NoCompile-->
 <!-- 24 -->
 ```verse
 PiFloat # 3.14159265358979323846...
-Inf     # Positive infinity
--Inf    # Negative infinity (negation of Inf)
-NaN     # Not a Number
+Inf     # 양의 무한
+-Inf    # 음의 무한
+NaN     # 숫자가 아님 (Not a Number)
 ```
+
 ## Booleans
 
-The `logic` type represents the Boolean values `true` and `false`.
+`logic` 자료형은 `true` 와 `false` 의 Boolean 값을 나타냅니다.
 
 <!--versetest-->
 <!-- 25 -->
@@ -468,25 +469,17 @@ The `logic` type represents the Boolean values `true` and `false`.
 A:logic = true
 B := false
 
-# A = B          # fails
-A?                # succeeds
-# B?             # fails
+# A = B          # 실패
+A?                # 성공
+# B?             # 실패
 
-true?             # succeeds
-# false?         # fails
+true?             # 성공
+# false?         # 실패
 ```
 
-The `logic` type only supports query operations and comparison
-operations.  Query expressions use the query operator `?` to check if
-a logic value is true and fail if the logic value is `false`.  For
-comparison operations, use the failable operator `=` to test if two
-logic values are the same, and `<>` to test for inequality.
+`logic` 자료형은 쿼리 연산과 비교 연산만 지원합니다. 쿼리 표현식은 쿼리 연산자 `?` 를 사용하여 논리값이 사실인지 확인하고, 논리 값이 `false` 인 경우에는 실패로 처리됩니다. 비교 연산에서 두 논리값이 같은지 테스트 하려면 실패할 수 있는 연산자인 `=` 를 사용하고, 두 논리값이 서로 다른지 확인하려면 `<>` 연산자를 사용하면 됩니다.
 
-Many programming languages find it idiomatic to use a type like
-`logic` to signal the success or failure of an operation. In Verse, we
-use success and failure instead for that purpose, whenever
-possible. The conditional only executes the `then` branch if the guard
-succeeds:
+많은 프로그래밍 언어들이 연산 성공과 실패에 대한 신호를 표시하기 위해 `logic` 과 같은 자료형을 관용적으로 씁니다. Verse 에서는 가능하다면 `logic` 과 같은 자료형을 쓰지 않고 성공과 실패 그 자체를 씁니다. 조건문은 guard[^Guard] 가 성공한 경우에만 `then` 분기를 실행합니다 :
 
 <!--versetest
 ShowTargetLockedIcon():void={}
@@ -1345,4 +1338,6 @@ box(t:type) := class:
 [^Overload]: 오버로드. 같은 클래스에 이름은 같고 매개변수만 다른 메서드를 여러개 만드는 것을 말합니다. 예를 들어, Calculate 라는 클래스 안에 서로 다른 매개변수를 쓰는 add(int a, int b) 와 add(float a, float b) 를 동시에 정의할 수 있는데, 이를 두고 add 라는 함수가 overload 되어있다고 표현할 수 있습니다.
 [^Signature]: 시그니처. 함수 시그니처 라고도 합니다. 함수(Function)를 호출하는 방법과 규격에 대한 명세를 말합니다. 그 구성요소로는 함수의 이름, 매개변수 목록, 반환 자료형 등이 있습니다. 선언부에 기재된 이와 같은 정보로 인해, 개발자들은 함수 내부 코드를 다 읽어보지 않아도 해당 함수를 쓰기 위해 어떤 데이터를 넣어야 할지 파악할 수 있습니다.
 [^Domain]: 정의역. 함수에 입력할 수 있도록 허용된 수나 값들의 전체 범위를 말합니다. Domain 의 경계값 이라는 것은, 그 범위의 끝에 있는 값들을 말합니다. 예를 들어, 정의역이 '0 보다 큰 integer' 로 정의되어 있다면, 0 은 Domain 에 포함되지 않는 경계값이고, 1 은 Domain 에 포함되는 경계값 입니다.
-[^BreakTiesToEven]: 반올림 방식의 하나를 말합니다. Banker's rounding 이라고도 합니다. 반올림할 자리가 정확히 중간값(0.5 등) 인 경우, 가장 가까운 짝수로 계산하되, 앞자리가 홀수이면 큰 방향의 짝수로, 앞자리가 짝수이면 작은 값의 짝수로 계산합니다. 예를 들어 2.5 는 2 로 계산되고, 3.5 도 4 로 계산됩니다.↩
+[^BreakTiesToEven]: 반올림 방식의 하나를 말합니다. Banker's rounding 이라고도 합니다. 반올림할 자리가 정확히 중간값(0.5 등) 인 경우, 가장 가까운 짝수로 계산하되, 앞자리가 홀수이면 큰 방향의 짝수로, 앞자리가 짝수이면 작은 값의 짝수로 계산합니다. 예를 들어 2.5 는 2 로 계산되고, 3.5 도 4 로 계산됩니다.
+[^NamedConstants]: 명명된 상수. 고유한 식별자(이름)를 부여받아 코드에서 해당 이름으로 참조할 수 있는 상수를 말합니다.
+[^Guard]: 가드. 조건문에서, 조건의 성립 여부를 확인하는 표현식을 말합니다. 예를 들어, if (Health > 0): Print("Alive") 라는 조건문이 있다면, Health > 0 부분이 guard 입니다.
