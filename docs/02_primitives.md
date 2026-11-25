@@ -491,8 +491,7 @@ if (TargetLocked?):
     ShowTargetLockedIcon()
 ```
 
-To convert an expression that has the `<decides>` effect to `true` on
-success or `false` on failure, use `logic{ exp }`:
+`<decides>` 효과를 갖는 표현식 연산 결과가 성공인 경우 `true` 로, 실패인 경우 `false` 로 변형하기 위해 `logic{ exp }` 를 씁니다 :
 
 <!--versetest
 F()<decides>:void=
@@ -502,19 +501,16 @@ F()<decides>:void=
 -->
 <!-- 27 -->
 ```verse
-GotIt := logic{5 > 3}    # the comparison succeeds, so GotIt is true
-GotIt?                   # so this succeeds
-GotIt = false            # and this fails
-not GotIt?               # and this fails too
+GotIt := logic{5 > 3}    # 비교 결과가 성공이므로, GotIt 은 참 입니다
+GotIt?                   # 그러므로 이 결과도 성공입니다
+GotIt = false            # 그리고 이 식은 실패입니다
+not GotIt?               # 그리고 이 식도 실패입니다
 ```
 <!-- #> -->
 
-## Characters and Strings
+## 문자와 문자열
 
-Text is represented in terms of characters and strings.  A `char` is a
-single **UTF-8 code unit** (not a full Unicode code point). A string
-is therefore an array of characters, written as `[]char`. For
-convenience, Verse provides the type alias `string` for `[]char`:
+텍스트는 문자(characters)와 문자열(strings)로 표현됩니다. `char` 은 전체 Unicode code point[^CodePoint]가 아니라, 단일 **UTF-8 code unit** 입니다. 그러므로 문자열은 문자의 배열이고, `[]char` 처럼 쓰입니다. 편의성을 위해서, Verse 는 `[]char` 자료형에 대한 별칭으로 `string` 을 제공합니다 :
 
 <!--versetest-->
 <!-- 28 -->
@@ -1341,3 +1337,4 @@ box(t:type) := class:
 [^BreakTiesToEven]: 반올림 방식의 하나를 말합니다. Banker's rounding 이라고도 합니다. 반올림할 자리가 정확히 중간값(0.5 등) 인 경우, 가장 가까운 짝수로 계산하되, 앞자리가 홀수이면 큰 방향의 짝수로, 앞자리가 짝수이면 작은 값의 짝수로 계산합니다. 예를 들어 2.5 는 2 로 계산되고, 3.5 도 4 로 계산됩니다.
 [^NamedConstants]: 명명된 상수. 고유한 식별자(이름)를 부여받아 코드에서 해당 이름으로 참조할 수 있는 상수를 말합니다.
 [^Guard]: 가드. 조건문에서, 조건의 성립 여부를 확인하는 표현식을 말합니다. 예를 들어, if (Health > 0): Print("Alive") 라는 조건문이 있다면, Health > 0 부분이 guard 입니다.
+[^CodePoint]: Unicode 에서, 각각의 문자에 부여한 고유한 숫자 값을 말합니다. 예를 들어, 글자 'A' 의 code point 는 U+0041 이고, '가' 의 code point 는 U+AC00 입니다. 이러한 code point 를 실제 메모리에 저장하려면 바이트(Byte) 단위로 인코딩해야 하는데, UTF-8 이 이를 위한 대표적인 인코딩 방식입니다. UTF-8 은 Code Point의 크기에 따라 1~4바이트를 사용해서 저장합니다. 예를 들어, U+0041 를 저장하려면 1 바이트가 필요하고, U+AC00 을 저장하려면 3 바이트가 필요합니다. 그리고 이때 UTF-8 이 저장을 위해 사용하는 기본 단위인 '1 바이트' 가 곧 UTF-8 의 Code Unit 입니다. (참고로, 모든 인코딩 방식에서의 Code Unit 이 1 바이트인 것은 아닙니다. 예를 들어, UTF-16 인코딩 방식에서의 Code Unit 은 2 바이트 입니다.)
