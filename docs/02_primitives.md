@@ -519,32 +519,26 @@ MyName :string = "Joseph"
 MyAlterEgo := "José"
 ```
 
-Verse uses UTF-8 as the character encoding scheme. Each UTF-8 code unit
-is one byte. A Unicode code point may require between one and four
-code units. Code points with lower values use fewer bytes, while
-higher values require more.
+Verse 는 문자 인코딩 체계로 UTF-8 을 씁니다. UTF-8 의 각 code unit 은 1 바이트 입니다. 1 개의 Unicode code point 는 1 ~ 4 개의 code unit 을 필요로 합니다. 값이 작은 code point 들은 더 적은 바이트만으로 표현할 수 있지만, 값이 큰 code point 들은 더 많은 바이트들을 필요로 합니다.
 
-For example:
+예를 들어 :
 
-- `"a"` requires one byte (`{0o61}`),
-- `"á"` requires two bytes (`{0oC3}{0oA1}`),
-- `"🐈"` (cat emoji) requires four bytes (`{0u1f408}`).
+- `"a"` 를 쓰려면 1 바이트가 필요하고 (`{0o61}`),
+- `"á"` 를 쓰려면 2 바이트가 필요하고 (`{0oC3}{0oA1}`),
+- `"🐈"` (고양이 이모지) 를 쓰려면 4 바이트가 필요합니다 (`{0u1f408}`).
 
-Thus, strings are sequences of code units, not necessarily sequences
-of Unicode characters in the abstract sense.
+그러므로, 문자열은 code unit 들의 연속적 배열이고, 추상적 개념인 Unicode 문자들의 연속적 배열이 아닙니다.
 
-Because strings are arrays of `char`, you can index into them with
-`[]`. Indexing has the `<decides>` effect: it succeeds when the index
-is valid and fails otherwise.
+문자열이 `char` 의 배열이기 때문에, `[]` 를 이용해서 그 배열의 구성요소를 열람 할 수 있습니다. 열람은 `<decides>` 효과를 가져서, 열람이 유효하면 성공 처리되고, 유효하지 않으면 실패 처리됩니다.
 
 <!--versetest
 MyName:string="J"
 -->
 <!-- 29 -->
 ```verse
-TheLetterJ := MyName[0]     # succeeds
-TheLetterJ = 'J'            # succeeds
-# MyName[100]               # fails
+TheLetterJ := MyName[0]     # 성공
+TheLetterJ = 'J'            # 성공
+# MyName[100]               # 실패
 ```
 
 The length of a string is the number of UTF-8 code units it contains,
