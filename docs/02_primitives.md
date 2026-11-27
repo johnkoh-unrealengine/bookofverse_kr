@@ -541,18 +541,16 @@ TheLetterJ = 'J'            # 성공
 # MyName[100]               # 실패
 ```
 
-The length of a string is the number of UTF-8 code units it contains,
-accessed via `.Length`. Note that this is *not the same as the number
-of Unicode characters*:
+문자열의 길이는 그 안에 포함된 UTF-8 의 code unit 수와 같고, `.Length` 를 써서 여기에 접근할 수 있습니다. 이 값이 *Unicode 문자 갯수와 일치하지 않는다는 점*에 주의하세요 :
 
 <!--versetest-->
 <!-- 30 -->
 ```verse
-"José".Length = 5           # succeeds; 5 UTF-8 code units
-"Jose".Length = 4           # succeeds; 4 UTF-8 code units
+"José".Length = 5           # 성공; 5 개의 UTF-8 code units 이 쓰였습니다
+"Jose".Length = 4           # 성공; 4 개의 UTF-8 code units 이 쓰였습니다
 ```
 
-Because `string` is just `[]char`, strings declared as `var` can be mutated:
+`string` 이 `[]char` 와 같기 때문에, `var` 로 선언된 문자열은 변형이 가능합니다 :
 
 <!--versetest-->
 <!-- 31 -->
@@ -561,7 +559,7 @@ var OuterSpaceFriend :string = "Glorblex"
 set OuterSpaceFriend[0] = 'F'
 ```
 
-Strings can be concatenated using the `+` operator:
+문자열은 `+` operator 를 써서 서로 이어 붙일 수 있습니다 :
 
 <!--versetest
 MyName:string="Joe"
@@ -572,7 +570,7 @@ MyAlterEgo:string="Jak"
 MyAttemptAtFormatting := "My name is " + MyName + " but my alter ego is " + MyAlterEgo + "."
 ```
 
-Verse also supports string interpolation for more readable formatting:
+Verse 는 가독성을 높이기 위해 string interpolation[^StringInterpolation] 기능도 지원합니다 :
 
 <!--versetest
 MyName:string="3"
@@ -1332,3 +1330,4 @@ box(t:type) := class:
 [^NamedConstants]: 명명된 상수. 고유한 식별자(이름)를 부여받아 코드에서 해당 이름으로 참조할 수 있는 상수를 말합니다.
 [^Guard]: 가드. 조건문에서, 조건의 성립 여부를 확인하는 표현식을 말합니다. 예를 들어, if (Health > 0): Print("Alive") 라는 조건문이 있다면, Health > 0 부분이 guard 입니다.
 [^CodePoint]: Unicode 에서, 각각의 문자에 부여한 고유한 숫자 값을 말합니다. 예를 들어, 글자 'A' 의 code point 는 U+0041 이고, '가' 의 code point 는 U+AC00 입니다. 이러한 code point 를 실제 메모리에 저장하려면 바이트(Byte) 단위로 인코딩해야 하는데, UTF-8 이 이를 위한 대표적인 인코딩 방식입니다. UTF-8 은 Code Point의 크기에 따라 1~4바이트를 사용해서 저장합니다. 예를 들어, U+0041 를 저장하려면 1 바이트가 필요하고, U+AC00 을 저장하려면 3 바이트가 필요합니다. 그리고 이때 UTF-8 이 저장을 위해 사용하는 기본 단위인 '1 바이트' 가 곧 UTF-8 의 Code Unit 입니다. (참고로, 모든 인코딩 방식에서의 Code Unit 이 1 바이트인 것은 아닙니다. 예를 들어, UTF-16 인코딩 방식에서의 Code Unit 은 2 바이트 입니다.)
+[^StringInterpolation]: 문자열 보간. 문자열 안에 변수나 표현식의 값을 삽입하여 문자열을 완성하는 것을 말합니다.
